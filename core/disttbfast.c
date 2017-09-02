@@ -522,9 +522,10 @@ static void pickup( int n, int *seqlen, int ***topol, char **name, char **seq )
 	}
 	writeData_pointer( stdout, m, nameout, nlenout, seqout );
 
-	FILES && printf("file open w \"notused\" %s:%d\n", __FILE__, __LINE__);
 	notusedfp = fopen( "notused", "w" );
+	FILES && printf("file open w \"notused\" (%d) %s:%d\n", notusedfp, __FILE__, __LINE__);
 	writeData_pointer( notusedfp, n-m, namenotused, nlennotused, seqnotused );
+	FILES && printf("file close \"notused\" %s:%d\n", __FILE__, __LINE__);
 	fclose( notusedfp );
 
 
@@ -1878,8 +1879,8 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		if( inputfile )
 		{
 			BRANCHES && printf("branch %d\n", __LINE__); // no
-			FILES && printf("file open r \"%s\" %s:%d\n", inputfile, __FILE__, __LINE__);
 			infp = fopen( inputfile, "r" );
+			FILES && printf("file open r \"%s\" (%d) %s:%d\n", inputfile, infp, __FILE__, __LINE__);
 			if( !infp )
 			{
 				reporterr(       "Cannot open %s\n", inputfile );
@@ -1967,6 +1968,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 	{
 		BRANCHES && printf("branch %d\n", __LINE__); // yes
 		readData_pointer( infp, name, nlen, seq );
+		FILES && printf("file close %d %s:%d\n", infp, __FILE__, __LINE__);
 		fclose( infp );
 	}
 #endif
@@ -2257,8 +2259,8 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 			if( distout )
 			{
 				BRANCHES && printf("branch %d\n", __LINE__); // no
-				FILES && printf("file open w \"hat2\" %s:%d\n", __FILE__, __LINE__);
 				hat2p = fopen( "hat2", "w" );
+				FILES && printf("file open w \"hat2\" (%d) %s:%d\n", hat2p, __FILE__, __LINE__);
 				WriteFloatHat2_pointer_halfmtx( hat2p, njob, name, mtx );
 				// writehat2 wo kakinaosu
 				fclose( hat2p );
@@ -2313,8 +2315,8 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		}
 
 	
-		FILES && printf("file open w \"order\" %s:%d\n", __FILE__, __LINE__);
 		orderfp = fopen( "order", "w" );
+		FILES && printf("file open w \"order\" (%d) %s:%d\n", orderfp, __FILE__, __LINE__);
 		if( !orderfp )
 		{
 			reporterr(       "Cannot open 'order'\n" );
