@@ -956,6 +956,7 @@ char *cutal( char *al, int al_display_start, int start, int end )
 void ErrorExit( char *message )
 {
 	CALLS && printf("called %s:ErrorExit()\n", __FILE__);
+	FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 	fprintf( stderr, "%s\n", message );
 	exit( 1 );
 }
@@ -1009,7 +1010,7 @@ int getaline_fp_eof( char *s, int l, FILE *fp )  /* end of file -> return 1 */
 int getaline_fp_eof_new(s, l, fp)  /* end of file -> return 1 */
 char    s[] ; int l ; FILE *fp ;
 {
-				CALLS && printf("called %s:getaline_fp_eof_new()\n", __FILE__);
+		CALLS && printf("called %s:getaline_fp_eof_new()\n", __FILE__);
         int c = 0, i = 0 ;
 		int noteofflag = 0;
 
@@ -1023,10 +1024,11 @@ char    s[] ; int l ; FILE *fp ;
 		return( !noteofflag );
 }
 
+// fgets() reads at most l characters into buffer s from file fp, stopping at newlines and EOFs.
 int myfgets(s, l, fp) // yes
 char    s[] ; int l ; FILE *fp ;
 {
-				CALLS && printf("called %s:myfgets()\n", __FILE__);
+		CALLS && printf("called %s:myfgets()\n", __FILE__);
         int     c = 0, i = 0 ;
 
 		if( feof( fp ) ) return( 1 );
@@ -1240,6 +1242,7 @@ void searchKUorWA( FILE *fp ) // yes
 	CALLS && printf("called %s:searchKUorWA()\n", __FILE__);
 	int c, b;
 	b = '\n';
+	FILES && printf("file read %d %s:%d\n", fp, __FILE__, __LINE__);
 	while( !( ( ( c = getc( fp ) ) == '>' || c == EOF ) && b == '\n' ) )
 		b = c;
 	ungetc( c, fp );
@@ -1382,13 +1385,15 @@ char *load1SeqWithoutName_realloc( FILE *fpp ) // yes
 	cbuf = val;
 
 	b = '\n';
+	FILES && printf("file read %d %s:%d\n", fpp, __FILE__, __LINE__);
 	while( ( c = getc( fpp ) ) != EOF &&           
           !( ( c == '>' || c == '(' || c == EOF ) && b == '\n' ) )
 	{
-		*cbuf++ = (char)c;  /* 長すぎてもしらない */
+		*cbuf++ = (char)c;  /* [mojibake] */
 		if( cbuf - val == size )
 		{
 			size += N;
+			FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 			fprintf( stderr, "reallocating...\n" );
 			val = (char *)realloc( val, (size+1) * sizeof( char ) );
 			if( !val )
@@ -1401,6 +1406,7 @@ char *load1SeqWithoutName_realloc( FILE *fpp ) // yes
 		}
 		b = c;
 	}
+	FILES && printf("file seek %d %s:%d\n", fpp, __FILE__, __LINE__);
 	ungetc( c, fpp );
 	*cbuf = 0;
 
@@ -1684,9 +1690,11 @@ void readData_pointer( FILE *fp, char **name, int *nlen, char **seq ) // yes
 	}
 #endif
 
+	FILES && printf("file seek %d %s:%d\n", fp, __FILE__, __LINE__);
 	rewind( fp );
 	searchKUorWA( fp );
 
+	FILES && printf("file read %d %s:%d\n", fp, __FILE__, __LINE__);
 	for( i=0; i<njob; i++ )
 	{
 		name[i][0] = '='; getc( fp ); 
@@ -1697,6 +1705,7 @@ void readData_pointer( FILE *fp, char **name, int *nlen, char **seq ) // yes
 			ErrorExit( "Too long name\n" );
 		name[i][j-1] = 0;
 #else
+		FILES && printf("file read %d %s:%d\n", fp, __FILE__, __LINE__);
 		myfgets( name[i]+1, B-2, fp ); 
 #endif
 #if 0
@@ -2388,6 +2397,7 @@ void getnumlen( FILE *fp ) // yes
 	total = 0;
 	for( i=0; i<njob; i++ )
 	{
+		FILES && printf("file read %d %s:%d\n", fp, __FILE__, __LINE__);
 		myfgets( tmpname, N-1, fp );
 		tmpseq = load1SeqWithoutName_realloc( fp );
 		tmp = strlen( tmpseq );
@@ -2497,9 +2507,11 @@ void writeData_pointer( FILE *fp, int locnjob, char **name, int *nlen, char **as
 	for( i=0; i<locnjob; i++ )
 	{
 #if DEBUG
+		FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 		fprintf( stderr, "i = %d in writeData\n", i );
 #endif
 		nalen = strlen( aseq[i] );
+		FILES && printf("file write %d %s:%d\n", fp, __FILE__, __LINE__);
 		fprintf( fp, ">%s\n", name[i]+1 );
 		for( j=0; j<nalen; j=j+C )
 		{
@@ -2507,6 +2519,7 @@ void writeData_pointer( FILE *fp, int locnjob, char **name, int *nlen, char **as
 			strncpy( b, aseq[i]+j, C ); b[C] = 0;
 			fprintf( fp, "%s\n",b );
 #else
+			FILES && printf("file write %d %s:%d\n", fp, __FILE__, __LINE__);
 			fprintf( fp, "%.*s\n", C, aseq[i]+j );
 #endif
 		}
@@ -2552,7 +2565,7 @@ void write1seq( FILE *fp, char *aseq )
 
 void readhat2_floathalf_part_pointer( FILE *fp, int nseq, int nadd, char **name, float **mtx )
 {
-		CALLS && printf("called %s:readhat2_floathalf_part_pointer()\n", __FILE__);
+	CALLS && printf("called %s:readhat2_floathalf_part_pointer()\n", __FILE__);
     int i, j, nseq0, norg;
     char b[B];
 
@@ -2589,7 +2602,7 @@ void readhat2_floathalf_part_pointer( FILE *fp, int nseq, int nadd, char **name,
 
 void readhat2_floathalf_pointer( FILE *fp, int nseq, char **name, float **mtx )
 {
-		CALLS && printf("called %s:readhat2_floathalf_pointer()\n", __FILE__);
+	CALLS && printf("called %s:readhat2_floathalf_pointer()\n", __FILE__);
     int i, j, nseq0;
     char b[B];
 
@@ -2654,7 +2667,7 @@ void readhat2_floathalf( FILE *fp, int nseq, char name[M][B], float **mtx )
 }
 void readhat2_float( FILE *fp, int nseq, char name[M][B], float **mtx )
 {
-		CALLS && printf("called %s:readhat2_float()\n", __FILE__);
+	CALLS && printf("called %s:readhat2_float()\n", __FILE__);
     int i, j, nseq0;
     char b[B];
 
@@ -2716,7 +2729,7 @@ void readhat2_int( FILE *fp, int nseq, char name[M][B], int **mtx )
 
 void readhat2_pointer( FILE *fp, int nseq, char **name, double **mtx )
 {
-		CALLS && printf("called %s:readhat2_pointer()\n", __FILE__);
+	CALLS && printf("called %s:readhat2_pointer()\n", __FILE__);
     int i, j, nseq0;
     char b[B];
 
@@ -2747,7 +2760,7 @@ void readhat2_pointer( FILE *fp, int nseq, char **name, double **mtx )
 }
 void readhat2( FILE *fp, int nseq, char name[M][B], double **mtx )
 {
-		CALLS && printf("called %s:readhat2()\n", __FILE__);
+	CALLS && printf("called %s:readhat2()\n", __FILE__);
     int i, j, nseq0;
     char b[B];
 
@@ -2953,7 +2966,7 @@ void WriteHat2plain( FILE *hat2p, int locnjob, double **mtx )
 
 int ReadFasta_sub( FILE *fp, double *dis, int nseq, char name[M][B] )
 {
-		CALLS && printf("called %s:ReadFasta_sub()\n", __FILE__);
+	CALLS && printf("called %s:ReadFasta_sub()\n", __FILE__);
     int i, count=0;
     char b[B];
     int junban[M];
@@ -2987,7 +3000,7 @@ int ReadFasta_sub( FILE *fp, double *dis, int nseq, char name[M][B] )
 
 int ReadSsearch( FILE *fp, double *dis, int nseq, char name[M][B] )
 {
-		CALLS && printf("called %s:ReadSsearch()\n", __FILE__);
+	CALLS && printf("called %s:ReadSsearch()\n", __FILE__);
     int i, count=0;
     char b[B];
     int junban[M];
@@ -3023,7 +3036,7 @@ int ReadSsearch( FILE *fp, double *dis, int nseq, char name[M][B] )
 
 int ReadBlastm7_avscore( FILE *fp, double *dis, int nin )
 {
-		CALLS && printf("called %s:ReadBlastm7_avscore()\n", __FILE__);
+	CALLS && printf("called %s:ReadBlastm7_avscore()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3151,7 +3164,7 @@ int ReadBlastm7_avscore( FILE *fp, double *dis, int nin )
 }
 int ReadBlastm7_scoreonly( FILE *fp, double *dis, int nin )
 {
-		CALLS && printf("called %s:ReadBlastm7_scoreonly()\n", __FILE__);
+	CALLS && printf("called %s:ReadBlastm7_scoreonly()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3269,7 +3282,7 @@ int ReadBlastm7_scoreonly( FILE *fp, double *dis, int nin )
 
 int ReadBlastm7( FILE *fp, double *dis, int qmem, char **name, LocalHom *localhomlist )
 {
-		CALLS && printf("called %s:ReadBlastm7()\n", __FILE__);
+	CALLS && printf("called %s:ReadBlastm7()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3385,7 +3398,7 @@ int ReadBlastm7( FILE *fp, double *dis, int qmem, char **name, LocalHom *localho
 
 int ReadFasta34noalign( FILE *fp, double *dis, int qmem, char **name, LocalHom *localhomlist )
 {
-		CALLS && printf("called %s:ReadFasta34noalign()\n", __FILE__);
+	CALLS && printf("called %s:ReadFasta34noalign()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3418,7 +3431,7 @@ int ReadFasta34noalign( FILE *fp, double *dis, int qmem, char **name, LocalHom *
 }
 int ReadFasta34m10_nuc( FILE *fp, double *dis, int qmem, char **name, LocalHom *localhomlist )
 {
-		CALLS && printf("called %s:ReadFasta34m10_nuc()\n", __FILE__);
+	CALLS && printf("called %s:ReadFasta34m10_nuc()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3558,7 +3571,7 @@ int ReadFasta34m10_nuc( FILE *fp, double *dis, int qmem, char **name, LocalHom *
 }
 int ReadFasta34m10( FILE *fp, double *dis, int qmem, char **name, LocalHom *localhomlist )
 {
-		CALLS && printf("called %s:ReadFasta34m10()\n", __FILE__);
+	CALLS && printf("called %s:ReadFasta34m10()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3696,7 +3709,7 @@ int ReadFasta34m10( FILE *fp, double *dis, int qmem, char **name, LocalHom *loca
 }
 int ReadFasta34m10_scoreonly_nucbk( FILE *fp, double *dis, int nin )
 {
-		CALLS && printf("called %s:ReadFasta34m10_scoreonly_nucbk()\n", __FILE__);
+	CALLS && printf("called %s:ReadFasta34m10_scoreonly_nucbk()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3740,7 +3753,7 @@ int ReadFasta34m10_scoreonly_nucbk( FILE *fp, double *dis, int nin )
 
 int ReadFasta34m10_scoreonly_nuc( FILE *fp, double *dis, int nin )
 {
-		CALLS && printf("called %s:ReadFasta34m10_scoreonly_nuc()\n", __FILE__);
+	CALLS && printf("called %s:ReadFasta34m10_scoreonly_nuc()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3802,7 +3815,7 @@ int ReadFasta34m10_scoreonly_nuc( FILE *fp, double *dis, int nin )
 
 int ReadFasta34m10_scoreonly( FILE *fp, double *dis, int nin )
 {
-		CALLS && printf("called %s:ReadFasta34m10_scoreonly()\n", __FILE__);
+	CALLS && printf("called %s:ReadFasta34m10_scoreonly()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3860,7 +3873,7 @@ int ReadFasta34m10_scoreonly( FILE *fp, double *dis, int nin )
 }
 int ReadFasta34( FILE *fp, double *dis, int nseq, char name[M][B], LocalHom *localhomlist )
 {
-		CALLS && printf("called %s:ReadFasta34()\n", __FILE__);
+	CALLS && printf("called %s:ReadFasta34()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3926,7 +3939,7 @@ int ReadFasta34( FILE *fp, double *dis, int nseq, char name[M][B], LocalHom *loc
 
 int ReadFasta3( FILE *fp, double *dis, int nseq, char name[M][B] )
 {
-		CALLS && printf("called %s:ReadFasta3()\n", __FILE__);
+	CALLS && printf("called %s:ReadFasta3()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3957,7 +3970,7 @@ int ReadFasta3( FILE *fp, double *dis, int nseq, char name[M][B] )
 
 int ReadFasta( FILE *fp, double *dis, int nseq, char name[M][B] )
 {
-		CALLS && printf("called %s:ReadFasta()\n", __FILE__);
+	CALLS && printf("called %s:ReadFasta()\n", __FILE__);
     int i, count=0;
     char b[B];
     int junban[M];
@@ -3996,7 +4009,7 @@ int ReadFasta( FILE *fp, double *dis, int nseq, char name[M][B] )
 
 int ReadOpt( FILE *fp, int opt[M], int nseq, char name[M][B] )
 {
-		CALLS && printf("called %s:ReadOpt()\n", __FILE__);
+	CALLS && printf("called %s:ReadOpt()\n", __FILE__);
     int i, count=0;
     char b[B];
     int junban[M];
@@ -4019,7 +4032,7 @@ int ReadOpt( FILE *fp, int opt[M], int nseq, char name[M][B] )
 
 int ReadOpt2( FILE *fp, int opt[M], int nseq, char name[M][B] )
 {
-		CALLS && printf("called %s:ReadOpt2()\n", __FILE__);
+	CALLS && printf("called %s:ReadOpt2()\n", __FILE__);
     int i, count=0;
     char b[B];
     int junban[M];
@@ -4156,6 +4169,7 @@ void initSignalSM( void ) // yes
 //	int signalsmid;
 
 #if IODEBUG
+	FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 	if( ppid ) fprintf( stderr, "PID of xced = %d\n", ppid );
 #endif
 	if( !ppid )
@@ -4182,14 +4196,14 @@ void initFiles( void ) // yes
 		sprintf( pname, "/tmp/pre.%d", ppid );
 	else
 		sprintf( pname, "pre" );
-	FILES && printf("file open w \"%s\" %s:%d\n", pname, __FILE__, __LINE__);
 	prep_g = fopen( pname, "w" );
+	FILES && printf("file open w \"%s\" (%d) %s:%d\n", pname, prep_g, __FILE__, __LINE__);
 	if( !prep_g ) ErrorExit( "Cannot open pre" );
 
-	FILES && printf("file open w \"trace\" %s:%d\n", __FILE__, __LINE__);
 	trap_g = fopen( "trace", "w" );
+	FILES && printf("file open w \"trace\" (%d) %s:%d\n", trap_g, __FILE__, __LINE__);
 	if( !trap_g ) ErrorExit( "cannot open trace" );
-	FILES && printf("file write \"trace\" %s:%d\n", __FILE__, __LINE__);
+	FILES && printf("file write \"trace\" (%d) %s:%d\n", trap_g, __FILE__, __LINE__);
 	fprintf( trap_g, "PID = %d\n", getpid() );
 	fflush( trap_g );
 }
@@ -4206,7 +4220,7 @@ void closeFiles( void ) // yes
 
 void WriteForFasta( FILE *fp, int locnjob, char **name, int nlen[M], char **aseq )
 {
-		CALLS && printf("called %s:WriteForFasta()\n", __FILE__);
+	CALLS && printf("called %s:WriteForFasta()\n", __FILE__);
     static char b[N];
     int i, j;
     int nalen[M];
@@ -5438,6 +5452,7 @@ int myatoi( char *in ) // yes
 	CALLS && printf("called %s:myatoi()\n", __FILE__);
 	if( in == NULL )
 	{
+		FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 		fprintf( stderr, "Error in myatoi()\n" );
 		exit( 1 );
 	}
@@ -5449,6 +5464,7 @@ float myatof( char *in ) // yes
 	CALLS && printf("called %s:myatof()\n", __FILE__);
 	if( in == NULL )
 	{
+		FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 		fprintf( stderr, "Error in myatof()\n" );
 		exit( 1 );
 	}
@@ -5465,13 +5481,18 @@ void reporterr( const char *str, ... ) // yes
 	{
 # if 1  // ato de sakujo
 		static FILE *errtmpfp = NULL;
-		if( errtmpfp == NULL )
+		if( errtmpfp == NULL ) {
 			errtmpfp = fopen( "maffterr", "w" );
-		else
+			FILES && printf("file open w \"maffterr\" (%d) %s:%d\n", errtmpfp, __FILE__, __LINE__);
+		} else {
 			errtmpfp = fopen( "maffterr", "a" );
+			FILES && printf("file open a \"maffterr\" (%d) %s:%d\n", errtmpfp, __FILE__, __LINE__);
+		}
 		va_start( args, str );
+		FILES && printf("file write %d %s:%d\n", errtmpfp, __FILE__, __LINE__);
 		vfprintf( errtmpfp, str, args );
 		va_end( args );
+		FILES && printf("file close %d %s:%d\n", errtmpfp, __FILE__, __LINE__);
 		fclose( errtmpfp );
 #endif
 
@@ -5500,6 +5521,7 @@ void reporterr( const char *str, ... ) // yes
 	else
 	{
 		va_start( args, str );
+		FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 		vfprintf( stderr, str, args );
 		va_end( args );
 //		fflush( stderr ); // iru?

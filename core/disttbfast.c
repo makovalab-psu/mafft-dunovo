@@ -429,11 +429,13 @@ void arguments( int argc, char *argv[] )
     if( argc != 0 ) 
     {
         reporterr(       "options: Check source file !\n" );
+        BRANCHES && printf("branch exit %s:%d\n", __FILE__, __LINE__);
         exit( 1 );
     }
 	if( tbitr == 1 && outgap == 0 )
 	{
 		reporterr(       "conflicting options : o, m or u\n" );
+		BRANCHES && printf("branch exit %s:%d\n", __FILE__, __LINE__);
 		exit( 1 );
 	}
 }
@@ -623,9 +625,15 @@ int commonsextet_p( int *table, int *pointt )
 	if( !memo )
 	{
 		memo = (int *)calloc( tsize, sizeof( int ) );
-		if( !memo ) ErrorExit( "Cannot allocate memo\n" );
+		if( !memo ) {
+			BRANCHES && printf("branch exit %s:%d\n", __FILE__, __LINE__);
+			ErrorExit( "Cannot allocate memo\n" );
+		}
 		ct = (int *)calloc( MIN( maxl, tsize )+1, sizeof( int ) ); // chuui!!
-		if( !ct ) ErrorExit( "Cannot allocate ct\n" );
+		if( !ct ) {
+			BRANCHES && printf("branch exit %s:%d\n", __FILE__, __LINE__);
+			ErrorExit( "Cannot allocate ct\n" );
+		}
 	}
 
 	cp = ct;
@@ -1787,6 +1795,7 @@ static void WriteOptions( FILE *fp )
 
 int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, char **argv, int (*callback)(int, int, char*))
 {
+	CALLS && printf("called %s:disttbfast()\n", __FILE__);
 	int  *nlen = NULL;	
 	int  *nogaplen = NULL;	
 	char **name = NULL, **seq = NULL;
@@ -1865,7 +1874,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 
 	if( ngui )
 	{
-		BRANCHES && printf("branch %d\n", __LINE__); // no (Don't need to mark ngui branches further; they're never taken.)
+		BRANCHES && printf("branch %d\n", __LINE__); // no
 		for( i=0; i<argc; i++ ) 
 		{
 //			free( tmpargv[i] );
@@ -2990,6 +2999,10 @@ chudan:
 
 int main( int argc, char **argv )
 {
+	CALLS && printf("called %s:main()\n", __FILE__);
+	FILES && printf("file descriptor stdin is %d\n", stdin);
+	FILES && printf("file descriptor stdout is %d\n", stdout);
+	FILES && printf("file descriptor stderr is %d\n", stderr);
 	int res = disttbfast( 0, 0, NULL, NULL, argc, argv, NULL );
 	if( res == GUI_CANCEL ) res = 0; // treeout de goto chudan wo riyousuru
 	return res;
