@@ -12,6 +12,7 @@
 
 void MtxuntDouble( double **mtx, int n )
 {
+		CALLS && printf("called %s:MtxuntDouble()\n", __FILE__);
     int i, j;
     for( i=0; i<n; i++ ) for( j=0; j<n; j++ ) mtx[i][j] = 0.0;
     for( i=0; i<n; i++ ) mtx[i][i] = 1.0;
@@ -19,6 +20,7 @@ void MtxuntDouble( double **mtx, int n )
 
 void MtxmltDouble( double **mtx1, double **mtx2, int n )
 {
+		CALLS && printf("called %s:MtxmltDouble()\n", __FILE__);
     int i, j, k;
     double s, *tmp;
 
@@ -38,6 +40,7 @@ void MtxmltDouble( double **mtx1, double **mtx2, int n )
 
 char *AllocateCharVec( int l1 )
 {
+	CALLS && printf("called %s:AllocateCharVec()\n", __FILE__);
 	char *cvec;
 	
 	cvec = (char *)calloc( l1, sizeof( char ) );
@@ -85,6 +88,7 @@ void ReallocateCharMtx( char **mtx, int l1, int l2 )
 #else
 void ReallocateCharMtx( char **mtx, int l1, int l2 )
 {
+	CALLS && printf("called %s:ReallocateCharMtx()\n", __FILE__);
 	int i;
 	for( i=0; i<l1; i++ ) 
 	{
@@ -99,6 +103,7 @@ void ReallocateCharMtx( char **mtx, int l1, int l2 )
 
 char **AllocateCharMtx( int l1, int l2 )
 {
+	CALLS && printf("called %s:AllocateCharMtx()\n", __FILE__);
 	int i;
 	char **cmtx;
 	
@@ -121,6 +126,7 @@ char **AllocateCharMtx( int l1, int l2 )
 
 void FreeCharMtx( char **mtx )
 {
+	CALLS && printf("called %s:FreeCharMtx()\n", __FILE__);
 /*
 	char **x;
 	x = mtx;
@@ -137,6 +143,7 @@ void FreeCharMtx( char **mtx )
 
 float *AllocateFloatVec( int l1 )
 {
+	CALLS && printf("called %s:AllocateFloatVec()\n", __FILE__);
 	float *vec;
 
 	vec = (float *)calloc( (unsigned int)l1, sizeof( float ) );
@@ -150,11 +157,13 @@ float *AllocateFloatVec( int l1 )
 
 void FreeFloatVec( float *vec )
 {
+	CALLS && printf("called %s:FreeFloatVec()\n", __FILE__);
 	free( (char *)vec );
 }
 
 float **AllocateFloatHalfMtx( int ll1 )
 {
+	CALLS && printf("called %s:AllocateFloatHalfMtx()\n", __FILE__);
 	float **mtx;
 	int i;
 
@@ -179,6 +188,7 @@ float **AllocateFloatHalfMtx( int ll1 )
 
 float **AllocateFloatMtx( int ll1, int ll2 )
 {
+	CALLS && printf("called %s:AllocateFloatMtx()\n", __FILE__);
 	float **mtx;
 	int i;
 
@@ -206,6 +216,7 @@ float **AllocateFloatMtx( int ll1, int ll2 )
 
 void FreeFloatHalfMtx( float **mtx, int n )
 {
+	CALLS && printf("called %s:FreeFloatHalfMtx()\n", __FILE__);
 	int i;
 
 	for( i=0; i<n; i++ ) 
@@ -216,6 +227,7 @@ void FreeFloatHalfMtx( float **mtx, int n )
 }
 void FreeFloatMtx( float **mtx )
 {
+	CALLS && printf("called %s:FreeFloatMtx()\n", __FILE__);
 	int i;
 
 	for( i=0; mtx[i]; i++ ) 
@@ -227,6 +239,7 @@ void FreeFloatMtx( float **mtx )
 
 int *AllocateIntVec( int ll1 )
 {
+	CALLS && printf("called %s:AllocateIntVec()\n", __FILE__);
 	int *vec;
 
 	vec = (int *)calloc( ll1, sizeof( int ) );
@@ -240,11 +253,13 @@ int *AllocateIntVec( int ll1 )
 
 void FreeIntVec( int *vec )
 {
+	CALLS && printf("called %s:FreeIntVec()\n", __FILE__);
 	free( (char *)vec );
 }
 
 float **AllocateFloatTri( int ll1 )
 {
+	CALLS && printf("called %s:AllocateFloatTri()\n", __FILE__);
 	float **tri;
 	int i;
 
@@ -265,6 +280,7 @@ float **AllocateFloatTri( int ll1 )
 
 void FreeFloatTri( float **tri )
 {
+	CALLS && printf("called %s:FreeFloatTri()\n", __FILE__);
 /*
 	float **x;
 	x = tri;
@@ -279,6 +295,7 @@ void FreeFloatTri( float **tri )
 		
 int **AllocateIntMtx( int ll1, int ll2 )
 {
+	CALLS && printf("called %s:AllocateIntMtx()\n", __FILE__);
 	int i;
 	int **mtx;
 
@@ -318,6 +335,7 @@ void FreeIntMtx( int **mtx )
 
 char ***AllocateCharCub( int ll1, int ll2, int  ll3 )
 {
+	CALLS && printf("called %s:AllocateCharCub()\n", __FILE__);
 	int i;
 	char ***cub;
 
@@ -340,6 +358,7 @@ char ***AllocateCharCub( int ll1, int ll2, int  ll3 )
 
 void FreeCharCub( char ***cub )
 {
+	CALLS && printf("called %s:FreeCharCub()\n", __FILE__);
 	int i;
 
 	for( i=0; cub[i]; i++ ) 
@@ -351,6 +370,7 @@ void FreeCharCub( char ***cub )
 
 void freeintmtx( int **mtx, int ll1, int ll2 )
 {
+		CALLS && printf("called %s:freeintmtx()\n", __FILE__);
     int i;
 
     for( i=0; i<ll1; i++ ) 
@@ -360,6 +380,7 @@ void freeintmtx( int **mtx, int ll1, int ll2 )
       
 void FreeIntMtx( int **mtx )
 {
+	CALLS && printf("called %s:FreeIntMtx()\n", __FILE__);
 	int i;
 
 	for( i=0; mtx[i]; i++ ) 
@@ -371,6 +392,7 @@ void FreeIntMtx( int **mtx )
 
 char ****AllocateCharHcu( int ll1, int ll2, int ll3, int ll4 )
 {
+	CALLS && printf("called %s:AllocateCharHcu()\n", __FILE__);
 	int i;
 	char ****hcu;
 
@@ -384,6 +406,7 @@ char ****AllocateCharHcu( int ll1, int ll2, int ll3, int ll4 )
 
 void FreeCharHcu( char ****hcu )
 {
+	CALLS && printf("called %s:FreeCharHcu()\n", __FILE__);
 	int i;
 	for( i=0; hcu[i]; i++ )
 	{
@@ -394,6 +417,7 @@ void FreeCharHcu( char ****hcu )
 
 double *AllocateDoubleVec( int ll1 )
 {
+	CALLS && printf("called %s:AllocateDoubleVec()\n", __FILE__);
 	double *vec;
 
 	vec = (double *)calloc( ll1, sizeof( double ) ); // filled with 0.0
@@ -402,11 +426,13 @@ double *AllocateDoubleVec( int ll1 )
 
 void FreeDoubleVec( double *vec )
 {
+	CALLS && printf("called %s:FreeDoubleVec()\n", __FILE__);
 	free( vec );
 }
 
 int ***AllocateIntCub( int ll1, int ll2, int ll3 )
 {
+	CALLS && printf("called %s:AllocateIntCub()\n", __FILE__);
 	int i;
 	int ***cub;
 
@@ -425,6 +451,7 @@ int ***AllocateIntCub( int ll1, int ll2, int ll3 )
 
 void FreeIntCub( int ***cub )
 {
+	CALLS && printf("called %s:FreeIntCub()\n", __FILE__);
 	int i;
 	for( i=0; cub[i]; i++ ) 
 	{
@@ -435,6 +462,7 @@ void FreeIntCub( int ***cub )
 
 double **AllocateDoubleMtx( int ll1, int ll2 )
 {
+	CALLS && printf("called %s:AllocateDoubleMtx()\n", __FILE__);
 	int i;
 	double **mtx;
 	mtx = (double **)calloc( ll1+1, sizeof( double * ) );
@@ -455,6 +483,7 @@ double **AllocateDoubleMtx( int ll1, int ll2 )
 
 void FreeDoubleMtx( double **mtx )
 {
+	CALLS && printf("called %s:FreeDoubleMtx()\n", __FILE__);
 	int i;
 	for( i=0; mtx[i]; i++ )
 		FreeDoubleVec( mtx[i] );
@@ -463,6 +492,7 @@ void FreeDoubleMtx( double **mtx )
 
 float ***AllocateFloatCub( int ll1, int ll2, int  ll3 )
 {
+	CALLS && printf("called %s:AllocateFloatCub()\n", __FILE__);
 	int i;
 	float ***cub;
 
@@ -482,6 +512,7 @@ float ***AllocateFloatCub( int ll1, int ll2, int  ll3 )
 
 void FreeFloatCub( float ***cub )
 {
+	CALLS && printf("called %s:FreeFloatCub()\n", __FILE__);
 	int i;
 
 	for( i=0; cub[i]; i++ ) 
@@ -493,6 +524,7 @@ void FreeFloatCub( float ***cub )
 
 double ***AllocateDoubleCub( int ll1, int ll2, int  ll3 )
 {
+	CALLS && printf("called %s:AllocateDoubleCub()\n", __FILE__);
 	int i;
 	double ***cub;
 
@@ -512,6 +544,7 @@ double ***AllocateDoubleCub( int ll1, int ll2, int  ll3 )
 
 void FreeDoubleCub( double ***cub )
 {
+	CALLS && printf("called %s:FreeDoubleCub()\n", __FILE__);
 	int i;
 
 	for( i=0; cub[i]; i++ ) 
@@ -524,6 +557,7 @@ void FreeDoubleCub( double ***cub )
 
 short *AllocateShortVec( int ll1 )
 {
+	CALLS && printf("called %s:AllocateShortVec()\n", __FILE__);
 	short *vec;
 
 	vec = (short *)calloc( ll1, sizeof( short ) );
@@ -537,11 +571,13 @@ short *AllocateShortVec( int ll1 )
 
 void FreeShortVec( short *vec )
 {
+	CALLS && printf("called %s:FreeShortVec()\n", __FILE__);
 	free( (char *)vec );
 }
 
 short **AllocateShortMtx( int ll1, int ll2 )
 {
+	CALLS && printf("called %s:AllocateShortMtx()\n", __FILE__);
 	int i;
 	short **mtx;
 
@@ -562,6 +598,7 @@ short **AllocateShortMtx( int ll1, int ll2 )
 
 void FreeShortMtx( short **mtx )
 {
+	CALLS && printf("called %s:FreeShortMtx()\n", __FILE__);
 	int i;
 
 	for( i=0; mtx[i]; i++ ) 

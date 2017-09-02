@@ -46,6 +46,7 @@ int intlen( int *num )
 
 char seqcheck( char **seq )
 {
+	CALLS && printf("called %s:seqcheck()\n", __FILE__);
 	int i, len;
 	char **seqbk = seq;
 	while( *seq )	
@@ -1658,6 +1659,7 @@ static double cluster_minimum_double( double d1, double d2 )
 
 void fixed_supg_float_realloc_nobk_halfmtx_treeout_constrained( int nseq, float **eff, int ***topol, float **len, char **name, int *nlen, Treedep *dep, int ngroup, int **groups, int efffree )
 {
+	CALLS && printf("called %s:fixed_supg_float_realloc_nobk_halfmtx_treeout_constrained()\n", __FILE__);
 	int i, j, k, miniim, maxiim, minijm, maxijm;
 	int *intpt, *intpt2;
 	float tmpfloat;
@@ -3386,6 +3388,7 @@ void fixed_supg_double_treeout_constrained( int nseq, double **eff, int ***topol
 
 void fixed_musclesupg_float_realloc_nobk_halfmtx( int nseq, float **eff, int ***topol, float **len, Treedep *dep, int progressout, int efffree )
 {
+	CALLS && printf("called %s:fixed_musclesupg_float_realloc_nobk_halfmtx()\n", __FILE__);
 	int i, j, k, miniim, maxiim, minijm, maxijm;
 	int *intpt, *intpt2;
 	float tmpfloat;
@@ -5093,6 +5096,7 @@ void counteff_simple_float( int nseq, int ***topol, float **len, double *node )
 
 void counteff_simple_float_nostatic( int nseq, int ***topol, float **len, double *node )
 {
+	CALLS && printf("called %s:counteff_simple_float_nostatic()\n", __FILE__);
     int i, j, s1, s2;
 	double total;
 	double *rootnode;
@@ -5679,6 +5683,7 @@ void FreeTmpSeqs( char **mseq2, char *mseq1 )
 
 void gappick0( char *aseq, char *seq )
 {
+	CALLS && printf("called %s:gappick0()\n", __FILE__);
 	for( ; *seq != 0; seq++ )
 	{
 		if( *seq != '-' )
@@ -5758,6 +5763,7 @@ void commongappick_record( int nseq, char **seq, int *map )
 
 void commongappick( int nseq, char **seq )
 {
+	CALLS && printf("called %s:commongappick()\n", __FILE__);
 	int i, j, count;
 	int len = strlen( seq[0] );
 #if 1
@@ -8122,6 +8128,7 @@ static int minimum( int i1, int i2 )
 
 static void commongappickpairfast( char *r1, char *r2, char *i1, char *i2, int *skip1, int *skip2 )
 {
+	CALLS && printf("called %s:commongappickpairfast()\n", __FILE__);
 //	char *i1bk = i1;
 	int skip, skipped1, skipped2;
 //	int skip, skipped1, skipped2, scand1, scand2;
@@ -8177,6 +8184,7 @@ static void commongappickpairfast( char *r1, char *r2, char *i1, char *i2, int *
 
 static void commongappickpair( char *r1, char *r2, char *i1, char *i2 )
 {
+	CALLS && printf("called %s:commongappickpair()\n", __FILE__);
 //	strcpy( r1, i1 );
 //	strcpy( r2, i2 );
 //	return; // not SP
@@ -8545,6 +8553,7 @@ float naivepairscorefast( char *seq1, char *seq2, int *skip1, int *skip2, int pe
 
 float naivepairscore11( char *seq1, char *seq2, int penal )
 {
+	CALLS && printf("called %s:naivepairscore11()\n", __FILE__);
 	float  vali;
 	int len = strlen( seq1 );
 	char *s1, *s2, *p1, *p2;
@@ -9255,6 +9264,7 @@ int samemember( int *mem, int *cand )
 #else
 int samemember( int *mem, int *cand )
 {
+	CALLS && printf("called %s:samemember()\n", __FILE__);
 	int i, j;
 	int nm, nc;
 
@@ -9333,6 +9343,7 @@ int samemembern( int *mem, int *cand, int nc )
 
 int includemember( int *mem, int *cand ) // mem in cand 
 {
+	CALLS && printf("called %s:includemember()\n", __FILE__);
 	int i, j;
 
 #if 0
@@ -9490,6 +9501,7 @@ void makedynamicmtx( double **out, double **in, float offset )
 }
 void FreeCommonIP()
 {
+	CALLS && printf("called %s:FreeCommonIP()\n", __FILE__);
 	if( commonIP ) FreeIntMtx( commonIP ); 
 	commonIP = NULL;
 	commonAlloc1 = 0;
@@ -9498,6 +9510,7 @@ void FreeCommonIP()
 
 void makeskiptable( int n, int **skip, char **seq )
 {
+	CALLS && printf("called %s:makeskiptable()\n", __FILE__);
 	char *nogapseq;
 	int nogaplen, alnlen;
 	int i, j, posinseq, gaplen;
@@ -9616,6 +9629,7 @@ int generatesubalignmentstable( int nseq, int ***tablept, int *nsubpt, int *maxm
 
 float sumofpairsscore( int nseq, char **seq )
 {
+	CALLS && printf("called %s:sumofpairsscore()\n", __FILE__);
 	float v = 0;
 	int i, j;
 	for( i=1; i<nseq; i++ )

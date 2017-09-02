@@ -945,6 +945,7 @@ char *cutal( char *al, int al_display_start, int start, int end )
 
 void ErrorExit( char *message )
 {
+	CALLS && printf("called %s:ErrorExit()\n", __FILE__);
 	fprintf( stderr, "%s\n", message );
 	exit( 1 );
 }
@@ -1635,6 +1636,7 @@ int copydatafromgui( char **namegui, char **seqgui, char **name, int *nlen, char
 
 void readData_pointer( FILE *fp, char **name, int *nlen, char **seq )
 {
+	CALLS && printf("called %s:readData_pointer()\n", __FILE__);
 	int i; 
 	static char *tmpseq = NULL;
 
@@ -2320,6 +2322,7 @@ void getnumlen_nogap_outallreg_web( FILE *fp, FILE *ofp, int *nlenminpt, int *is
 
 void getnumlen( FILE *fp )
 {
+	CALLS && printf("called %s:getnumlen()\n", __FILE__);
 	int total;
 	int nsite = 0;
 	int atgcnum;
@@ -2435,6 +2438,7 @@ void writeDataforgaln( FILE *fp, int locnjob, char **name, int *nlen, char **ase
 
 void writeData_pointer( FILE *fp, int locnjob, char **name, int *nlen, char **aseq )
 {
+	CALLS && printf("called %s:writeData_pointer()\n", __FILE__);
 	int i, j;
 	int nalen;
 
@@ -2716,6 +2720,7 @@ void readhat2( FILE *fp, int nseq, char name[M][B], double **mtx )
 
 void WriteFloatHat2_pointer_halfmtx( FILE *hat2p, int locnjob, char **name, float **mtx )
 {
+	CALLS && printf("called %s:WriteFloatHat2_pointer_halfmtx()\n", __FILE__);
 	int i, j, ijsa;
 	double max = 0.0;
 	for( i=0; i<locnjob-1; i++ ) for( j=1; j<locnjob-i; j++ ) if( mtx[i][j] > max ) max = mtx[i][j];
@@ -4064,6 +4069,7 @@ void readOtherOptions( int *ppidptr, int *fftThresholdptr, int *fftWinSizeptr )
 
 void initSignalSM( void )
 {
+	CALLS && printf("called %s:initSignalSM()\n", __FILE__);
 //	int signalsmid;
 
 #if IODEBUG
@@ -4087,22 +4093,27 @@ void initSignalSM( void )
 
 void initFiles( void )
 {
+	CALLS && printf("called %s:initFiles()\n", __FILE__);
 	char pname[100];
 	if( ppid )
 		sprintf( pname, "/tmp/pre.%d", ppid );
 	else
 		sprintf( pname, "pre" );
+	FILES && printf("file open w \"%s\" %s:%d\n", pname, __FILE__, __LINE__);
 	prep_g = fopen( pname, "w" );
 	if( !prep_g ) ErrorExit( "Cannot open pre" );
 
+	FILES && printf("file open w \"trace\" %s:%d\n", __FILE__, __LINE__);
 	trap_g = fopen( "trace", "w" );
 	if( !trap_g ) ErrorExit( "cannot open trace" );
+	FILES && printf("file write \"trace\" %s:%d\n", __FILE__, __LINE__);
 	fprintf( trap_g, "PID = %d\n", getpid() );
 	fflush( trap_g );
 }
 
 void closeFiles( void )
 {
+	CALLS && printf("called %s:closeFiles()\n", __FILE__);
 	fclose( prep_g );
 	fclose( trap_g );
 }
@@ -4110,6 +4121,7 @@ void closeFiles( void )
 
 void WriteForFasta( FILE *fp, int locnjob, char **name, int nlen[M], char **aseq )
 {
+		CALLS && printf("called %s:WriteForFasta()\n", __FILE__);
     static char b[N];
     int i, j;
     int nalen[M];
@@ -4117,6 +4129,7 @@ void WriteForFasta( FILE *fp, int locnjob, char **name, int nlen[M], char **aseq
     for( i=0; i<locnjob; i++ )
     {
         nalen[i] = strlen( aseq[i] );
+        FILES && printf("file write %d %s:%d\n", fp, __FILE__, __LINE__);
         fprintf( fp, ">%s\n", name[i] );
         for( j=0; j<nalen[i]; j=j+C ) 
         {
@@ -5331,6 +5344,7 @@ float myatof( char *in )
 
 void reporterr( const char *str, ... )
 {
+	CALLS && printf("called %s:reporterr()\n", __FILE__);
 //	static int loglen = 0;
 	va_list args;
 

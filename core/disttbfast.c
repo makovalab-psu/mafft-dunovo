@@ -115,6 +115,7 @@ typedef struct _distancematrixthread_arg
 
 void arguments( int argc, char *argv[] )
 {
+	CALLS && printf("called %s:arguments()\n", __FILE__);
     int c;
 
 	nthread = 1;
@@ -319,6 +320,7 @@ void arguments( int argc, char *argv[] )
 				case 'X':
 					treemethod = 'X';
 					sueff_global = atof( *++argv );
+					FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 					fprintf( stderr, "sueff_global = %f\n", sueff_global );
 					--argc;
 					goto nextoption;
@@ -520,6 +522,7 @@ static void pickup( int n, int *seqlen, int ***topol, char **name, char **seq )
 	}
 	writeData_pointer( stdout, m, nameout, nlenout, seqout );
 
+	FILES && printf("file open w \"notused\" %s:%d\n", __FILE__, __LINE__);
 	notusedfp = fopen( "notused", "w" );
 	writeData_pointer( notusedfp, n-m, namenotused, nlennotused, seqnotused );
 	fclose( notusedfp );
@@ -543,6 +546,7 @@ static int nunknown = 0;
 
 void seq_grp_nuc( int *grp, char *seq )
 {
+	CALLS && printf("called %s:seq_grp_nuc()\n", __FILE__);
 	int tmp;
 	int *grpbk = grp;
 	while( *seq )
@@ -564,6 +568,7 @@ void seq_grp_nuc( int *grp, char *seq )
 
 void seq_grp( int *grp, char *seq )
 {
+	CALLS && printf("called %s:seq_grp()\n", __FILE__);
 	int tmp;
 	int *grpbk = grp;
 	while( *seq )
@@ -585,6 +590,7 @@ void seq_grp( int *grp, char *seq )
 
 void makecompositiontable_p( int *table, int *pointt )
 {
+	CALLS && printf("called %s:makecompositiontable_p()\n", __FILE__);
 	int point;
 
 	while( ( point = *pointt++ ) != END_OF_VEC )
@@ -593,6 +599,7 @@ void makecompositiontable_p( int *table, int *pointt )
 
 int commonsextet_p( int *table, int *pointt )
 {
+	CALLS && printf("called %s:commonsextet_p()\n", __FILE__);
 	int value = 0;
 	int tmp;
 	int point;
@@ -639,6 +646,7 @@ int commonsextet_p( int *table, int *pointt )
 
 void makepointtable_nuc_dectet( int *pointt, int *n )
 {
+	CALLS && printf("called %s:makepointtable_nuc_dectet()\n", __FILE__);
 	int point;
 	register int *p;
 
@@ -706,6 +714,7 @@ void makepointtable_nuc_octet( int *pointt, int *n )
 
 void makepointtable_nuc( int *pointt, int *n )
 {
+	CALLS && printf("called %s:makepointtable_nuc()\n", __FILE__);
 	int point;
 	register int *p;
 
@@ -736,6 +745,7 @@ void makepointtable_nuc( int *pointt, int *n )
 
 void makepointtable( int *pointt, int *n )
 {
+	CALLS && printf("called %s:makepointtable()\n", __FILE__);
 	int point;
 	register int *p;
 
@@ -767,6 +777,7 @@ void makepointtable( int *pointt, int *n )
 
 static void *msadistmtxthread( void *arg ) // enablemultithread == 0 demo tsukau
 {
+	CALLS && printf("called %s:msadistmtxthread()\n", __FILE__);
 	msadistmtxthread_arg_t *targ = (msadistmtxthread_arg_t *)arg;
 	int njob = targ->njob;
 	int thread_no = targ->thread_no;
@@ -809,11 +820,17 @@ static void *msadistmtxthread( void *arg ) // enablemultithread == 0 demo tsukau
 
 		if( nthread )
 		{
-			if( j==i+1 && i % 10 == 0 ) fprintf( stderr, "\r% 5d / %d (thread %4d)", i, njob, thread_no );
+			if( j==i+1 && i % 10 == 0 ) {
+				FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
+				fprintf( stderr, "\r% 5d / %d (thread %4d)", i, njob, thread_no );
+			}
 		}
 		else
 		{
-			if( j==i+1 && i % 10 == 0 ) fprintf( stderr, "\r% 5d / %d", i, njob );
+			if( j==i+1 && i % 10 == 0 ) {
+				FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
+				fprintf( stderr, "\r% 5d / %d", i, njob );
+			}
 		}
 		ssi = selfscore[i];
 		ssj = selfscore[j];
@@ -1277,6 +1294,7 @@ static void *treebasethread( void *arg )
 
 static int treebase( int *nlen, char **aseq, int nadd, char *mergeoralign, char **mseq1, char **mseq2, int ***topol, Treedep *dep, double *effarr, float **newdistmtx, float *selfscore, int *alloclen, int (*callback)(int, int, char*) )
 {
+	CALLS && printf("called %s:treebase()\n", __FILE__);
 	int l, len1, len2, i, m, immin, immax;
 	int len1nocommongap, len2nocommongap;
 	int clus1, clus2;
@@ -1702,6 +1720,8 @@ static int treebase( int *nlen, char **aseq, int nadd, char *mergeoralign, char 
 
 static void WriteOptions( FILE *fp )
 {
+	CALLS && printf("called %s:WriteOptions()\n", __FILE__);
+	FILES && printf("file write %d %s:%d\n", fp, __FILE__, __LINE__);
 
 	if( dorp == 'd' ) fprintf( fp, "DNA\n" );
 	else
@@ -1762,7 +1782,7 @@ static void WriteOptions( FILE *fp )
         fprintf( fp, "FFT off\n" );
 	fflush( fp );
 }
-	 
+
 
 int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, char **argv, int (*callback)(int, int, char*))
 {
@@ -1814,6 +1834,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 
 	if( ngui )
 	{
+		BRANCHES && printf("branch %d\n", __LINE__); // no
 		initglobalvariables();
 		njob = ngui;
 		nlenmax = 0;
@@ -1828,18 +1849,22 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		for( i=0; i<argc; i++ ) tmpargv[i] = argv[i];
 		gmsg = 1;
 	}
-	else
+	else {
+		BRANCHES && printf("branch %d\n", __LINE__); // yes
 		gmsg = 0; // iranai
+	}
 
 	arguments( argc, argv );
 	algbackup = alg; // tbfast wo disttbfast ni ketsugou shitatame.
 #ifndef enablemultithread
+	BRANCHES && printf("branch %d\n", __LINE__); // no
 	nthread = 0;
 #endif
 
 
 	if( ngui )
 	{
+		BRANCHES && printf("branch %d\n", __LINE__); // no (Don't need to mark ngui branches further; they're never taken.)
 		for( i=0; i<argc; i++ ) 
 		{
 //			free( tmpargv[i] );
@@ -1849,8 +1874,11 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 	}
 	else
 	{
+		BRANCHES && printf("branch %d\n", __LINE__); // yes
 		if( inputfile )
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // no
+			FILES && printf("file open r \"%s\" %s:%d\n", inputfile, __FILE__, __LINE__);
 			infp = fopen( inputfile, "r" );
 			if( !infp )
 			{
@@ -1858,10 +1886,12 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 				exit( 1 );
 			}
 		}
-		else
+		else {
+			BRANCHES && printf("branch %d\n", __LINE__); // yes
 			infp = stdin;
+		}
 	
-		getnumlen( infp );
+		getnumlen( infp ); // yes
 		rewind( infp );
 	}
 	
@@ -1881,6 +1911,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 
 	if( specificityconsideration != 0.0 && nlenmax)
 	{
+		BRANCHES && printf("branch %d\n", __LINE__); // no
 		if( nlenmax > 100000 )
 		{
 			reporterr( "\n" );
@@ -1895,6 +1926,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 
 	if( subalignment )
 	{
+		BRANCHES && printf("branch %d\n", __LINE__); // no
 		readsubalignmentstable( njob, NULL, NULL, &nsubalignments, &maxmem );
 		reporterr(       "nsubalignments = %d\n", nsubalignments );
 		reporterr(       "maxmem = %d\n", maxmem );
@@ -1933,6 +1965,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 	}
 	else
 	{
+		BRANCHES && printf("branch %d\n", __LINE__); // yes
 		readData_pointer( infp, name, nlen, seq );
 		fclose( infp );
 	}
@@ -1975,8 +2008,12 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 
 	if( !treein )
 	{
+		BRANCHES && printf("branch %d\n", __LINE__); // yes
 		reporterr(       "\n\nMaking a distance matrix ..\n" );
-		if( callback && callback( 0, 0, "Distance matrix" ) ) goto chudan;
+		if( callback && callback( 0, 0, "Distance matrix" ) ) {
+			BRANCHES && printf("branch %d\n", __LINE__); // no
+			goto chudan;
+		}
 
 	    tmpseq = AllocateCharVec( nlenmax+1 );
 		grpseq = AllocateIntVec( nlenmax+1 );
@@ -2010,10 +2047,12 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		maxl = 0;
 		for( i=0; i<njob; i++ ) 
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // yes
 			gappick0( tmpseq, seq[i] );
 			nogaplen[i] = strlen( tmpseq );
 			if( nogaplen[i] < 6 )
 			{
+					BRANCHES && printf("branch %d\n", __LINE__); // no
 //				reporterr(       "Seq %d, too short, %d characters\n", i+1, nogaplen[i] );
 //				reporterr(       "Please use mafft-ginsi, mafft-linsi or mafft-ginsi\n\n\n" );
 //				exit( 1 );
@@ -2021,14 +2060,16 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 			if( nogaplen[i] > maxl ) maxl = nogaplen[i];
 			if( dorp == 'd' ) /* nuc */
 			{
+				BRANCHES && printf("branch %d\n", __LINE__); // yes
 				seq_grp_nuc( grpseq, tmpseq );
 //				makepointtable_nuc( pointt[i], grpseq );
 //				makepointtable_nuc_octet( pointt[i], grpseq );
 				if( tuplesize == 10 )
 					makepointtable_nuc_dectet( pointt[i], grpseq );
-				else if( tuplesize == 6 )
+				else if( tuplesize == 6 ) {
+					BRANCHES && printf("branch %d\n", __LINE__);
 					makepointtable_nuc( pointt[i], grpseq );
-				else
+				} else
 				{
 					reporterr(       "tuplesize=%d: not supported\n", tuplesize );
 					exit( 1 );
@@ -2036,14 +2077,17 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 			}
 			else                 /* amino */
 			{
+				BRANCHES && printf("branch %d\n", __LINE__);  // no
 				seq_grp( grpseq, tmpseq );
 				makepointtable( pointt[i], grpseq );
 			}
 		}
 		if( nunknown ) reporterr(       "\nThere are %d ambiguous characters.\n", nunknown );
 #ifdef enablemultithread
+		BRANCHES && printf("branch %d\n", __LINE__); // yes
 		if( nthread > 0 )
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // no
 			distancematrixthread_arg_t *targ; 
 			int jobpos;
 			pthread_t *handle;
@@ -2076,13 +2120,18 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		}
 		else
 #endif
+		BRANCHES && printf("branch %d\n", __LINE__); // yes
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // yes
+			// njob == number of input sequences, in at least one case.
 			for( i=0; i<njob; i++ )
 			{
+				BRANCHES && printf("branch %d\n", __LINE__); // yes
 				table1 = (int *)calloc( tsize, sizeof( int ) );
 				if( !table1 ) ErrorExit( "Cannot allocate table1\n" );
 				if( i % 100 == 0 )
 				{
+					BRANCHES && printf("branch %d\n", __LINE__); // yes
 					reporterr(       "\r% 5d / %d", i+1, njob );
 					if( callback && callback( 0, i*25/njob, "Distance matrix" ) ) goto chudan;
 				}
@@ -2127,12 +2176,14 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		}
 		if( disopt )
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // no
 			for( i=0; i<njob; i++ ) 
 			{
 				sprintf( b, "=lgth = %04d", nogaplen[i] );
 				strins( b, name[i] );
 			}
 		}
+		BRANCHES && printf("branch %d\n", __LINE__);
 		free( grpseq ); grpseq = NULL;
 		free( tmpseq ); tmpseq = NULL;
 		FreeIntMtx( pointt ); pointt = NULL;
@@ -2164,7 +2215,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 	for( iguidetree=0; iguidetree<nguidetree; iguidetree++ )
 //	for( iguidetree=0; ; iguidetree++ )
 	{
-
+		BRANCHES && printf("branch %d\n", __LINE__); // yes
 		alg = algbackup; // tbfast wo disttbfast ni ketsugou shitatame.
 
 
@@ -2178,10 +2229,14 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 
 		if( calcpairdists ) selfscore = AllocateFloatVec( njob );
 
-		if( callback && callback( 0, 25, "Guide tree" ) ) goto chudan;
+		if( callback && callback( 0, 25, "Guide tree" ) ) {
+			BRANCHES && printf("branch %d\n", __LINE__); // no
+			goto chudan;
+		}
 	
 		if( treein )
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // no
 			nguidetree = 1; //  iranai
 			reporterr(       "Loading a tree ... " );
 			loadtree( njob, topol, len, name, nogaplen, dep );
@@ -2189,6 +2244,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		}
 		else if( topin )
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // no
 			reporterr(       "Loading a topology ... " );
 			reporterr(       "--topin has been disabled\n" );
 			exit( 1 );
@@ -2197,8 +2253,11 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		}
 		else
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // yes
 			if( distout )
 			{
+				BRANCHES && printf("branch %d\n", __LINE__); // no
+				FILES && printf("file open w \"hat2\" %s:%d\n", __FILE__, __LINE__);
 				hat2p = fopen( "hat2", "w" );
 				WriteFloatHat2_pointer_halfmtx( hat2p, njob, name, mtx );
 				// writehat2 wo kakinaosu
@@ -2206,6 +2265,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 			}
 			if( subalignment ) // merge error no tame
 			{
+				BRANCHES && printf("branch %d\n", __LINE__); // no
 				reporterr(       "Constructing a UPGMA tree ... " );
 				fixed_supg_float_realloc_nobk_halfmtx_treeout_constrained( njob, mtx, topol, len, name, nlen, dep, nsubalignments, subtable, !calcpairdists );
 				if( !calcpairdists ) 
@@ -2215,6 +2275,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 			}
 			else if( treeout ) // merge error no tame
 			{
+				BRANCHES && printf("branch %d\n", __LINE__); // no
 				reporterr(       "Constructing a UPGMA tree ... " );
 				fixed_musclesupg_float_realloc_nobk_halfmtx_treeout( njob, mtx, topol, len, name, nogaplen, dep, !calcpairdists );
 				if( !calcpairdists )
@@ -2224,6 +2285,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 			}
 			else
 			{
+				BRANCHES && printf("branch %d\n", __LINE__); // yes
 				reporterr(       "Constructing a UPGMA tree ... " );
 				fixed_musclesupg_float_realloc_nobk_halfmtx( njob, mtx, topol, len, dep, 1, !calcpairdists );
 				if( !calcpairdists )
@@ -2235,10 +2297,14 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 //		else 
 //			ErrorExit( "Incorrect tree\n" );
 		reporterr(       "\ndone.\n\n" );
-		if( callback && callback( 0, 50, "Guide tree" ) ) goto chudan;
+		if( callback && callback( 0, 50, "Guide tree" ) ) {
+			BRANCHES && printf("branch %d\n", __LINE__); // no
+			goto chudan;
+		}
 
 		if( sparsepickup && iguidetree == nguidetree-1 )
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // no
 			reporterr(       "Sparsepickup! \n" );
 			pickup( njob, nogaplen, topol, name, seq );
 			reporterr(       "done. \n" );
@@ -2247,6 +2313,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		}
 
 	
+		FILES && printf("file open w \"order\" %s:%d\n", __FILE__, __LINE__);
 		orderfp = fopen( "order", "w" );
 		if( !orderfp )
 		{
@@ -2255,10 +2322,14 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		}
 		for( i=0; (j=topol[njob-2][0][i])!=-1; i++ )
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // yes
+			FILES && printf("file write \"order\" %s:%d\n", __FILE__, __LINE__);
 			fprintf( orderfp, "%d\n", j );
 		}
 		for( i=0; (j=topol[njob-2][1][i])!=-1; i++ )
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // yes
+			FILES && printf("file write \"order\" %s:%d\n", __FILE__, __LINE__);
 			fprintf( orderfp, "%d\n", j );
 		}
 		fclose( orderfp );
@@ -2267,6 +2338,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 	
 		if( ( treeout || distout )  && noalign ) 
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // no
 			writeData_pointer( stdout, njob, name, nlen, seq );
 			reporterr(       "\n" );
 			SHOWVERSION;
@@ -2280,6 +2352,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 #if 0
 			utree = 0; counteff( njob, topol, len, eff ); utree = 1;
 #else
+			BRANCHES && printf("branch %d\n", __LINE__); // yes
 			counteff_simple_float_nostatic( njob, topol, len, eff );
 #endif
 		}
@@ -2294,7 +2367,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		exit( 1 );
 #endif
 	
-	
+		BRANCHES && printf("branch %d\n", __LINE__); // yes
 		FreeFloatMtx( len ); len = NULL;
 	
 		bseq = AllocateCharMtx( njob, nlenmax*2+1 );
@@ -2303,6 +2376,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 	
 		if( nadd )
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // no
 			alignmentlength = strlen( seq[0] );
 			for( i=0; i<njob-nadd; i++ )
 			{
@@ -2318,6 +2392,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 			}
 			if( addprofile )
 			{
+				BRANCHES && printf("branch %d\n", __LINE__); // no
 				alignmentlength = strlen( seq[njob-nadd] );
 				for( i=njob-nadd; i<njob; i++ )
 				{
@@ -2336,6 +2411,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 				foundthebranch = 0;
 				for( i=0; i<njob-1; i++ )
 				{
+					BRANCHES && printf("branch %d\n", __LINE__); // no
 					if( samemember( topol[i][0], addmem ) ) // jissainiha nai
 					{
 						mergeoralign[i] = '1';
@@ -2361,6 +2437,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 					reporterr(       "############################################################################### \n" );
 					exit( 1 );
 				}
+				BRANCHES && printf("branch %d\n", __LINE__); // no
 				commongappick( nadd, seq+njob-nadd );
 				for( i=njob-nadd; i<njob; i++ ) strcpy( bseq[i], seq[i] );
 			}
@@ -2373,6 +2450,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 					addmem[1] = -1;
 					for( i=0; i<njob-1; i++ )
 					{
+						BRANCHES && printf("branch %d\n", __LINE__); // no
 						if( samemembern( topol[i][0], addmem, 1 ) ) // arieru
 						{
 //							reporterr(       "HIT!\n" );
@@ -2394,6 +2472,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 //				for( i=0; i<njob-1; i++ )
 				for( i=0; i<nlim; i++ )
 				{
+					BRANCHES && printf("branch %d\n", __LINE__); // no
 					includememberres0 = includemember( topol[i][0], addmem );
 					includememberres1 = includemember( topol[i][1], addmem );
 //					if( includemember( topol[i][0], addmem ) && includemember( topol[i][1], addmem ) )
@@ -2422,15 +2501,20 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 					reporterr(       "i=%d, mergeoralign[] = %c\n", i, mergeoralign[i] );
 				}
 #endif
-				for( i=njob-nadd; i<njob; i++ ) gappick0( bseq[i], seq[i] );
+				for( i=njob-nadd; i<njob; i++ ) {
+					BRANCHES && printf("branch %d\n", __LINE__); // no
+					gappick0( bseq[i], seq[i] );
+				}
 			}
-	
+
+			BRANCHES && printf("branch %d\n", __LINE__); // no
 			commongappick( njob-nadd, seq );
 			for( i=0; i<njob-nadd; i++ ) strcpy( bseq[i], seq[i] );
 		}
 //--------------- kokokara ----
 		else if( subalignment )
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // no
 			for( i=0; i<njob-1; i++ ) mergeoralign[i] = 'a';
 			for( i=0; i<nsubalignments; i++ )
 			{
@@ -2473,6 +2557,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 				}
 				for( j=0; j<njob-1; j++ )
 				{
+					BRANCHES && printf("branch %d\n", __LINE__); // no
 					if( includemember( topol[j][0], subtable[i] ) && includemember( topol[j][1], subtable[i] ) )
 					{
 						mergeoralign[j] = 'n';
@@ -2481,6 +2566,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 				foundthebranch = 0;
 				for( j=0; j<njob-1; j++ )
 				{
+					BRANCHES && printf("branch %d\n", __LINE__); // no
 					if( samemember( topol[j][0], subtable[i] ) || samemember( topol[j][1], subtable[i] ) )
 					{
 						foundthebranch = 1;
@@ -2490,6 +2576,8 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 				}
 				if( !foundthebranch )
 				{
+					BRANCHES && printf("branch %d\n", __LINE__); // no
+					FILES && printf("file cp \"infile.tree\" \"GuideTree\" %s:%d\n", __FILE__, __LINE__);
 					system( "cp infile.tree GuideTree" ); // tekitou
 					reporterr(       "\n" );
 					reporterr(       "###############################################################################\n" );
@@ -2528,7 +2616,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 				reporterr(       "%d -> %c\n\n", i, mergeoralign[i] );
 			}
 #endif
-	
+			BRANCHES && printf("branch %d\n", __LINE__); // no
 			for( i=0; i<njob; i++ ) 
 			{
 				if( insubtable[i] ) strcpy( bseq[i], seq[i] );
@@ -2538,7 +2626,10 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 			for( i=0; i<nsubalignments; i++ ) 
 			{
 				for( j=0; subtable[i][j]!=-1; j++ ) subalnpt[i][j] = bseq[subtable[i][j]];
-				if( !preservegaps[i] ) commongappick( j, subalnpt[i] );
+				if( !preservegaps[i] ) {
+					BRANCHES && printf("branch %d\n", __LINE__); // no
+					commongappick( j, subalnpt[i] );
+				}
 			}
 	
 #if 0 // --> iguidetree loop no soto he
@@ -2556,13 +2647,19 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 			for( i=0; i<njob-1; i++ ) mergeoralign[i] = 'a';
 		}
 
-		if( calcpairdists ) for( i=0; i<njob; i++ ) selfscore[i] = naivepairscore11( seq[i], seq[i], penalty_dist );
+		if ( calcpairdists ) {
+			BRANCHES && printf("branch %d\n", __LINE__); // yes
+			for ( i=0; i<njob; i++ ) {
+				selfscore[i] = naivepairscore11( seq[i], seq[i], penalty_dist );
+			}
+		}
 	
 		reporterr(       "Progressive alignment %d/%d... \n", iguidetree+1, nguidetree );
 	
 #ifdef enablemultithread
 		if( nthread > 0 && nadd == 0 )
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // no
 			treebasethread_arg_t *targ; 
 			int jobpos;
 			pthread_t *handle;
@@ -2640,6 +2737,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 			else
 #endif
 			{
+				BRANCHES && printf("branch %d\n", __LINE__); // yes
 				if( treebase( nlen, bseq, nadd, mergeoralign, mseq1, mseq2, topol, dep, eff, NULL, NULL, &alloclen, callback ) ) goto chudan;
 			}
 		}
@@ -2663,12 +2761,14 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		if( calcpairdists )
 #endif
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // yes
 			reporterr( "Making a distance matrix from msa.. \n" );
 			skiptable = AllocateIntMtx( njob, 0 );
 			makeskiptable( njob, skiptable, bseq ); // allocate suru.
 #ifdef enablemultithread
 			if( nthread > 0 )
 			{
+				BRANCHES && printf("branch %d\n", __LINE__); // no
 				msadistmtxthread_arg_t *targ;
 				Jobtable jobpos;
 				pthread_t *handle;
@@ -2719,6 +2819,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 				targ = calloc( 1, sizeof( msadistmtxthread_arg_t ) );
 	
 				{
+					BRANCHES && printf("branch %d\n", __LINE__); // yes
 					targ[0].thread_no = 0;
 					targ[0].njob = njob;
 					targ[0].selfscore = selfscore;
@@ -2741,6 +2842,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 
 		if( calcpairdists ) 
 		{
+			BRANCHES && printf("branch %d\n", __LINE__); // yes
 			free( selfscore );
 			selfscore = NULL;
 			FreeCharMtx( bseq );
@@ -2754,6 +2856,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 
 	if( scoreout )
 	{
+		BRANCHES && printf("branch %d\n", __LINE__); // no
 		unweightedspscore = plainscore( njob, bseq );
 		reporterr(       "\nSCORE %s = %.0f, ", "(treebase)", unweightedspscore );
 		reporterr(       "SCORE / residue = %f", unweightedspscore / ( njob * strlen( bseq[0] ) ) );
@@ -2789,6 +2892,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 	}
 	else
 	{
+		BRANCHES && printf("branch %d\n", __LINE__); // yes
 		writeData_pointer( stdout, njob, name, nlen, bseq );
 	} 
 
@@ -2797,6 +2901,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 
 	if( subalignment )
 	{
+		BRANCHES && printf("branch %d\n", __LINE__); // no
 		FreeIntMtx( subtable );
 		free( insubtable );
 		for( i=0; i<nsubalignments; i++ ) free( subalnpt[i] );
@@ -2805,6 +2910,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 	}
 
 #if 1 // seqgui[i] =  bseq[i] no toki bseq ha free shinai
+	BRANCHES && printf("branch %d\n", __LINE__); // yes
 	FreeCharMtx( bseq );
 #endif
 	FreeCharMtx( name );
@@ -2823,12 +2929,16 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 
 	if( nadd ) free( addmem );
 	free( eff );
+	BRANCHES && printf("branch %d\n", __LINE__); // yes
 	freeconstants();
 	closeFiles();
 	FreeCommonIP();
 	return( val );
 
 chudan:
+	// This seems like some kind of cleanup routine.
+	BRANCHES && printf("branch chudan\n");
+	BRANCHES && printf("branch %d\n", __LINE__); // no
 
 	if( nlen ) free( nlen ); nlen = NULL;
 	if( seq ) FreeCharMtx( seq ); seq = NULL;
@@ -2836,6 +2946,7 @@ chudan:
 	if( mseq2 ) free( mseq2 ); mseq2 = NULL;
 	if( topol ) 
 	{
+		BRANCHES && printf("branch %d\n", __LINE__); // no
 		for( i=0; i<njob; i++ )
 		{
 			if( topol[i] && topol[i][0] ) 

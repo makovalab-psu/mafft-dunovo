@@ -211,6 +211,7 @@ static void generatenuc1pam( double **pam1, int kimuraR, double *freq )
 
 void constants( int nseq, char **seq )
 {
+	CALLS && printf("called %s:constants()\n", __FILE__);
 	int i, j, x;
 //	double tmp;
 	char shiftmodel[100];
@@ -651,6 +652,7 @@ void constants( int nseq, char **seq )
 		{
 			for( j=0; j<nalphabets; j++ ) 
 			{
+				FILES && printf("file write stdout %s:%d\n", __FILE__, __LINE__);
 				fprintf( stdout, "%6.2f", n_distmp[i][j] );
 			}
 			fprintf( stdout, "\n" );
@@ -732,6 +734,7 @@ void constants( int nseq, char **seq )
 
         if( disp )
         {
+      FILES && printf("file write stdout %s:%d\n", __FILE__, __LINE__);
 			fprintf( stdout, "freq = \n" );
 			for( i=0; i<nalphabets; i++ ) fprintf( stdout, "%c %f\n", amino[i], freq1[i] );
             fprintf( stdout, " scoring matrix  \n" );
@@ -742,6 +745,7 @@ void constants( int nseq, char **seq )
                     fprintf( stdout, "%5.0f", n_distmp[i][j] );
                 fprintf( stdout, "\n" );
             }
+      FILES && printf("file write stdout %s:%d\n", __FILE__, __LINE__);
 			fprintf( stdout, "     " );
             for( i=0; i<nalphabets; i++ )
 				fprintf( stdout, "    %c", amino[i] );
@@ -749,11 +753,13 @@ void constants( int nseq, char **seq )
 			average = 0.0;
         	for( i=0; i<nalphabets; i++ ) for( j=0; j<nalphabets; j++ )
 				average += n_distmp[i][j] * freq1[i] * freq1[j];
+			FILES && printf("file write stdout %s:%d\n", __FILE__, __LINE__);
 			fprintf( stdout, "average = %f\n", average );
 
 			average = 0.0;
         	for( i=0; i<nalphabets; i++ )
 				average += n_distmp[i][i] * freq1[i];
+			FILES && printf("file write stdout %s:%d\n", __FILE__, __LINE__);
 			fprintf( stdout, "itch average = %f\n", average );
 			reporterr(       "parameters: %d, %d, %d\n", penalty, penalty_ex, offset );
 
@@ -1399,6 +1405,7 @@ exit( 1 );
 
 void freeconstants()
 {
+	CALLS && printf("called %s:freeconstants()\n", __FILE__);
 	FreeDoubleMtx( n_disLN );
 	FreeIntMtx( n_dis );
 	FreeIntMtx( n_disFFT );
