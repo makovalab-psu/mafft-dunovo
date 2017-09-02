@@ -18,6 +18,7 @@ static int upperCase = 0;
 
 char creverse( char f )
 {
+	CALLS && printf("called %s:creverse()\n", __FILE__);
 	static char *table = NULL;
 	if( table == NULL )
 	{
@@ -65,6 +66,7 @@ char creverse( char f )
 
 void sreverse( char *r, char *s )
 {
+	CALLS && printf("called %s:sreverse()\n", __FILE__);
 	r += strlen( s );
 	*r-- = 0;
 	while( *s )
@@ -74,6 +76,7 @@ void sreverse( char *r, char *s )
 
 void gappick_samestring( char *seq )
 {
+	CALLS && printf("called %s:gappick_samestring()\n", __FILE__);
 	char *aseq = seq;
 
 	for( ; *seq != 0; seq++ )
@@ -222,6 +225,7 @@ static int addlocalhom2( char *al1, char *al2, LocalHom *localhompt, int off1, i
 
 static int addlocalhom_r( char *al1, char *al2, LocalHom *localhompt, int off1, int off2, int opt, int overlapaa, int skip )
 {
+	CALLS && printf("called %s:addlocalhom_r()\n", __FILE__);
 	int pos1, pos2, start1, start2, end1, end2;
 	char *pt1, *pt2;
 	double score;
@@ -346,6 +350,7 @@ static int addlocalhom_r( char *al1, char *al2, LocalHom *localhompt, int off1, 
 }
 void putlocalhom3( char *al1, char *al2, LocalHom *localhompt, int off1, int off2, int opt, int overlapaa )
 {
+	CALLS && printf("called %s:putlocalhom3()\n", __FILE__);
 	int pos1, pos2, start1, start2, end1, end2;
 	char *pt1, *pt2;
 	double score;
@@ -491,6 +496,7 @@ void putlocalhom3( char *al1, char *al2, LocalHom *localhompt, int off1, int off
 }
 void putlocalhom_ext( char *al1, char *al2, LocalHom *localhompt, int off1, int off2, int opt, int overlapaa )
 {
+	CALLS && printf("called %s:putlocalhom_ext()\n", __FILE__);
 	int pos1, pos2, start1, start2, end1, end2;
 	char *pt1, *pt2;
 	int iscore;
@@ -622,6 +628,7 @@ void putlocalhom_ext( char *al1, char *al2, LocalHom *localhompt, int off1, int 
 
 void putlocalhom_str( char *al1, char *al2, double *equiv, double scale, LocalHom *localhompt, int off1, int off2, int opt, int overlapaa )
 {
+	CALLS && printf("called %s:putlocalhom_str()\n", __FILE__);
 	int posinaln, pos1, pos2, start1, start2, end1, end2;
 	char *pt1, *pt2;
 	int isumscore;
@@ -671,6 +678,7 @@ void putlocalhom_str( char *al1, char *al2, double *equiv, double scale, LocalHo
 
 void putlocalhom2( char *al1, char *al2, LocalHom *localhompt, int off1, int off2, int opt, int overlapaa )
 {
+	CALLS && printf("called %s:putlocalhom2()\n", __FILE__);
 	int pos1, pos2, start1, start2, end1, end2;
 	char *pt1, *pt2;
 	int iscore;
@@ -800,6 +808,7 @@ void putlocalhom2( char *al1, char *al2, LocalHom *localhompt, int off1, int off
 }
 void putlocalhom( char *al1, char *al2, LocalHom *localhompt, int off1, int off2, int opt, int overlapaa )
 {
+	CALLS && printf("called %s:putlocalhom()\n", __FILE__);
 	int pos1, pos2, start1, start2, end1, end2;
 	char *pt1, *pt2;
 	double score;
@@ -927,6 +936,7 @@ void putlocalhom( char *al1, char *al2, LocalHom *localhompt, int off1, int off2
 
 char *cutal( char *al, int al_display_start, int start, int end )
 {
+	CALLS && printf("called %s:cutal()\n", __FILE__);
 	int pos;
 	char *pt = al;
 	char *val = NULL;
@@ -952,6 +962,7 @@ void ErrorExit( char *message )
 
 void strncpy_caseC( char *str1, char *str2, int len )
 {
+	CALLS && printf("called %s:strncpy_caseC()\n", __FILE__);
 	if( dorp == 'd' && upperCase > 0 ) 
 	{
 		while( len-- )
@@ -962,6 +973,7 @@ void strncpy_caseC( char *str1, char *str2, int len )
 	
 void seqUpper( int nseq, char **seq )
 {
+	CALLS && printf("called %s:seqUpper()\n", __FILE__);
 	int i, j, len;
 	for( i=0; i<nseq; i++ ) 
 	{
@@ -973,6 +985,7 @@ void seqUpper( int nseq, char **seq )
 
 void seqLower( int nseq, char **seq )
 {
+	CALLS && printf("called %s:seqLower()\n", __FILE__);
 	int i, j, len;
 	for( i=0; i<nseq; i++ ) 
 	{
@@ -984,6 +997,7 @@ void seqLower( int nseq, char **seq )
 
 int getaline_fp_eof( char *s, int l, FILE *fp )  /* end of file -> return 1 */
 {
+	CALLS && printf("called %s:getaline_fp_eof()\n", __FILE__);
     int c, i = 0 ;
     int noteofflag = 0;
     for( i=0; i<l && ( noteofflag = ( (c=getc(fp)) != EOF ) ) && c != '\n'; i++ ) 
@@ -995,6 +1009,7 @@ int getaline_fp_eof( char *s, int l, FILE *fp )  /* end of file -> return 1 */
 int getaline_fp_eof_new(s, l, fp)  /* end of file -> return 1 */
 char    s[] ; int l ; FILE *fp ;
 {
+				CALLS && printf("called %s:getaline_fp_eof_new()\n", __FILE__);
         int c = 0, i = 0 ;
 		int noteofflag = 0;
 
@@ -1008,9 +1023,10 @@ char    s[] ; int l ; FILE *fp ;
 		return( !noteofflag );
 }
 
-int myfgets(s, l, fp)  /* l以上は、行末まで読み飛ばす */
+int myfgets(s, l, fp)  /* [mojibake] */
 char    s[] ; int l ; FILE *fp ;
 {
+				CALLS && printf("called %s:myfgets()\n", __FILE__);
         int     c = 0, i = 0 ;
 
 		if( feof( fp ) ) return( 1 );
@@ -1026,6 +1042,7 @@ char    s[] ; int l ; FILE *fp ;
 
 float input_new( FILE *fp, int d )
 {
+	CALLS && printf("called %s:input_new()\n", __FILE__);
 	char mojiretsu[10];
 	int i, c;
 
@@ -1043,6 +1060,7 @@ float input_new( FILE *fp, int d )
 
 void PreRead( FILE *fp, int *locnjob, int *locnlenmax )
 {
+	CALLS && printf("called %s:PreRead()\n", __FILE__);
 	int i, nleni;
 	char b[B];
 
@@ -1074,6 +1092,7 @@ void PreRead( FILE *fp, int *locnjob, int *locnlenmax )
 
 int allSpace( char *str )
 {
+	CALLS && printf("called %s:allSpace()\n", __FILE__);
 	int value = 1;
 	while( *str ) value *= ( !isdigit( *str++ ) );
 	return( value );
@@ -1081,6 +1100,7 @@ int allSpace( char *str )
 	
 void Read( char name[M][B], int nlen[M], char **seq )
 {
+	CALLS && printf("called %s:Read()\n", __FILE__);
 	extern void FRead( FILE *x, char y[M][B], int z[M], char **w );
 	FRead( stdin, name, nlen, seq );
 }
@@ -1088,6 +1108,7 @@ void Read( char name[M][B], int nlen[M], char **seq )
 
 void FRead( FILE *fp, char name[][B], int nlen[], char **seq )
 {
+	CALLS && printf("called %s:FRead()\n", __FILE__);
 	int i, j; 
 	char b[B];
 
@@ -1197,6 +1218,7 @@ void FRead( FILE *fp, char name[][B], int nlen[], char **seq )
 
 static int countKUorWA( FILE *fp )
 {
+	CALLS && printf("called %s:countKUorWA()\n", __FILE__);
 	int value;
 	int c, b;
 
@@ -1214,6 +1236,7 @@ static int countKUorWA( FILE *fp )
 
 void searchKUorWA( FILE *fp )
 {
+	CALLS && printf("called %s:searchKUorWA()\n", __FILE__);
 	int c, b;
 	b = '\n';
 	while( !( ( ( c = getc( fp ) ) == '>' || c == EOF ) && b == '\n' ) )
@@ -1223,6 +1246,7 @@ void searchKUorWA( FILE *fp )
 
 static int onlyGraph( char *str )
 {
+	CALLS && printf("called %s:onlyGraph()\n", __FILE__);
 	char tmp;
 	char *res = str;
 	char *bk = str;
@@ -1251,6 +1275,7 @@ static int onlyGraph( char *str )
 
 static int charfilter( char *str )
 {
+	CALLS && printf("called %s:charfilter()\n", __FILE__);
 	char tmp;
 	char *res = str;
 	char *bk = str;
@@ -1273,6 +1298,7 @@ static int charfilter( char *str )
 }
 static int onlyAlpha_lower( char *str )
 {
+	CALLS && printf("called %s:onlyAlpha_lower()\n", __FILE__);
 	char tmp;
 	char *res = str;
 	char *bk = str;
@@ -1285,6 +1311,7 @@ static int onlyAlpha_lower( char *str )
 }
 static int onlyAlpha_upper( char *str )
 {
+	CALLS && printf("called %s:onlyAlpha_upper()\n", __FILE__);
 	char tmp;
 	char *res = str;
 	char *bk = str;
@@ -1298,6 +1325,7 @@ static int onlyAlpha_upper( char *str )
 
 void kake2hiku( char *str )
 {
+	CALLS && printf("called %s:kake2hiku()\n", __FILE__);
 	do
 		if( *str == '*' ) *str = '-';
 	while( *str++ );
@@ -1305,6 +1333,7 @@ void kake2hiku( char *str )
 
 char *load1SeqWithoutName_realloc_casepreserve( FILE *fpp )
 {
+	CALLS && printf("called %s:load1SeqWithoutName_realloc_casepreserve()\n", __FILE__);
 	int c, b;
 	char *cbuf;
 	int size = N;
@@ -1342,6 +1371,7 @@ char *load1SeqWithoutName_realloc_casepreserve( FILE *fpp )
 
 char *load1SeqWithoutName_realloc( FILE *fpp )
 {
+	CALLS && printf("called %s:load1SeqWithoutName_realloc()\n", __FILE__);
 	int c, b;
 	char *cbuf;
 	int size = N;
@@ -1390,6 +1420,7 @@ char *load1SeqWithoutName_realloc( FILE *fpp )
 
 int load1SeqWithoutName_new( FILE *fpp, char *cbuf )
 {
+	CALLS && printf("called %s:load1SeqWithoutName_new()\n", __FILE__);
 	int c, b;
 	char *bk = cbuf;
 
@@ -1413,6 +1444,7 @@ int load1SeqWithoutName_new( FILE *fpp, char *cbuf )
 
 void readDataforgaln( FILE *fp, char **name, int *nlen, char **seq )
 {
+	CALLS && printf("called %s:readDataforgaln()\n", __FILE__);
 	int i; 
 	static char *tmpseq = NULL;
 
@@ -1454,6 +1486,7 @@ void readDataforgaln( FILE *fp, char **name, int *nlen, char **seq )
 
 void readData_varlen( FILE *fp, char **name, int *nlen, char **seq )
 {
+	CALLS && printf("called %s:readData_varlen()\n", __FILE__);
 	int i; 
 	static char *tmpseq = NULL;
 
@@ -1490,6 +1523,7 @@ void readData_varlen( FILE *fp, char **name, int *nlen, char **seq )
 
 void readData_pointer2( FILE *fp, int nseq, char **name, int *nlen, char **seq )
 {
+	CALLS && printf("called %s:readData_pointer2()\n", __FILE__);
 	int i; 
 	static char *tmpseq = NULL;
 
@@ -1551,6 +1585,7 @@ void readData_pointer2( FILE *fp, int nseq, char **name, int *nlen, char **seq )
 
 void readData_pointer_casepreserve( FILE *fp, char **name, int *nlen, char **seq )
 {
+	CALLS && printf("called %s:readData_pointer_casepreserve()\n", __FILE__);
 	int i; 
 	static char *tmpseq = NULL;
 
@@ -1589,6 +1624,7 @@ void readData_pointer_casepreserve( FILE *fp, char **name, int *nlen, char **seq
 
 int copydatafromgui( char **namegui, char **seqgui, char **name, int *nlen, char **seq )
 {
+	CALLS && printf("called %s:copydatafromgui()\n", __FILE__);
 	int i; 
 
 
@@ -1697,6 +1733,7 @@ void readData_pointer( FILE *fp, char **name, int *nlen, char **seq )
 
 void readData( FILE *fp, char name[][B], int nlen[], char **seq )
 {
+	CALLS && printf("called %s:readData()\n", __FILE__);
 	int i; 
 	static char *tmpseq = NULL;
 
@@ -1738,6 +1775,7 @@ void readData( FILE *fp, char name[][B], int nlen[], char **seq )
 
 void cutAlignment( FILE *fp, int **regtable, char **revtable, int *outtable, char **name, char **outseq )
 {
+	CALLS && printf("called %s:cutAlignment()\n", __FILE__);
 	int i, j; 
 	int outlen;
 	static char *tmpseq = NULL;
@@ -1827,6 +1865,7 @@ void cutAlignment( FILE *fp, int **regtable, char **revtable, int *outtable, cha
 
 void cutData( FILE *fp, int **regtable, char **revtable, int *outtable )
 {
+	CALLS && printf("called %s:cutData()\n", __FILE__);
 	int i, j; 
 	int outlen, seqlen, startpos, endpos;
 	static char *tmpseq = NULL;
@@ -1912,6 +1951,7 @@ void cutData( FILE *fp, int **regtable, char **revtable, int *outtable )
 
 void catData( FILE *fp )
 {
+	CALLS && printf("called %s:catData()\n", __FILE__);
 	int i; 
 	static char *tmpseq = NULL;
 	static char *dumname = NULL;
@@ -1947,6 +1987,7 @@ void catData( FILE *fp )
 
 int countATGC( char *s, int *total )
 {
+	CALLS && printf("called %s:countATGC()\n", __FILE__);
 	int nATGC;
 	int nChar;
 	char c;
@@ -1976,6 +2017,7 @@ int countATGC( char *s, int *total )
 
 double countATGCbk( char *s )
 {
+	CALLS && printf("called %s:countATGCbk()\n", __FILE__);
 	int nATGC;
 	int nChar;
 	char c;
@@ -1998,6 +2040,7 @@ double countATGCbk( char *s )
 
 int countnogaplen( char *seq )
 {
+	CALLS && printf("called %s:countnogaplen()\n", __FILE__);
 	int val = 0;
 	while( *seq )
 		if( *seq++ != '-' ) val++;
@@ -2006,6 +2049,7 @@ int countnogaplen( char *seq )
 
 int countnormalletters( char *seq, char *ref )
 {
+	CALLS && printf("called %s:countnormalletters()\n", __FILE__);
 	int val = 0;
 	while( *seq )
 		if( strchr( ref, *seq++ ) ) val++;
@@ -2014,6 +2058,7 @@ int countnormalletters( char *seq, char *ref )
 
 void getnumlen_casepreserve( FILE *fp, int *nlenminpt )
 {
+	CALLS && printf("called %s:getnumlen_casepreserve()\n", __FILE__);
 	int total;
 	int nsite = 0;
 	int atgcnum;
@@ -2058,6 +2103,7 @@ void getnumlen_casepreserve( FILE *fp, int *nlenminpt )
 
 void getnumlen_nogap( FILE *fp, int *nlenminpt )
 {
+	CALLS && printf("called %s:getnumlen_nogap()\n", __FILE__);
 	int total;
 	int nsite = 0;
 	int atgcnum;
@@ -2103,6 +2149,7 @@ void getnumlen_nogap( FILE *fp, int *nlenminpt )
 
 void getnumlen_nogap_outallreg( FILE *fp, int *nlenminpt )
 {
+	CALLS && printf("called %s:getnumlen_nogap_outallreg()\n", __FILE__);
 	int total;
 	int nsite = 0;
 	int atgcnum;
@@ -2149,6 +2196,7 @@ void getnumlen_nogap_outallreg( FILE *fp, int *nlenminpt )
 
 static void escapehtml( char *res, char *ori, int maxlen )
 {
+	CALLS && printf("called %s:escapehtml()\n", __FILE__);
 	char *res0 = res;
 	while( *ori )
 	{
@@ -2191,6 +2239,7 @@ static void escapehtml( char *res, char *ori, int maxlen )
 
 void getnumlen_nogap_outallreg_web( FILE *fp, FILE *ofp, int *nlenminpt, int *isalignedpt )
 {
+	CALLS && printf("called %s:getnumlen_nogap_outallreg_web()\n", __FILE__);
 	int total;
 	int nsite = 0;
 	int atgcnum;
@@ -2371,6 +2420,7 @@ void getnumlen( FILE *fp )
 
 void WriteGapFill( FILE *fp, int locnjob, char name[][B], int nlen[M], char **aseq )
 {
+	CALLS && printf("called %s:WriteGapFill()\n", __FILE__);
 	static char b[N];
 	int i, j;
 	int nalen[M];
@@ -2417,6 +2467,7 @@ void WriteGapFill( FILE *fp, int locnjob, char name[][B], int nlen[M], char **as
 
 void writeDataforgaln( FILE *fp, int locnjob, char **name, int *nlen, char **aseq )
 {
+	CALLS && printf("called %s:writeDataforgaln()\n", __FILE__);
 	int i, j;
 	int nalen;
 
@@ -2463,6 +2514,7 @@ void writeData_pointer( FILE *fp, int locnjob, char **name, int *nlen, char **as
 
 void writeData( FILE *fp, int locnjob, char name[][B], int nlen[], char **aseq )
 {
+	CALLS && printf("called %s:writeData()\n", __FILE__);
 	int i, j;
 	int nalen;
 
@@ -2488,6 +2540,7 @@ void writeData( FILE *fp, int locnjob, char name[][B], int nlen[], char **aseq )
 
 void write1seq( FILE *fp, char *aseq )
 {
+	CALLS && printf("called %s:write1seq()\n", __FILE__);
 	int j;
 	int nalen;
 
@@ -2498,6 +2551,7 @@ void write1seq( FILE *fp, char *aseq )
 
 void readhat2_floathalf_part_pointer( FILE *fp, int nseq, int nadd, char **name, float **mtx )
 {
+		CALLS && printf("called %s:readhat2_floathalf_part_pointer()\n", __FILE__);
     int i, j, nseq0, norg;
     char b[B];
 
@@ -2534,6 +2588,7 @@ void readhat2_floathalf_part_pointer( FILE *fp, int nseq, int nadd, char **name,
 
 void readhat2_floathalf_pointer( FILE *fp, int nseq, char **name, float **mtx )
 {
+		CALLS && printf("called %s:readhat2_floathalf_pointer()\n", __FILE__);
     int i, j, nseq0;
     char b[B];
 
@@ -2598,6 +2653,7 @@ void readhat2_floathalf( FILE *fp, int nseq, char name[M][B], float **mtx )
 }
 void readhat2_float( FILE *fp, int nseq, char name[M][B], float **mtx )
 {
+		CALLS && printf("called %s:readhat2_float()\n", __FILE__);
     int i, j, nseq0;
     char b[B];
 
@@ -2659,6 +2715,7 @@ void readhat2_int( FILE *fp, int nseq, char name[M][B], int **mtx )
 
 void readhat2_pointer( FILE *fp, int nseq, char **name, double **mtx )
 {
+		CALLS && printf("called %s:readhat2_pointer()\n", __FILE__);
     int i, j, nseq0;
     char b[B];
 
@@ -2689,6 +2746,7 @@ void readhat2_pointer( FILE *fp, int nseq, char **name, double **mtx )
 }
 void readhat2( FILE *fp, int nseq, char name[M][B], double **mtx )
 {
+		CALLS && printf("called %s:readhat2()\n", __FILE__);
     int i, j, nseq0;
     char b[B];
 
@@ -2743,6 +2801,7 @@ void WriteFloatHat2_pointer_halfmtx( FILE *hat2p, int locnjob, char **name, floa
 
 void WriteFloatHat2_pointer( FILE *hat2p, int locnjob, char **name, float **mtx )
 {
+	CALLS && printf("called %s:WriteFloatHat2_pointer()\n", __FILE__);
 	int i, j;
 	double max = 0.0;
 	for( i=0; i<locnjob-1; i++ ) for( j=1; j<locnjob-i; j++ ) if( mtx[i][j] > max ) max = mtx[i][j];
@@ -2764,6 +2823,7 @@ void WriteFloatHat2_pointer( FILE *hat2p, int locnjob, char **name, float **mtx 
 
 void WriteFloatHat2( FILE *hat2p, int locnjob, char name[M][B], float **mtx )
 {
+	CALLS && printf("called %s:WriteFloatHat2()\n", __FILE__);
 	int i, j;
 	double max = 0.0;
 	for( i=0; i<locnjob-1; i++ ) for( j=1; j<locnjob-i; j++ ) if( mtx[i][j] > max ) max = mtx[i][j];
@@ -2785,6 +2845,7 @@ void WriteFloatHat2( FILE *hat2p, int locnjob, char name[M][B], float **mtx )
 
 void WriteHat2_int( FILE *hat2p, int locnjob, char name[M][B], int **mtx )
 {
+	CALLS && printf("called %s:WriteHat2_int()\n", __FILE__);
 	int i, j;
 	double max = 0.0;
 	for( i=0; i<locnjob-1; i++ ) for( j=i+1; j<locnjob; j++ ) if( mtx[i][j] > max ) max = mtx[i][j];
@@ -2807,6 +2868,7 @@ void WriteHat2_int( FILE *hat2p, int locnjob, char name[M][B], int **mtx )
 
 void WriteHat2_part_pointer( FILE *hat2p, int locnjob, int nadd, char **name, double **mtx )
 {
+	CALLS && printf("called %s:WriteHat2_part_pointer()\n", __FILE__);
 	int i, j;
 	int norg = locnjob-nadd;
 	double max = 0.0;
@@ -2829,6 +2891,7 @@ void WriteHat2_part_pointer( FILE *hat2p, int locnjob, int nadd, char **name, do
 
 void WriteHat2_pointer( FILE *hat2p, int locnjob, char **name, double **mtx )
 {
+	CALLS && printf("called %s:WriteHat2_pointer()\n", __FILE__);
 	int i, j;
 	double max = 0.0;
 	for( i=0; i<locnjob-1; i++ ) for( j=i+1; j<locnjob; j++ ) if( mtx[i][j] > max ) max = mtx[i][j];
@@ -2850,6 +2913,7 @@ void WriteHat2_pointer( FILE *hat2p, int locnjob, char **name, double **mtx )
 
 void WriteHat2( FILE *hat2p, int locnjob, char name[M][B], double **mtx )
 {
+	CALLS && printf("called %s:WriteHat2()\n", __FILE__);
 	int i, j;
 	double max = 0.0;
 	for( i=0; i<locnjob-1; i++ ) for( j=i+1; j<locnjob; j++ ) if( mtx[i][j] > max ) max = mtx[i][j];
@@ -2888,6 +2952,7 @@ void WriteHat2plain( FILE *hat2p, int locnjob, double **mtx )
 
 int ReadFasta_sub( FILE *fp, double *dis, int nseq, char name[M][B] )
 {
+		CALLS && printf("called %s:ReadFasta_sub()\n", __FILE__);
     int i, count=0;
     char b[B];
     int junban[M];
@@ -2921,6 +2986,7 @@ int ReadFasta_sub( FILE *fp, double *dis, int nseq, char name[M][B] )
 
 int ReadSsearch( FILE *fp, double *dis, int nseq, char name[M][B] )
 {
+		CALLS && printf("called %s:ReadSsearch()\n", __FILE__);
     int i, count=0;
     char b[B];
     int junban[M];
@@ -2956,6 +3022,7 @@ int ReadSsearch( FILE *fp, double *dis, int nseq, char name[M][B] )
 
 int ReadBlastm7_avscore( FILE *fp, double *dis, int nin )
 {
+		CALLS && printf("called %s:ReadBlastm7_avscore()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3083,6 +3150,7 @@ int ReadBlastm7_avscore( FILE *fp, double *dis, int nin )
 }
 int ReadBlastm7_scoreonly( FILE *fp, double *dis, int nin )
 {
+		CALLS && printf("called %s:ReadBlastm7_scoreonly()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3200,6 +3268,7 @@ int ReadBlastm7_scoreonly( FILE *fp, double *dis, int nin )
 
 int ReadBlastm7( FILE *fp, double *dis, int qmem, char **name, LocalHom *localhomlist )
 {
+		CALLS && printf("called %s:ReadBlastm7()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3315,6 +3384,7 @@ int ReadBlastm7( FILE *fp, double *dis, int qmem, char **name, LocalHom *localho
 
 int ReadFasta34noalign( FILE *fp, double *dis, int qmem, char **name, LocalHom *localhomlist )
 {
+		CALLS && printf("called %s:ReadFasta34noalign()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3347,6 +3417,7 @@ int ReadFasta34noalign( FILE *fp, double *dis, int qmem, char **name, LocalHom *
 }
 int ReadFasta34m10_nuc( FILE *fp, double *dis, int qmem, char **name, LocalHom *localhomlist )
 {
+		CALLS && printf("called %s:ReadFasta34m10_nuc()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3486,6 +3557,7 @@ int ReadFasta34m10_nuc( FILE *fp, double *dis, int qmem, char **name, LocalHom *
 }
 int ReadFasta34m10( FILE *fp, double *dis, int qmem, char **name, LocalHom *localhomlist )
 {
+		CALLS && printf("called %s:ReadFasta34m10()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3623,6 +3695,7 @@ int ReadFasta34m10( FILE *fp, double *dis, int qmem, char **name, LocalHom *loca
 }
 int ReadFasta34m10_scoreonly_nucbk( FILE *fp, double *dis, int nin )
 {
+		CALLS && printf("called %s:ReadFasta34m10_scoreonly_nucbk()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3666,6 +3739,7 @@ int ReadFasta34m10_scoreonly_nucbk( FILE *fp, double *dis, int nin )
 
 int ReadFasta34m10_scoreonly_nuc( FILE *fp, double *dis, int nin )
 {
+		CALLS && printf("called %s:ReadFasta34m10_scoreonly_nuc()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3727,6 +3801,7 @@ int ReadFasta34m10_scoreonly_nuc( FILE *fp, double *dis, int nin )
 
 int ReadFasta34m10_scoreonly( FILE *fp, double *dis, int nin )
 {
+		CALLS && printf("called %s:ReadFasta34m10_scoreonly()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3784,6 +3859,7 @@ int ReadFasta34m10_scoreonly( FILE *fp, double *dis, int nin )
 }
 int ReadFasta34( FILE *fp, double *dis, int nseq, char name[M][B], LocalHom *localhomlist )
 {
+		CALLS && printf("called %s:ReadFasta34()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3849,6 +3925,7 @@ int ReadFasta34( FILE *fp, double *dis, int nseq, char name[M][B], LocalHom *loc
 
 int ReadFasta3( FILE *fp, double *dis, int nseq, char name[M][B] )
 {
+		CALLS && printf("called %s:ReadFasta3()\n", __FILE__);
     int count=0;
     char b[B];
 	char *pt;
@@ -3879,6 +3956,7 @@ int ReadFasta3( FILE *fp, double *dis, int nseq, char name[M][B] )
 
 int ReadFasta( FILE *fp, double *dis, int nseq, char name[M][B] )
 {
+		CALLS && printf("called %s:ReadFasta()\n", __FILE__);
     int i, count=0;
     char b[B];
     int junban[M];
@@ -3917,6 +3995,7 @@ int ReadFasta( FILE *fp, double *dis, int nseq, char name[M][B] )
 
 int ReadOpt( FILE *fp, int opt[M], int nseq, char name[M][B] )
 {
+		CALLS && printf("called %s:ReadOpt()\n", __FILE__);
     int i, count=0;
     char b[B];
     int junban[M];
@@ -3939,6 +4018,7 @@ int ReadOpt( FILE *fp, int opt[M], int nseq, char name[M][B] )
 
 int ReadOpt2( FILE *fp, int opt[M], int nseq, char name[M][B] )
 {
+		CALLS && printf("called %s:ReadOpt2()\n", __FILE__);
     int i, count=0;
     char b[B];
     int junban[M];
@@ -3961,6 +4041,7 @@ int ReadOpt2( FILE *fp, int opt[M], int nseq, char name[M][B] )
 
 int writePre( int nseq, char **name, int nlen[M], char **aseq, int force )
 {
+	CALLS && printf("called %s:writePre()\n", __FILE__);
 #if USE_XCED
 	int i, value;
 	if( !signalSM )
@@ -4037,6 +4118,7 @@ int writePre( int nseq, char **name, int nlen[M], char **aseq, int force )
 
 void readOtherOptions( int *ppidptr, int *fftThresholdptr, int *fftWinSizeptr )
 {
+	CALLS && printf("called %s:readOtherOptions()\n", __FILE__);
 	if( calledByXced )
 	{
 		FILE *fp = fopen( "pre", "r" );
@@ -4141,6 +4223,7 @@ void WriteForFasta( FILE *fp, int locnjob, char **name, int nlen[M], char **aseq
 
 void readlocalhomtable2( FILE*fp, int njob, LocalHom **localhomtable, char *kozoarivec )
 {
+	CALLS && printf("called %s:readlocalhomtable2()\n", __FILE__);
 	double opt;
 	static char buff[B];
 	char infor[100];
@@ -4223,6 +4306,7 @@ void readlocalhomtable2( FILE*fp, int njob, LocalHom **localhomtable, char *kozo
 }
 void readlocalhomtable( FILE*fp, int njob, LocalHom **localhomtable, char *kozoarivec )
 {
+	CALLS && printf("called %s:readlocalhomtable()\n", __FILE__);
 	double opt;
 	static char buff[B];
 	char infor[100];
@@ -4302,6 +4386,7 @@ void readlocalhomtable( FILE*fp, int njob, LocalHom **localhomtable, char *kozoa
 
 void readlocalhomtable_two( FILE*fp, int norg, int nadd, LocalHom **localhomtable, LocalHom **localhomtablex, char *kozoarivec ) // for test only
 {
+	CALLS && printf("called %s:readlocalhomtable_two()\n", __FILE__);
 	double opt;
 	static char buff[B];
 	char infor[100];
@@ -4389,6 +4474,7 @@ void readlocalhomtable_two( FILE*fp, int norg, int nadd, LocalHom **localhomtabl
 
 void readlocalhomtable_one( FILE*fp, int norg, int nadd, LocalHom **localhomtable, char *kozoarivec ) // for test only
 {
+	CALLS && printf("called %s:readlocalhomtable_one()\n", __FILE__);
 	double opt;
 	static char buff[B];
 	char infor[100];
@@ -4449,6 +4535,7 @@ void readlocalhomtable_one( FILE*fp, int norg, int nadd, LocalHom **localhomtabl
 
 void outlocalhom_part( LocalHom **localhom, int norg, int nadd )
 {
+	CALLS && printf("called %s:outlocalhom_part()\n", __FILE__);
 	int i, j;
 	LocalHom *tmpptr;
 	for( i=0; i<norg; i++ ) for( j=0; j<nadd; j++ )
@@ -4465,6 +4552,7 @@ void outlocalhom_part( LocalHom **localhom, int norg, int nadd )
 
 void outlocalhom( LocalHom **localhom, int nseq )
 {
+	CALLS && printf("called %s:outlocalhom()\n", __FILE__);
 	int i, j;
 	LocalHom *tmpptr;
 	for( i=0; i<nseq; i++ ) for( j=0; j<nseq; j++ )
@@ -4481,6 +4569,7 @@ void outlocalhom( LocalHom **localhom, int nseq )
 
 void outlocalhompt( LocalHom ***localhom, int n1, int n2 )
 {
+	CALLS && printf("called %s:outlocalhompt()\n", __FILE__);
 	int i, j;
 	LocalHom *tmpptr;
 	for( i=0; i<n1; i++ ) for( j=0; j<n2; j++ )
@@ -4497,6 +4586,7 @@ void outlocalhompt( LocalHom ***localhom, int n1, int n2 )
 
 void FreeLocalHomTable_part( LocalHom **localhomtable, int n, int m ) 
 {
+	CALLS && printf("called %s:FreeLocalHomTable_part()\n", __FILE__);
 	int i, j;
 	LocalHom *ppp, *tmpptr;
 	for( i=0; i<n; i++ ) 
@@ -4536,6 +4626,7 @@ void FreeLocalHomTable_part( LocalHom **localhomtable, int n, int m )
 
 void FreeLocalHomTable_two( LocalHom **localhomtable, int n, int m ) 
 {
+	CALLS && printf("called %s:FreeLocalHomTable_two()\n", __FILE__);
 	int i, j;
 	LocalHom *ppp, *tmpptr;
 	for( i=0; i<n; i++ ) 
@@ -4602,6 +4693,7 @@ void FreeLocalHomTable_two( LocalHom **localhomtable, int n, int m )
 
 void FreeLocalHomTable_one( LocalHom **localhomtable, int n, int m ) 
 {
+	CALLS && printf("called %s:FreeLocalHomTable_one()\n", __FILE__);
 	int i, j;
 	LocalHom *ppp, *tmpptr;
 	for( i=0; i<n; i++ ) 
@@ -4642,6 +4734,7 @@ void FreeLocalHomTable_one( LocalHom **localhomtable, int n, int m )
 
 void FreeLocalHomTable( LocalHom **localhomtable, int n ) 
 {
+	CALLS && printf("called %s:FreeLocalHomTable()\n", __FILE__);
 	int i, j;
 	LocalHom *ppp, *tmpptr;
 	for( i=0; i<n; i++ ) 
@@ -4681,6 +4774,7 @@ void FreeLocalHomTable( LocalHom **localhomtable, int n )
 
 char *progName( char *str )
 {
+	CALLS && printf("called %s:progName()\n", __FILE__);
     char *value; 
     if( ( value = strrchr( str, '/' ) ) != NULL )
         return( value+1 );
@@ -4690,6 +4784,7 @@ char *progName( char *str )
 
 static void tabtospace( char *str )
 {
+	CALLS && printf("called %s:tabtospace()\n", __FILE__);
 	char *p;
 //	fprintf( stderr, "before = %s\n", str );
 	while( NULL != ( p = strchr( str , '\t' ) ) )
@@ -4701,6 +4796,7 @@ static void tabtospace( char *str )
 
 static char *extractfirstword( char *str )
 {
+	CALLS && printf("called %s:extractfirstword()\n", __FILE__);
 	char *val = str;
 
 	tabtospace( str );
@@ -4724,6 +4820,7 @@ static char *extractfirstword( char *str )
 
 void phylipout_pointer( FILE *fp, int nseq, int maxlen, char **seq, char **name, int *order, int namelen )
 {
+	CALLS && printf("called %s:phylipout_pointer()\n", __FILE__);
 	int pos, pos2, j;
 	if( namelen == -1 ) namelen = 10;
 	pos = 0;
@@ -4754,6 +4851,7 @@ void phylipout_pointer( FILE *fp, int nseq, int maxlen, char **seq, char **name,
 
 void clustalout_pointer( FILE *fp, int nseq, int maxlen, char **seq, char **name, char *mark, char *comment, int *order, int namelen )
 {
+	CALLS && printf("called %s:clustalout_pointer()\n", __FILE__);
 	int pos, j;
 	if( namelen == -1 ) namelen = 15;
 	pos = 0;
@@ -4782,6 +4880,7 @@ void clustalout_pointer( FILE *fp, int nseq, int maxlen, char **seq, char **name
 
 void writeData_reorder_pointer( FILE *fp, int locnjob, char **name, int *nlen, char **aseq, int *order )
 {
+	CALLS && printf("called %s:writeData_reorder_pointer()\n", __FILE__);
 	int i, j, k;
 	int nalen;
 
@@ -4806,6 +4905,7 @@ void writeData_reorder_pointer( FILE *fp, int locnjob, char **name, int *nlen, c
 }
 void writeData_reorder( FILE *fp, int locnjob, char name[][B], int nlen[], char **aseq, int *order )
 {
+	CALLS && printf("called %s:writeData_reorder()\n", __FILE__);
 	int i, j, k;
 	int nalen;
 
@@ -4830,6 +4930,7 @@ void writeData_reorder( FILE *fp, int locnjob, char name[][B], int nlen[], char 
 }
 static void showaamtxexample()
 {
+	CALLS && printf("called %s:showaamtxexample()\n", __FILE__);
 	fprintf( stderr, "Format error in aa matrix\n" );
 	fprintf( stderr, "# Example:\n" );
 	fprintf( stderr, "# comment\n" );
@@ -4847,6 +4948,7 @@ static void showaamtxexample()
 
 double *loadaamtx( void )
 {
+	CALLS && printf("called %s:loadaamtx()\n", __FILE__);
 	int i, j, k, ii, jj;
 	double *val;
 	double **raw;
@@ -4983,6 +5085,7 @@ double *loadaamtx( void )
 
 static void tab2space( char *s ) // nen no tame
 {
+	CALLS && printf("called %s:tab2space()\n", __FILE__);
 	while( *s )
 	{
 		if( *s == '\t' ) *s = ' ';
@@ -4992,6 +5095,7 @@ static void tab2space( char *s ) // nen no tame
 
 static int readasubalignment( char *s, int *t, int *preservegaps )
 {
+	CALLS && printf("called %s:readasubalignment()\n", __FILE__);
 	int v = 0;
 	char status = 's';
 	char *pt = s;
@@ -5029,6 +5133,7 @@ static int readasubalignment( char *s, int *t, int *preservegaps )
 
 static int countspace( char *s )
 {
+	CALLS && printf("called %s:countspace()\n", __FILE__);
 	int v = 0;
 	char status = 's';
 	char *pt = s;
@@ -5061,6 +5166,7 @@ static int countspace( char *s )
 
 void readsubalignmentstable( int nseq, int **table, int *preservegaps, int *nsubpt, int *maxmempt )
 {
+	CALLS && printf("called %s:readsubalignmentstable()\n", __FILE__);
 	FILE *fp;
 	char *line;
 	int linelen = 1000000;
@@ -5139,6 +5245,7 @@ void readsubalignmentstable( int nseq, int **table, int *preservegaps, int *nsub
 
 void readmccaskill( FILE *fp, RNApair **pairprob, int length )
 {
+	CALLS && printf("called %s:readmccaskill()\n", __FILE__);
 	char gett[1000];
 	int *pairnum;
 	int i;
@@ -5203,6 +5310,7 @@ void readmccaskill( FILE *fp, RNApair **pairprob, int length )
 
 void readpairfoldalign( FILE *fp, char *s1, char *s2, char *aln1, char *aln2, int q1, int q2, int *of1, int *of2, int sumlen )
 {
+	CALLS && printf("called %s:readpairfoldalign()\n", __FILE__);
 	char gett[1000];
 	int *maptoseq1;
 	int *maptoseq2;
@@ -5324,6 +5432,7 @@ void readpairfoldalign( FILE *fp, char *s1, char *s2, char *aln1, char *aln2, in
 
 int myatoi( char *in )
 {
+	CALLS && printf("called %s:myatoi()\n", __FILE__);
 	if( in == NULL )
 	{
 		fprintf( stderr, "Error in myatoi()\n" );
@@ -5334,6 +5443,7 @@ int myatoi( char *in )
 
 float myatof( char *in )
 {
+	CALLS && printf("called %s:myatof()\n", __FILE__);
 	if( in == NULL )
 	{
 		fprintf( stderr, "Error in myatof()\n" );
