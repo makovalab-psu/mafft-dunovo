@@ -11,6 +11,11 @@
 
 #define NORMALIZE1 1
 
+#ifdef PBRANCHES
+#define BRANCHES 1
+#else
+#define BRANCHES 0
+#endif
 #ifdef PCALLS
 #define CALLS 1
 #else
@@ -25,6 +30,7 @@
 
 static int shishagonyuu( double in )
 {
+	CALLS && printf("called %s:shishagonyuu()\n", __FILE__);
 	int out;
 	if     ( in >  0.0 ) out = ( (int)( in + 0.5 ) );
 	else if( in == 0.0 ) out = ( 0 );
@@ -35,6 +41,7 @@ static int shishagonyuu( double in )
 
 static void ambiguousscore( int *amino_n, int **n_dis )
 {
+	CALLS && printf("called %s:ambiguousscore()\n", __FILE__);
 	int i;
 	for( i=0; i<26; i++ )
 	{
@@ -76,6 +83,7 @@ static void ambiguousscore( int *amino_n, int **n_dis )
 
 static void calcfreq_nuc( int nseq, char **seq, double *datafreq )
 {
+	CALLS && printf("called %s:calcfreq_nuc()\n", __FILE__);
 	int i, j, l;
 	int aan;
 	double total;
@@ -116,6 +124,7 @@ static void calcfreq_nuc( int nseq, char **seq, double *datafreq )
 
 static void calcfreq( int nseq, char **seq, double *datafreq )
 {
+	CALLS && printf("called %s:calcfreq()\n", __FILE__);
 	int i, j, l;
 	int aan;
 	double total;
@@ -150,6 +159,7 @@ static void calcfreq( int nseq, char **seq, double *datafreq )
 
 static void calcfreq_extended( int nseq, char **seq, double *datafreq )
 {
+	CALLS && printf("called %s:calcfreq_extended()\n", __FILE__);
 	int i, j, l;
 	int aan;
 	double total;
@@ -184,6 +194,7 @@ static void calcfreq_extended( int nseq, char **seq, double *datafreq )
 
 static void generatenuc1pam( double **pam1, int kimuraR, double *freq )
 {
+	CALLS && printf("called %s:generatenuc1pam()\n", __FILE__);
 	int i, j;
 	double R[4][4], mut[4], total, tmp;
 
@@ -223,6 +234,7 @@ void constants( int nseq, char **seq )
 
 	if( dorp == 'd' )  /* DNA */
 	{
+		BRANCHES && printf("branch %s %d\n", __FILE__, __LINE__); // yes
 		int k, m;
 		double average;
 		double **pamx = AllocateDoubleMtx( 11,11 );
@@ -578,10 +590,12 @@ void constants( int nseq, char **seq )
 		FreeDoubleMtx( pam1 );
 		FreeDoubleMtx( pamx );
 		free( freq );
+		BRANCHES && printf("branch %s %d\n", __FILE__, __LINE__); // yes
 
 	}
 	else if( dorp == 'p' && scoremtx == 1 && nblosum == -2 )  /* extended */
 	{
+		BRANCHES && printf("branch %s %d\n", __FILE__, __LINE__); // no
 		double *freq;
 		double *freq1;
 		double *datafreq;
@@ -727,6 +741,7 @@ void constants( int nseq, char **seq )
 /* 注意 ！！！！！！！！！！ */
 			penalty -= offset;
 #endif
+    BRANCHES && printf("branch %s %d\n", __FILE__, __LINE__); // no
 
 
 		for( i=0; i<nalphabets; i++ ) for( j=0; j<nalphabets; j++ ) 
@@ -734,6 +749,7 @@ void constants( int nseq, char **seq )
 
         if( disp )
         {
+      BRANCHES && printf("branch %s %d\n", __FILE__, __LINE__); // no
       FILES && printf("file write stdout %s:%d\n", __FILE__, __LINE__);
 			fprintf( stdout, "freq = \n" );
 			for( i=0; i<nalphabets; i++ ) fprintf( stdout, "%c %f\n", amino[i], freq1[i] );
@@ -780,6 +796,7 @@ void constants( int nseq, char **seq )
 	}
 	else if( dorp == 'p' && scoremtx == 1 )  /* Blosum, user-defined */
 	{
+		BRANCHES && printf("branch %s %d\n", __FILE__, __LINE__); // no
 		double *freq;
 		double *freq1;
 		double *datafreq;
@@ -966,11 +983,13 @@ void constants( int nseq, char **seq )
 	}
 	else if( dorp == 'p' && scoremtx == 2 ) /* Miyata-Yasunaga */
 	{
+		BRANCHES && printf("branch %s %d\n", __FILE__, __LINE__); // no
 		reporterr(       "Not supported\n" );
 		exit( 1 );
 	}
 	else         /* JTT */
 	{
+		BRANCHES && printf("branch %s %d\n", __FILE__, __LINE__); // no
 		double **rsr;
 		double **pam1;
 		double **pamx;
@@ -1268,6 +1287,7 @@ void constants( int nseq, char **seq )
 		FreeDoubleVec( mutab );
 		FreeDoubleVec( datafreq );
 	}
+	BRANCHES && printf("branch %s %d\n", __FILE__, __LINE__); // yes
 	reporterr(       "scoremtx = %d\n", scoremtx );
 
 #if DEBUG
@@ -1359,7 +1379,7 @@ void constants( int nseq, char **seq )
 exit( 1 );
 #endif
 
-
+	BRANCHES && printf("branch %s %d\n", __FILE__, __LINE__); // yes
 	ppid = 0;
 
 
