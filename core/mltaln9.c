@@ -888,6 +888,7 @@ void upg2( int nseq, double **eff, int ***topol, double **len )
 
 static void setnearest( int nseq, Bchain *acpt, float **eff, float *mindisfrompt, int *nearestpt, int pos )
 {
+	CALLS && printf("called %s:freeconstants()\n", __FILE__);
 	int j;
 	float tmpfloat;
 	float mindisfrom;
