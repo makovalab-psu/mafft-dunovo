@@ -983,7 +983,7 @@ void seqUpper( int nseq, char **seq )
 	}
 }
 
-void seqLower( int nseq, char **seq )
+void seqLower( int nseq, char **seq ) // yes
 {
 	CALLS && printf("called %s:seqLower()\n", __FILE__);
 	int i, j, len;
@@ -1023,7 +1023,7 @@ char    s[] ; int l ; FILE *fp ;
 		return( !noteofflag );
 }
 
-int myfgets(s, l, fp)  /* [mojibake] */
+int myfgets(s, l, fp) // yes
 char    s[] ; int l ; FILE *fp ;
 {
 				CALLS && printf("called %s:myfgets()\n", __FILE__);
@@ -1216,7 +1216,7 @@ void FRead( FILE *fp, char name[][B], int nlen[], char **seq )
 }
 
 
-static int countKUorWA( FILE *fp )
+static int countKUorWA( FILE *fp ) // yes
 {
 	CALLS && printf("called %s:countKUorWA()\n", __FILE__);
 	int value;
@@ -1224,6 +1224,7 @@ static int countKUorWA( FILE *fp )
 
 	value= 0;
 	b = '\n';
+	FILES && printf("file read %d %s:%d\n", fp, __FILE__, __LINE__);
 	while( ( c = getc( fp ) ) != EOF )
 	{
 		if( b == '\n' && ( c == '>' ) )
@@ -1234,7 +1235,7 @@ static int countKUorWA( FILE *fp )
 	return( value );
 }
 
-void searchKUorWA( FILE *fp )
+void searchKUorWA( FILE *fp ) // yes
 {
 	CALLS && printf("called %s:searchKUorWA()\n", __FILE__);
 	int c, b;
@@ -1296,7 +1297,7 @@ static int charfilter( char *str )
 	*res = 0;
 	return( res - bk );
 }
-static int onlyAlpha_lower( char *str )
+static int onlyAlpha_lower( char *str ) // yes
 {
 	CALLS && printf("called %s:onlyAlpha_lower()\n", __FILE__);
 	char tmp;
@@ -1323,7 +1324,7 @@ static int onlyAlpha_upper( char *str )
 	return( res - bk );
 }
 
-void kake2hiku( char *str )
+void kake2hiku( char *str ) // yes
 {
 	CALLS && printf("called %s:kake2hiku()\n", __FILE__);
 	do
@@ -1369,7 +1370,7 @@ char *load1SeqWithoutName_realloc_casepreserve( FILE *fpp )
 	return( val );
 }
 
-char *load1SeqWithoutName_realloc( FILE *fpp )
+char *load1SeqWithoutName_realloc( FILE *fpp ) // yes
 {
 	CALLS && printf("called %s:load1SeqWithoutName_realloc()\n", __FILE__);
 	int c, b;
@@ -1670,7 +1671,7 @@ int copydatafromgui( char **namegui, char **seqgui, char **name, int *nlen, char
 	return( 0 );
 }
 
-void readData_pointer( FILE *fp, char **name, int *nlen, char **seq )
+void readData_pointer( FILE *fp, char **name, int *nlen, char **seq ) // yes
 {
 	CALLS && printf("called %s:readData_pointer()\n", __FILE__);
 	int i; 
@@ -1985,7 +1986,7 @@ void catData( FILE *fp )
 	}
 }
 
-int countATGC( char *s, int *total )
+int countATGC( char *s, int *total ) // yes
 {
 	CALLS && printf("called %s:countATGC()\n", __FILE__);
 	int nATGC;
@@ -2369,7 +2370,7 @@ void getnumlen_nogap_outallreg_web( FILE *fp, FILE *ofp, int *nlenminpt, int *is
 
 }
 
-void getnumlen( FILE *fp )
+void getnumlen( FILE *fp ) // yes
 {
 	CALLS && printf("called %s:getnumlen()\n", __FILE__);
 	int total;
@@ -2487,7 +2488,7 @@ void writeDataforgaln( FILE *fp, int locnjob, char **name, int *nlen, char **ase
 	}
 }
 
-void writeData_pointer( FILE *fp, int locnjob, char **name, int *nlen, char **aseq )
+void writeData_pointer( FILE *fp, int locnjob, char **name, int *nlen, char **aseq ) // yes
 {
 	CALLS && printf("called %s:writeData_pointer()\n", __FILE__);
 	int i, j;
@@ -4149,7 +4150,7 @@ void readOtherOptions( int *ppidptr, int *fftThresholdptr, int *fftWinSizeptr )
 #endif
 }
 
-void initSignalSM( void )
+void initSignalSM( void ) // yes
 {
 	CALLS && printf("called %s:initSignalSM()\n", __FILE__);
 //	int signalsmid;
@@ -4173,7 +4174,7 @@ void initSignalSM( void )
 #endif
 }
 
-void initFiles( void )
+void initFiles( void ) // yes
 {
 	CALLS && printf("called %s:initFiles()\n", __FILE__);
 	char pname[100];
@@ -4193,10 +4194,12 @@ void initFiles( void )
 	fflush( trap_g );
 }
 
-void closeFiles( void )
+void closeFiles( void ) // yes
 {
 	CALLS && printf("called %s:closeFiles()\n", __FILE__);
+	FILES && printf("file close %d %s:%d\n", prep_g, __FILE__, __LINE__);
 	fclose( prep_g );
+	FILES && printf("file close %d %s:%d\n", trap_g, __FILE__, __LINE__);
 	fclose( trap_g );
 }
 
@@ -4772,7 +4775,7 @@ void FreeLocalHomTable( LocalHom **localhomtable, int n )
 #endif
 }
 
-char *progName( char *str )
+char *progName( char *str ) // yes
 {
 	CALLS && printf("called %s:progName()\n", __FILE__);
     char *value; 
@@ -5430,7 +5433,7 @@ void readpairfoldalign( FILE *fp, char *s1, char *s2, char *aln1, char *aln2, in
 	free( maptoseq2 );
 }
 
-int myatoi( char *in )
+int myatoi( char *in ) // yes
 {
 	CALLS && printf("called %s:myatoi()\n", __FILE__);
 	if( in == NULL )
@@ -5441,7 +5444,7 @@ int myatoi( char *in )
 	return( atoi( in ) );
 }
 
-float myatof( char *in )
+float myatof( char *in ) // yes
 {
 	CALLS && printf("called %s:myatof()\n", __FILE__);
 	if( in == NULL )
@@ -5452,7 +5455,7 @@ float myatof( char *in )
 	return( atof( in ) );
 }
 
-void reporterr( const char *str, ... )
+void reporterr( const char *str, ... ) // yes
 {
 	CALLS && printf("called %s:reporterr()\n", __FILE__);
 //	static int loglen = 0;

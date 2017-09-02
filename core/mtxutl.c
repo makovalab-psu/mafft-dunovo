@@ -9,8 +9,13 @@
 #else
 #define CALLS 0
 #endif
+#ifdef PFILES
+#define FILES 1
+#else
+#define FILES 0
+#endif
 
-void MtxuntDouble( double **mtx, int n )
+void MtxuntDouble( double **mtx, int n ) // yes
 {
 		CALLS && printf("called %s:MtxuntDouble()\n", __FILE__);
     int i, j;
@@ -18,7 +23,7 @@ void MtxuntDouble( double **mtx, int n )
     for( i=0; i<n; i++ ) mtx[i][i] = 1.0;
 }
 
-void MtxmltDouble( double **mtx1, double **mtx2, int n )
+void MtxmltDouble( double **mtx1, double **mtx2, int n ) // yes
 {
 		CALLS && printf("called %s:MtxmltDouble()\n", __FILE__);
     int i, j, k;
@@ -38,7 +43,7 @@ void MtxmltDouble( double **mtx1, double **mtx2, int n )
 	free( tmp );
 }
 
-char *AllocateCharVec( int l1 )
+char *AllocateCharVec( int l1 ) // yes
 {
 	CALLS && printf("called %s:AllocateCharVec()\n", __FILE__);
 	char *cvec;
@@ -46,6 +51,7 @@ char *AllocateCharVec( int l1 )
 	cvec = (char *)calloc( l1, sizeof( char ) );
 	if( cvec == NULL )
 	{
+		FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 		fprintf( stderr, "Cannot allocate %d character vector.\n", l1 );
 		exit( 1 );
 	}
@@ -101,7 +107,7 @@ void ReallocateCharMtx( char **mtx, int l1, int l2 )
 } 
 #endif
 
-char **AllocateCharMtx( int l1, int l2 )
+char **AllocateCharMtx( int l1, int l2 ) // yes
 {
 	CALLS && printf("called %s:AllocateCharMtx()\n", __FILE__);
 	int i;
@@ -110,6 +116,7 @@ char **AllocateCharMtx( int l1, int l2 )
 	cmtx = (char **)calloc( l1+1, sizeof( char * ) );
 	if( cmtx == NULL )
 	{
+		FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 		fprintf( stderr, "Cannot allocate %d x %d character matrix.\n", l1, l2 );
 		exit( 1 );
 	}   
@@ -124,7 +131,7 @@ char **AllocateCharMtx( int l1, int l2 )
 	return( cmtx );
 } 
 
-void FreeCharMtx( char **mtx )
+void FreeCharMtx( char **mtx ) // yes
 {
 	CALLS && printf("called %s:FreeCharMtx()\n", __FILE__);
 /*
@@ -141,7 +148,7 @@ void FreeCharMtx( char **mtx )
 	free( mtx );
 }
 
-float *AllocateFloatVec( int l1 )
+float *AllocateFloatVec( int l1 ) // yes
 {
 	CALLS && printf("called %s:AllocateFloatVec()\n", __FILE__);
 	float *vec;
@@ -149,19 +156,20 @@ float *AllocateFloatVec( int l1 )
 	vec = (float *)calloc( (unsigned int)l1, sizeof( float ) );
 	if( vec == NULL )
 	{
+		FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 		fprintf( stderr, "Allocation error ( %d fload vec )\n", l1 );
 		exit( 1 );
 	}
 	return( vec );
 }
 
-void FreeFloatVec( float *vec )
+void FreeFloatVec( float *vec ) // yes
 {
 	CALLS && printf("called %s:FreeFloatVec()\n", __FILE__);
 	free( (char *)vec );
 }
 
-float **AllocateFloatHalfMtx( int ll1 )
+float **AllocateFloatHalfMtx( int ll1 ) // yes
 {
 	CALLS && printf("called %s:AllocateFloatHalfMtx()\n", __FILE__);
 	float **mtx;
@@ -170,6 +178,7 @@ float **AllocateFloatHalfMtx( int ll1 )
 	mtx = (float **)calloc( (unsigned int)ll1+1, sizeof( float * ) );
 	if( mtx == NULL )
 	{
+		FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 		fprintf( stderr, "Allocation error ( %d fload halfmtx )\n", ll1 );
 		exit( 1 );
 	}
@@ -178,6 +187,7 @@ float **AllocateFloatHalfMtx( int ll1 )
 		mtx[i] = (float *)calloc( ll1-i, sizeof( float ) );
 		if( !mtx[i] )
 		{
+			FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 			fprintf( stderr, "Allocation error( %d floathalfmtx )\n", ll1 );
 			exit( 1 );
 		}
@@ -186,7 +196,7 @@ float **AllocateFloatHalfMtx( int ll1 )
 	return( mtx );
 }
 
-float **AllocateFloatMtx( int ll1, int ll2 )
+float **AllocateFloatMtx( int ll1, int ll2 ) // yes
 {
 	CALLS && printf("called %s:AllocateFloatMtx()\n", __FILE__);
 	float **mtx;
@@ -195,6 +205,7 @@ float **AllocateFloatMtx( int ll1, int ll2 )
 	mtx = (float **)calloc( (unsigned int)ll1+1, sizeof( float * ) );
 	if( mtx == NULL )
 	{
+		FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 		fprintf( stderr, "Allocation error ( %d x %d fload mtx )\n", ll1, ll2 );
 		exit( 1 );
 	}
@@ -205,6 +216,7 @@ float **AllocateFloatMtx( int ll1, int ll2 )
 			mtx[i] = (float *)calloc( ll2, sizeof( float ) );
 			if( !mtx[i] )
 			{
+				FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 				fprintf( stderr, "Allocation error( %d x %d floatmtx )\n", ll1, ll2 );
 				exit( 1 );
 			}
@@ -214,7 +226,7 @@ float **AllocateFloatMtx( int ll1, int ll2 )
 	return( mtx );
 }
 
-void FreeFloatHalfMtx( float **mtx, int n )
+void FreeFloatHalfMtx( float **mtx, int n ) // yes
 {
 	CALLS && printf("called %s:FreeFloatHalfMtx()\n", __FILE__);
 	int i;
@@ -225,7 +237,7 @@ void FreeFloatHalfMtx( float **mtx, int n )
 	}
 	free( mtx );
 }
-void FreeFloatMtx( float **mtx )
+void FreeFloatMtx( float **mtx ) // yes
 {
 	CALLS && printf("called %s:FreeFloatMtx()\n", __FILE__);
 	int i;
@@ -237,21 +249,22 @@ void FreeFloatMtx( float **mtx )
 	free( mtx );
 }
 
-int *AllocateIntVec( int ll1 )
+int *AllocateIntVec( int ll1 ) // yes
 {
 	CALLS && printf("called %s:AllocateIntVec()\n", __FILE__);
 	int *vec;
 
 	vec = (int *)calloc( ll1, sizeof( int ) );
 	if( vec == NULL )
-	{	
+	{
+		FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 		fprintf( stderr, "Allocation error( %d int vec )\n", ll1 );
 		exit( 1 );
 	}
 	return( vec );
 }	
 
-void FreeIntVec( int *vec )
+void FreeIntVec( int *vec ) // yes
 {
 	CALLS && printf("called %s:FreeIntVec()\n", __FILE__);
 	free( (char *)vec );
@@ -293,7 +306,7 @@ void FreeFloatTri( float **tri )
 	free( tri );
 }
 		
-int **AllocateIntMtx( int ll1, int ll2 )
+int **AllocateIntMtx( int ll1, int ll2 ) // yes
 {
 	CALLS && printf("called %s:AllocateIntMtx()\n", __FILE__);
 	int i;
@@ -302,6 +315,7 @@ int **AllocateIntMtx( int ll1, int ll2 )
 	mtx = (int **)calloc( ll1+1, sizeof( int * ) );
 	if( !mtx )
 	{
+		FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 		fprintf( stderr, "Allocation error( %d x %d int mtx )\n", ll1, ll2 );
 		exit( 1 );
 	}
@@ -378,7 +392,7 @@ void freeintmtx( int **mtx, int ll1, int ll2 )
     free( (char *)mtx );
 }
       
-void FreeIntMtx( int **mtx )
+void FreeIntMtx( int **mtx ) // yes
 {
 	CALLS && printf("called %s:FreeIntMtx()\n", __FILE__);
 	int i;
@@ -415,7 +429,7 @@ void FreeCharHcu( char ****hcu )
 	free ( (char *)hcu );
 }
 
-double *AllocateDoubleVec( int ll1 )
+double *AllocateDoubleVec( int ll1 ) // yes
 {
 	CALLS && printf("called %s:AllocateDoubleVec()\n", __FILE__);
 	double *vec;
@@ -424,13 +438,13 @@ double *AllocateDoubleVec( int ll1 )
 	return( vec );
 }
 
-void FreeDoubleVec( double *vec )
+void FreeDoubleVec( double *vec ) // yes
 {
 	CALLS && printf("called %s:FreeDoubleVec()\n", __FILE__);
 	free( vec );
 }
 
-int ***AllocateIntCub( int ll1, int ll2, int ll3 )
+int ***AllocateIntCub( int ll1, int ll2, int ll3 ) // yes
 {
 	CALLS && printf("called %s:AllocateIntCub()\n", __FILE__);
 	int i;
@@ -439,6 +453,7 @@ int ***AllocateIntCub( int ll1, int ll2, int ll3 )
 	cub = (int ***)calloc( ll1+1, sizeof( int ** ) );
 	if( cub == NULL )
 	{
+		FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 		fprintf( stderr, "cannot allocate IntCub\n" );
 		exit( 1 );
 	}
@@ -460,7 +475,7 @@ void FreeIntCub( int ***cub )
 	free( cub );
 }
 
-double **AllocateDoubleMtx( int ll1, int ll2 )
+double **AllocateDoubleMtx( int ll1, int ll2 ) // yes
 {
 	CALLS && printf("called %s:AllocateDoubleMtx()\n", __FILE__);
 	int i;
@@ -468,6 +483,7 @@ double **AllocateDoubleMtx( int ll1, int ll2 )
 	mtx = (double **)calloc( ll1+1, sizeof( double * ) );
 	if( !mtx )
 	{
+		FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
 		fprintf( stderr, "cannot allocate DoubleMtx\n" );
 		exit( 1 );
 	}
@@ -481,7 +497,7 @@ double **AllocateDoubleMtx( int ll1, int ll2 )
 	return mtx;
 }
 
-void FreeDoubleMtx( double **mtx )
+void FreeDoubleMtx( double **mtx ) // yes
 {
 	CALLS && printf("called %s:FreeDoubleMtx()\n", __FILE__);
 	int i;
