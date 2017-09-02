@@ -24,7 +24,7 @@ CFLAGS = -O3
 #CFLAGS =  -O0  -fPIC -pedantic -Wall -std=c99 -g -DMALLOC_CHECK_=3 # for shark, valgrind
 
 
-MYCFLAGS = $(MNO_CYGWIN) $(ENABLE_MULTITHREAD) $(CFLAGS)
+MYCFLAGS = $(MNO_CYGWIN) $(ENABLE_MULTITHREAD) $(CFLAGS) $(ENVFLAGS)
 
 ifdef ENABLE_MULTITHREAD
 LIBS = -lm  -lpthread

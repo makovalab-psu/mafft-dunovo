@@ -1,5 +1,16 @@
 #include "mltaln.h"
 
+#ifdef PCALLS
+#define CALLS 1
+#else
+#define CALLS 0
+#endif
+#ifdef PFILES
+#define FILES 1
+#else
+#define FILES 0
+#endif
+
 static int upperCase = 0;
 
 #define DEBUG   0

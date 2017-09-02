@@ -2,6 +2,12 @@
 
 #define DEBUG 0
 
+#ifdef PCALLS
+#define CALLS 1
+#else
+#define CALLS 0
+#endif
+
 #if 0
 int seqlen( char *seq )
 {

@@ -1,5 +1,21 @@
 #include "mltaln.h"
 
+#ifdef PCALLS
+#define CALLS 1
+#else
+#define CALLS 0
+#endif
+#ifdef PBRANCHES
+#define BRANCHES 1
+#else
+#define BRANCHES 0
+#endif
+#ifdef PFILES
+#define FILES 1
+#else
+#define FILES 0
+#endif
+
 #define DEBUG 0
 #define IODEBUG 0
 #define SCOREOUT 0

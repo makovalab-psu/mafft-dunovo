@@ -4,6 +4,12 @@
 #include <string.h>
 #include "mtxutl.h"
 
+#ifdef PCALLS
+#define CALLS 1
+#else
+#define CALLS 0
+#endif
+
 void MtxuntDouble( double **mtx, int n )
 {
     int i, j;
