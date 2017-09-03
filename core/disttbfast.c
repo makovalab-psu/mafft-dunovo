@@ -1844,7 +1844,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 
 	if( ngui )
 	{
-		BRANCHES && printf("branch %d\n", __LINE__); // no
+		BRANCHES && printf("branch %d\n", __LINE__); // no/yes
 		initglobalvariables();
 		njob = ngui;
 		nlenmax = 0;
@@ -1860,7 +1860,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		gmsg = 1;
 	}
 	else {
-		BRANCHES && printf("branch %d\n", __LINE__); // yes
+		BRANCHES && printf("branch %d\n", __LINE__); // yes/no
 		gmsg = 0; // iranai
 	}
 
@@ -1874,7 +1874,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 
 	if( ngui )
 	{
-		BRANCHES && printf("branch %d\n", __LINE__); // no
+		BRANCHES && printf("branch %d\n", __LINE__); // no/yes
 		for( i=0; i<argc; i++ ) 
 		{
 //			free( tmpargv[i] );
@@ -1884,7 +1884,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 	}
 	else
 	{
-		BRANCHES && printf("branch %d\n", __LINE__); // yes
+		BRANCHES && printf("branch %d\n", __LINE__); // yes/no
 		if( inputfile )
 		{
 			BRANCHES && printf("branch %d\n", __LINE__); // no
@@ -1897,7 +1897,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 			}
 		}
 		else {
-			BRANCHES && printf("branch %d\n", __LINE__); // yes
+			BRANCHES && printf("branch %d\n", __LINE__); // yes/no
 			infp = stdin;
 		}
 	
@@ -1970,12 +1970,13 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
     nogaplen = AllocateIntVec( njob ); 
 	if( ngui )
 	{
+		BRANCHES && printf("branch %d\n", __LINE__); // yes
 		if( copydatafromgui( namegui, seqgui, name, nlen, seq ) )
 			exit( 1 );
 	}
 	else
 	{
-		BRANCHES && printf("branch %d\n", __LINE__); // yes
+		BRANCHES && printf("branch %d\n", __LINE__); // yes/no
 		readData_pointer( infp, name, nlen, seq );
 		FILES && printf("file close %d %s:%d\n", infp, __FILE__, __LINE__);
 		fclose( infp );
@@ -2882,6 +2883,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 	val = 0;
 	if( ngui ) 
 	{
+		BRANCHES && printf("branch %d\n", __LINE__); // yes
 		ien = strlen( bseq[0] );
 		if( ien > lgui )
 		{
@@ -2903,7 +2905,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 	}
 	else
 	{
-		BRANCHES && printf("branch %d\n", __LINE__); // yes
+		BRANCHES && printf("branch %d\n", __LINE__); // yes/no
 		writeData_pointer( stdout, njob, name, nlen, bseq );
 	} 
 

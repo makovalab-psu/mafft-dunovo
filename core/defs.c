@@ -2,6 +2,12 @@
 #include "dp.h"
 #include "mltaln.h"
 
+#ifdef PCALLS
+#define CALLS 1
+#else
+#define CALLS 0
+#endif
+
 int TLS commonAlloc1 = 0;
 int TLS commonAlloc2 = 0;
 int TLS **commonIP = NULL;
@@ -126,6 +132,7 @@ double sueff_global = SUEFF;
 
 void initglobalvariables()
 {
+	CALLS && printf("called %s:initglobalvariables()\n", __FILE__);
 	commonAlloc1 = 0;
 	commonAlloc2 = 0;
 	commonIP = NULL;
