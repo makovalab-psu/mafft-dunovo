@@ -5473,6 +5473,7 @@ float myatof( char *in ) // yes
 
 void reporterr( const char *str, ... ) // yes
 {
+	return;
 	CALLS && printf("called %s:reporterr()\n", __FILE__);
 //	static int loglen = 0;
 	va_list args;

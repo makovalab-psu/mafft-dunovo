@@ -320,8 +320,8 @@ void arguments( int argc, char *argv[] )
 				case 'X':
 					treemethod = 'X';
 					sueff_global = atof( *++argv );
-					FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
-					fprintf( stderr, "sueff_global = %f\n", sueff_global );
+					// FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
+					// fprintf( stderr, "sueff_global = %f\n", sueff_global );
 					--argc;
 					goto nextoption;
 				case 'E':
@@ -837,8 +837,8 @@ static void *msadistmtxthread( void *arg ) // enablemultithread == 0 demo tsukau
 		else
 		{
 			if( j==i+1 && i % 10 == 0 ) {
-				FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
-				fprintf( stderr, "\r% 5d / %d", i, njob );
+				// FILES && printf("file write stderr %s:%d\n", __FILE__, __LINE__);
+				// fprintf( stderr, "\r% 5d / %d", i, njob );
 			}
 		}
 		ssi = selfscore[i];
