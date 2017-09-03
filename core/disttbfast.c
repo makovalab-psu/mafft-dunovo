@@ -1730,6 +1730,7 @@ static int treebase( int *nlen, char **aseq, int nadd, char *mergeoralign, char 
 static void WriteOptions( FILE *fp )
 {
 	CALLS && printf("called %s:WriteOptions()\n", __FILE__);
+	return;
 	FILES && printf("file write %d %s:%d\n", fp, __FILE__, __LINE__);
 
 	if( dorp == 'd' ) fprintf( fp, "DNA\n" );
@@ -2325,6 +2326,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		}
 
 	
+		/*
 		orderfp = fopen( "order", "w" );
 		FILES && printf("file open w \"order\" (%d) %s:%d\n", orderfp, __FILE__, __LINE__);
 		if( !orderfp )
@@ -2345,6 +2347,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 			fprintf( orderfp, "%d\n", j );
 		}
 		fclose( orderfp );
+		*/
 
 
 	

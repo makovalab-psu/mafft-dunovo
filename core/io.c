@@ -4190,6 +4190,7 @@ void initSignalSM( void ) // yes
 
 void initFiles( void ) // yes
 {
+	return;
 	CALLS && printf("called %s:initFiles()\n", __FILE__);
 	char pname[100];
 	if( ppid )
@@ -4210,6 +4211,7 @@ void initFiles( void ) // yes
 
 void closeFiles( void ) // yes
 {
+	return;
 	CALLS && printf("called %s:closeFiles()\n", __FILE__);
 	FILES && printf("file close %d %s:%d\n", prep_g, __FILE__, __LINE__);
 	fclose( prep_g );
@@ -5473,8 +5475,8 @@ float myatof( char *in ) // yes
 
 void reporterr( const char *str, ... ) // yes
 {
-	return;
 	CALLS && printf("called %s:reporterr()\n", __FILE__);
+	return;
 //	static int loglen = 0;
 	va_list args;
 
