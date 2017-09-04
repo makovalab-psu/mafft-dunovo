@@ -57,41 +57,7 @@ char *AllocateCharVec( int l1 ) // yes
 	}
 	return( cvec );
 }
-	
-#if 0
-void ReallocateCharMtx( char **mtx, int l1, int l2 )
-{
-	int i;
-	char *bk = (char *)malloc( l2+1 ); // hontou ha iranai
-	if( bk == NULL )
-	{
-		fprintf( stderr, "Cannot allocate bk in ReallocateCharMtx\n" );
-		exit( 1 );
-	}
-	for( i=0; i<l1; i++ ) 
-	{
-#if 1
-		strcpy( bk, mtx[i] );
-		mtx[i] = (char *)realloc( mtx[i], (l2+1) * sizeof( char ) );
-		if( mtx[i] == NULL )
-		{
-			fprintf( stderr, "Cannot reallocate %d x %d character matrix.\n", l1, l2 );
-		}
-		if( strcmp( bk, mtx[i] ) ) // hontou ha iranai
-		{
-			fprintf( stderr, "changed!! \n%s\n \nto\n%s\n in realloc..\n", bk, mtx[i] );
-			strcpy( mtx[i], bk );
-		}
-#else
-		strcpy( bk, mtx[i] );
-		free( mtx[i] );
-		mtx[i] = (char *)calloc( (l2+1), sizeof( char ) );
-		strcpy( mtx[i], bk );
-#endif
-	}
-	free( bk ); // hontou ha iranai
-} 
-#else
+
 void ReallocateCharMtx( char **mtx, int l1, int l2 )
 {
 	CALLS && printf("called %s:ReallocateCharMtx()\n", __FILE__);
@@ -104,8 +70,7 @@ void ReallocateCharMtx( char **mtx, int l1, int l2 )
 			fprintf( stderr, "Cannot reallocate %d x %d character matrix.\n", l1, l2 );
 		}
 	}
-} 
-#endif
+}
 
 char **AllocateCharMtx( int l1, int l2 ) // yes
 {

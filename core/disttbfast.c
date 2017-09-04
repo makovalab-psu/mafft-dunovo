@@ -52,16 +52,6 @@ static int subalignment;
 static int subalignmentoffset;
 static int nguidetree;
 static int sparsepickup;
-#if 0
-#define PLENFACA 0.0123
-#define PLENFACB 10252
-#define PLENFACC 10822
-#define PLENFACD 0.5
-#define DLENFACA 0.01
-#define DLENFACB 2445
-#define DLENFACC 2412
-#define DLENFACD 0.1
-#else
 #define PLENFACA 0.01
 #define PLENFACB 10000
 #define PLENFACC 10000
@@ -74,7 +64,6 @@ static int sparsepickup;
 #define D10LENFACB 1000000
 #define D10LENFACC 1000000
 #define D10LENFACD 0.0
-#endif
 
 typedef struct _jobtable
 {
@@ -274,11 +263,9 @@ void arguments( int argc, char *argv[] )
 //					reporterr(       "specificityconsideration = %f\n", specificityconsideration );
 					--argc; 
 					goto nextoption;
-#if 1
 				case 'a':
 					fmodel = 1;
 					break;
-#endif
 				case 'K':
 					addprofile = 0;
 					break;
@@ -291,11 +278,6 @@ void arguments( int argc, char *argv[] )
 				case 'T':
 					noalign = 1;
 					break;
-#if 0
-				case 'r':
-					fmodel = -1;
-					break;
-#endif
 				case 'D':
 					dorp = 'd';
 					break;
@@ -313,22 +295,9 @@ void arguments( int argc, char *argv[] )
 					subalignmentoffset = myatoi( *++argv );
 					--argc;
 					goto nextoption;
-#if 0
-				case 'R':
-					fftRepeatStop = 1;
-					break;
-#endif
 				case 'n' :
 					outnumber = 1;
 					break;
-#if 0
-				case 's':
-					treemethod = 's';
-					break;
-				case 'q':
-					treemethod = 'q'; // minimum
-					break;
-#endif
 				case 'q':
 					sparsepickup = myatoi( *++argv );
 					reporterr(       "sparsepickup = %d\n", sparsepickup );
@@ -346,14 +315,6 @@ void arguments( int argc, char *argv[] )
 					reporterr(       "nguidetree = %d\n", nguidetree );
 					--argc; 
 					goto nextoption;
-#if 0
-				case 'a':
-					alg = 'a';
-					break;
-				case 'H':
-					alg = 'H';
-					break;
-#endif
 				case 'R':
 					alg = 'R';
 					break;
@@ -366,15 +327,9 @@ void arguments( int argc, char *argv[] )
 				case 'M':
 					alg = 'M';
 					break;
-#if 0
-				case 'S' :
-					scoreout = 1; // for checking parallel calculation
-					break;
-#else
 				case 'S' :
 					spscoreout = 1; // 2014/Dec/30, sp score
 					break;
-#endif
 				case 'B': // hitsuyou! memopt -M -B no tame
 					break;
 				case 'F':
@@ -384,11 +339,6 @@ void arguments( int argc, char *argv[] )
 					use_fft = 1;
 					force_fft = 1;
 					break;
-#if 0
-				case 'V':
-					topin = 1;
-					break;
-#endif
 				case 'U':
 					treein = 1;
 					break;
@@ -402,15 +352,9 @@ void arguments( int argc, char *argv[] )
 				case 'd':
 					disp = 1;
 					break;
-#if 1
 				case 'O':
 					outgap = 0;
 					break;
-#else
-				case 'O':
-					fftNoAnchStop = 1;
-					break;
-#endif
 				case 'J':
 					tbutree = 0;
 					break;
@@ -955,9 +899,6 @@ static void *treebasethread( void *arg )
 #if SKIP
 	int **skiptable1 = NULL, **skiptable2 = NULL;
 #endif
-#if 0
-	int i, j;
-#endif
 
 	mseq1 = AllocateCharMtx( njob, 0 );
 	mseq2 = AllocateCharMtx( njob, 0 );
@@ -968,16 +909,6 @@ static void *treebasethread( void *arg )
 	indication1 = AllocateCharVec( 150 );
 	indication2 = AllocateCharVec( 150 );
 	dynamicmtx = AllocateDoubleMtx( nalphabets, nalphabets );
-
-
-#if 0
-	reporterr(       "##### fftwinsize = %d, fftthreshold = %d\n", fftWinSize, fftThreshold );
-#endif
-
-#if 0
-	for( i=0; i<njob; i++ )
-		reporterr(       "TBFAST effarr[%d] = %f\n", i, effarr[i] );
-#endif
 
 //	for( i=0; i<njob; i++ ) strcpy( aseq[i], seq[i] );
 
@@ -1084,57 +1015,8 @@ static void *treebasethread( void *arg )
 
 		pthread_mutex_unlock( targ->mutex );
 
-#if 1 // CHUUI@@@@
 		clus1 = fastconjuction_noname( topol[l][0], localcopy, mseq1, effarr1, effarr, indication1, 0.0 );
 		clus2 = fastconjuction_noname( topol[l][1], localcopy, mseq2, effarr2, effarr, indication2, 0.0 );
-#else
-		clus1 = fastconjuction_noweight( topol[l][0], localcopy, mseq1, effarr1,  indication1 );
-		clus2 = fastconjuction_noweight( topol[l][1], localcopy, mseq2, effarr2,  indication2 );
-#endif
-
-
-#if 0
-    for( i=0; i<clus1; i++ ) 
-    {
-        if( strlen( mseq1[i] ) != len1 ) 
-        {
-            reporterr(       "i = %d / %d\n", i, clus1 ); 
-            reporterr(       "hairetsu ga kowareta (in treebase, after conjuction) !\n" ); 
-            exit( 1 );
-        }
-    }
-    for( j=0; j<clus2; j++ )
-    {
-        if( strlen( mseq2[j] ) != len2 ) 
-        {
-            reporterr(       "j = %d / %d\n", j, clus2 ); 
-            reporterr(       "hairetsu ga kowareta (in treebase, after conjuction) !\n" ); 
-            exit( 1 );
-        }
-    }
-#endif
-
-#if 0
-    for( i=0; i<clus1; i++ ) 
-    {
-        if( strlen( mseq1[i] ) != len1 ) 
-        {
-            reporterr(       "i = %d / %d\n", i, clus1 ); 
-            reporterr(       "hairetsu ga kowareta (in treebase, after free topol) !\n" ); 
-            exit( 1 );
-        }
-    }
-    for( j=0; j<clus2; j++ )
-    {
-        if( strlen( mseq2[j] ) != len2 ) 
-        {
-            reporterr(       "j = %d / %d\n", j, clus2 ); 
-            reporterr(       "hairetsu ga kowareta (in treebase, after free topol) !\n" ); 
-            exit( 1 );
-        }
-    }
-#endif
-
 
 //		fprintf( trap_g, "\nSTEP-%d\n", l );
 //		fprintf( trap_g, "group1 = %s\n", indication1 );
@@ -1142,16 +1024,6 @@ static void *treebasethread( void *arg )
 
 //		reporterr(       "\rSTEP % 5d / %d %d-%d", l+1, njob-1, clus1, clus2 );
 		reporterr(       "\rSTEP % 5d / %d (thread %4d)", l+1, njob-1, thread_no );
-
-#if 0
-		reporterr(       "STEP %d /%d\n", l+1, njob-1 );
-		reporterr(       "group1 = %.66s", indication1 );
-		if( strlen( indication1 ) > 66 ) reporterr(       "..." );
-		reporterr(       "\n" );
-		reporterr(       "group2 = %.66s", indication2 );
-		if( strlen( indication2 ) > 66 ) reporterr(       "..." );
-		reporterr(       "\n" );
-#endif
 
 /*
 		reporterr(       "before align all\n" );
@@ -1226,14 +1098,6 @@ static void *treebasethread( void *arg )
 
 		if( newdistmtx ) // tsukawanai
 		{
-#if 0
-			reporterr( "group1 = " );
-			for( i=0; i<clus1; i++ ) reporterr( "%d ", topol[l][0][i] );
-			reporterr( "\n" );
-			reporterr( "group2 = " );
-			for( m=0; m<clus2; m++ ) reporterr( "%d ", topol[l][1][m] );
-			reporterr( "\n" );
-#endif
 #if SKIP
 			skiptable1 = AllocateIntMtx( clus1, 0 );
 			skiptable2 = AllocateIntMtx( clus2, 0 );
@@ -1341,9 +1205,6 @@ static int treebase( int *nlen, char **aseq, int nadd, char *mergeoralign, char 
 #if SKIP
 	int **skiptable1 = NULL, **skiptable2 = NULL;
 #endif
-#if 0
-	int i, j;
-#endif
 
 //	reporterr( "treebase newdistmtx=%p\n", newdistmtx );
 
@@ -1365,15 +1226,6 @@ static int treebase( int *nlen, char **aseq, int nadd, char *mergeoralign, char 
 	if( callback && callback( 0, 50, "Progressive alignment" ) ) goto chudan_tbfast;
 
 	for( l=0; l<njob; l++ ) fftlog[l] = 1;
-
-#if 0
-	reporterr(       "##### fftwinsize = %d, fftthreshold = %d\n", fftWinSize, fftThreshold );
-#endif
-
-#if 0
-	for( i=0; i<njob; i++ )
-		reporterr(       "TBFAST effarr[%d] = %f\n", i, effarr[i] );
-#endif
 
 //	for( i=0; i<njob; i++ ) strcpy( aseq[i], seq[i] );
 
@@ -1420,13 +1272,8 @@ static int treebase( int *nlen, char **aseq, int nadd, char *mergeoralign, char 
 			reporterr(       "done. *alloclen = %d\n", *alloclen );
 		}
 
-#if 1 // CHUUI@@@@
 		clus1 = fastconjuction_noname( topol[l][0], aseq, mseq1, effarr1, effarr, indication1, 0.0 );
 		clus2 = fastconjuction_noname( topol[l][1], aseq, mseq2, effarr2, effarr, indication2, 0.0 );
-#else
-		clus1 = fastconjuction_noweight( topol[l][0], aseq, mseq1, effarr1,  indication1 );
-		clus2 = fastconjuction_noweight( topol[l][1], aseq, mseq2, effarr2,  indication2 );
-#endif
 		if( mergeoralign[l] == '1' || mergeoralign[l] == '2' )
 		{
 			newgapstr = "=";
@@ -1449,49 +1296,6 @@ static int treebase( int *nlen, char **aseq, int nadd, char *mergeoralign, char 
 			len1nocommongap = strlen( mseq1[0] );
 		}
 
-#if 0
-    for( i=0; i<clus1; i++ ) 
-    {
-        if( strlen( mseq1[i] ) != len1 ) 
-        {
-            reporterr(       "i = %d / %d\n", i, clus1 ); 
-            reporterr(       "hairetsu ga kowareta (in treebase, after conjuction) !\n" ); 
-            exit( 1 );
-        }
-    }
-    for( j=0; j<clus2; j++ )
-    {
-        if( strlen( mseq2[j] ) != len2 ) 
-        {
-            reporterr(       "j = %d / %d\n", j, clus2 ); 
-            reporterr(       "hairetsu ga kowareta (in treebase, after conjuction) !\n" ); 
-            exit( 1 );
-        }
-    }
-#endif
-
-
-#if 0
-    for( i=0; i<clus1; i++ ) 
-    {
-        if( strlen( mseq1[i] ) != len1 ) 
-        {
-            reporterr(       "i = %d / %d\n", i, clus1 ); 
-            reporterr(       "hairetsu ga kowareta (in treebase, after free topol) !\n" ); 
-            exit( 1 );
-        }
-    }
-    for( j=0; j<clus2; j++ )
-    {
-        if( strlen( mseq2[j] ) != len2 ) 
-        {
-            reporterr(       "j = %d / %d\n", j, clus2 ); 
-            reporterr(       "hairetsu ga kowareta (in treebase, after free topol) !\n" ); 
-            exit( 1 );
-        }
-    }
-#endif
-
 
 //		fprintf( trap_g, "\nSTEP-%d\n", l );
 //		fprintf( trap_g, "group1 = %s\n", indication1 );
@@ -1500,16 +1304,6 @@ static int treebase( int *nlen, char **aseq, int nadd, char *mergeoralign, char 
 //		reporterr(       "\rSTEP % 5d / %d %d-%d", l+1, njob-1, clus1, clus2 );
 		reporterr(       "\rSTEP % 5d / %d ", l+1, njob-1 );
 		if( callback && callback( 0, 50+50*l/(njob-1), "Progressive alignment" ) ) goto chudan_tbfast;
-
-#if 0
-		reporterr(       "STEP %d /%d\n", l+1, njob-1 );
-		reporterr(       "group1 = %.66s", indication1 );
-		if( strlen( indication1 ) > 66 ) reporterr(       "..." );
-		reporterr(       "\n" );
-		reporterr(       "group2 = %.66s", indication2 );
-		if( strlen( indication2 ) > 66 ) reporterr(       "..." );
-		reporterr(       "\n" );
-#endif
 
 /*
 		reporterr(       "before align all\n" );
@@ -1606,51 +1400,17 @@ static int treebase( int *nlen, char **aseq, int nadd, char *mergeoralign, char 
 		}
 		if( mergeoralign[l] == '2' )
 		{
-//			for( i=0; i<clus1; i++ ) reporterr(       ">STEP0 mseq1[%d] = \n%s\n", i, mseq1[i] );
-//			for( i=0; i<clus2; i++ ) reporterr(       ">STEP0 mseq2[%d] = \n%s\n", i, mseq2[i] );
 			adjustgapmap( strlen( mseq1[0] )-len1nocommongap+len1, gapmap, mseq1[0] );
-//			for( i=0; i<clus1; i++ ) reporterr(       ">STEP1 mseq1[%d] = \n%s\n", i, mseq1[i] );
-//			for( i=0; i<clus2; i++ ) reporterr(       ">STEP1 mseq2[%d] = \n%s\n", i, mseq2[i] );
 			restorecommongaps( njob, aseq, topol[l][0], topol[l][1], gapmap, *alloclen, '-' );
-//			for( i=0; i<clus1; i++ ) reporterr(       ">STEP2 mseq1[%d] = \n%s\n", i, mseq1[i] );
-//			for( i=0; i<clus2; i++ ) reporterr(       ">STEP2 mseq2[%d] = \n%s\n", i, mseq2[i] );
 			findnewgaps( clus1, 0, mseq1, gaplen );
 			insertnewgaps( njob, alreadyaligned, aseq, topol[l][0], topol[l][1], gaplen, gapmap, *alloclen, alg, '-' );
-//			for( i=0; i<clus1; i++ ) reporterr(       ">STEP3 mseq1[%d] = \n%s\n", i, mseq1[i] );
-//			for( i=0; i<clus2; i++ ) reporterr(       ">STEP3 mseq2[%d] = \n%s\n", i, mseq2[i] );
-#if 0
-			for( i=0; i<njob; i++ ) eq2dash( aseq[i] );
-			for( i=0; i<clus1; i++ ) 
-			{
-				reporterr( "mseq1[%d] bef change = %s\n", i, mseq1[i] );
-				eq2dash( mseq1[i] );
-				reporterr( "mseq1[%d] aft change = %s\n", i, mseq1[i] );
-			}
-			for( i=0; i<clus2; i++ ) 
-			{
-				reporterr( "mseq2[%d] bef change = %s\n", i, mseq2[i] );
-				eq2dash( mseq2[i] );
-				reporterr( "mseq2[%d] aft change = %s\n", i, mseq2[i] );
-			}
-			for( i=0; i<clus1; i++ ) eq2dash( mseq1[i] );
-			for( i=0; i<clus2; i++ ) eq2dash( mseq2[i] );
-#else
 			eq2dashmatometehayaku( mseq1, clus1 );
 			eq2dashmatometehayaku( mseq2, clus2 );
-#endif
 			for( i=0; (m=topol[l][1][i])>-1; i++ ) alreadyaligned[m] = 1;
 		}
 
 		if( newdistmtx ) // tsukawanai
 		{
-#if 0
-			reporterr( "group1 = " );
-			for( i=0; i<clus1; i++ ) reporterr( "%d ", topol[l][0][i] );
-			reporterr( "\n" );
-			reporterr( "group2 = " );
-			for( m=0; m<clus2; m++ ) reporterr( "%d ", topol[l][1][m] );
-			reporterr( "\n" );
-#endif
 #if SKIP
 			skiptable1 = AllocateIntMtx( clus1, 0 );
 			skiptable2 = AllocateIntMtx( clus2, 0 );
@@ -1983,10 +1743,6 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 
 	if( nadd ) addmem = AllocateIntVec( nadd+1 );
 
-#if 0
-	Read( name, nlen, seq );
-	readData( infp, name, nlen, seq );
-#else
     name = AllocateCharMtx( njob, B+1 );
     nlen = AllocateIntVec( njob ); 
     nogaplen = AllocateIntVec( njob ); 
@@ -2003,15 +1759,10 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		FILES && printf("file close %d %s:%d\n", infp, __FILE__, __LINE__);
 		fclose( infp );
 	}
-#endif
 
 
 	constants( njob, seq );
 
-
-#if 0
-	reporterr(       "params = %d, %d, %d\n", penalty, penalty_ex, offset );
-#endif
 
 	TIMES && time_check(&now, __LINE__);
 
@@ -2225,27 +1976,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		FreeIntMtx( pointt ); pointt = NULL;
 		commonsextet_p( NULL, NULL );
 
-#if 0 // writehat2 wo kakinaosu -> iguidetree loop nai ni idou
-		if( distout )
-		{
-			hat2p = fopen( "hat2", "w" );
-			WriteFloatHat2_pointer_halfmtx( hat2p, njob, name, mtx );
-			fclose( hat2p );
-		}
-#endif
-
 	}
-#if 0 
-	else 
-	{
-		reporterr(       "Loading 'hat2' ... " );
-		prep = fopen( "hat2", "r" );
-		if( prep == NULL ) ErrorExit( "Make hat2." );
-		readhat2_float( prep, njob, name, mtx ); // name chuui
-		fclose( prep );
-		reporterr(       "done.\n" );
-	}
-#endif
 
 	// The majority of the time is taken here.
 	TIMES && time_check(&now, __LINE__);
@@ -2388,24 +2119,14 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		
 		if( tbrweight )
 		{
-			weight = 3; 
-#if 0
-			utree = 0; counteff( njob, topol, len, eff ); utree = 1;
-#else
+			weight = 3;
 			BRANCHES && printf("branch %d\n", __LINE__); // yes
 			counteff_simple_float_nostatic( njob, topol, len, eff );
-#endif
 		}
 		else
 		{
 			for( i=0; i<njob; i++ ) eff[i] = 1.0;
 		}
-	
-#if 0
-		for( i=0; i<njob; i++ )
-			reporterr(       "eff[%d] = %20.16f\n", i, eff[i] );
-		exit( 1 );
-#endif
 	
 		BRANCHES && printf("branch %d\n", __LINE__); // yes
 		FreeFloatMtx( len ); len = NULL;
@@ -2529,18 +2250,6 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 						mergeoralign[i] = '2';
 					}
 				}
-#if 0
-				for( i=0; i<njob-1; i++ )
-				{
-					reporterr(       "mem0 = " );
-					for( j=0; topol[i][0][j]>-1; j++ )	reporterr(       "%d ", topol[i][0][j] );
-					reporterr(       "\n" );
-					reporterr(       "mem1 = " );
-					for( j=0; topol[i][1][j]>-1; j++ )	reporterr(       "%d ", topol[i][1][j] );
-					reporterr(       "\n" );
-					reporterr(       "i=%d, mergeoralign[] = %c\n", i, mergeoralign[i] );
-				}
-#endif
 				for( i=njob-nadd; i<njob; i++ ) {
 					BRANCHES && printf("branch %d\n", __LINE__); // no
 					gappick0( bseq[i], seq[i] );
@@ -2641,21 +2350,6 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 				}
 //				commongappick( seq[subtable[i]], subalignment[i] ); // irukamo
 			}
-#if 0
-			for( i=0; i<njob-1; i++ )
-			{
-				reporterr(       "STEP %d\n", i+1 );
-				reporterr(       "group1 = " );
-				for( j=0; topol[i][0][j] != -1; j++ )
-					reporterr(       "%d ", topol[i][0][j]+1 );
-				reporterr(       "\n" );
-				reporterr(       "group2 = " );
-				for( j=0; topol[i][1][j] != -1; j++ )
-					reporterr(       "%d ", topol[i][1][j]+1 );
-				reporterr(       "\n" );
-				reporterr(       "%d -> %c\n\n", i, mergeoralign[i] );
-			}
-#endif
 			BRANCHES && printf("branch %d\n", __LINE__); // no
 			for( i=0; i<njob; i++ ) 
 			{
@@ -2671,14 +2365,6 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 					commongappick( j, subalnpt[i] );
 				}
 			}
-	
-#if 0 // --> iguidetree loop no soto he
-			FreeIntMtx( subtable );
-			free( insubtable );
-			for( i=0; i<nsubalignments; i++ ) free( subalnpt[i] );
-			free( subalnpt );
-			free( preservegaps );
-#endif
 		}
 //--------------- kokomade ----
 		else
@@ -2735,21 +2421,8 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 				targ[i].alloclenpt = &alloclen;
 				targ[i].fftlog = fftlog;
 				targ[i].mergeoralign = mergeoralign;
-#if 1 // tsuneni SEPARATELYCALCPAIRDISTS
 				targ[i].newdistmtx = NULL;
 				targ[i].selfscore = NULL;
-#else
-				if( calcpairdists ) // except for last cycle
-				{
-					targ[i].newdistmtx = mtx;
-					targ[i].selfscore = selfscore;
-				}
-				else
-				{
-					targ[i].newdistmtx = NULL;
-					targ[i].selfscore = NULL;
-				}
-#endif
 				targ[i].mutex = &mutex;
 				targ[i].treecond = &treecond;
 	
@@ -2769,13 +2442,6 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 		else
 #endif
 		{
-#if 0
-			if( calcpairdists ) // except for last
-			{
-				if( treebase( nlen, bseq, nadd, mergeoralign, mseq1, mseq2, topol, dep, eff, mtx, selfscore, &alloclen, callback ) ) goto chudan;
-			}
-			else
-#endif
 			{
 				BRANCHES && printf("branch %d\n", __LINE__); // yes
 				if( treebase( nlen, bseq, nadd, mergeoralign, mseq1, mseq2, topol, dep, eff, NULL, NULL, &alloclen, callback ) ) goto chudan;
@@ -2849,7 +2515,6 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 //				reporterr( "Check source!\n" );
 //				exit( 1 );
 
-#if 1
 				msadistmtxthread_arg_t *targ;
 				Jobtable jobpos;
 
@@ -2872,7 +2537,6 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 				}
 	
 				free( targ );
-#endif
 			}
 			if( skiptable) FreeIntMtx( skiptable ); skiptable = NULL;
 			reporterr(       "\ndone.\n\n" );

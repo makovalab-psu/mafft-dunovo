@@ -112,14 +112,6 @@ static void calcfreq_nuc( int nseq, char **seq, double *datafreq )
 	total = 0.0; for( i=0; i<4; i++ ) total += datafreq[i];
 //	reporterr(       "total = %f\n", total );
 	for( i=0; i<4; i++ ) datafreq[i] /= (double)total;
-
-#if 0
-	reporterr(       "\ndatafreq = " );
-	for( i=0; i<4; i++ )
-		reporterr(       "%10.5f ", datafreq[i] );
-	reporterr(       "\n" );
-	exit( 1 );
-#endif
 }
 
 static void calcfreq( int nseq, char **seq, double *datafreq )
@@ -330,17 +322,7 @@ void constants( int nseq, char **seq )
 		}
 		else
 		{
-#if 0
-				double f = 0.99;
-				double s = (double)kimuraR / ( 2 + kimuraR ) * 0.01;
-				double v = (double)1       / ( 2 + kimuraR ) * 0.01;
-				pam1[0][0] = f; pam1[0][1] = s; pam1[0][2] = v; pam1[0][3] = v;
-				pam1[1][0] = s; pam1[1][1] = f; pam1[1][2] = v; pam1[1][3] = v;
-				pam1[2][0] = v; pam1[2][1] = v; pam1[2][2] = f; pam1[2][3] = s;
-				pam1[3][0] = v; pam1[3][1] = v; pam1[3][2] = s; pam1[3][3] = f;
-#else
 				generatenuc1pam( pam1, kimuraR, freq );
-#endif
 	
 				reporterr(       "generating a scoring matrix for nucleotide (dist=%d) ... ", pamN );
 	
@@ -640,12 +622,7 @@ void constants( int nseq, char **seq )
 		else sprintf( shiftmodel, "noshift" );
 
 		sprintf( modelname, "Extended, %4.2f, %+4.2f, %+4.2f, %s", -(double)ppenalty/1000, -(double)poffset/1000, -(double)ppenalty_ex/1000, shiftmodel );
-#if 0
-		for( i=0; i<26; i++ ) amino[i] = locaminod[i];
-		for( i=0; i<26; i++ ) amino_grp[(int)amino[i]] = locgrpd[i];
-		for( i=0; i<0x80; i++ ) amino_n[i] = 0;
-		for( i=0; i<26; i++ ) amino_n[(int)amino[i]] = i;
-#endif
+
 		for( i=0; i<0x80; i++ )amino_n[i] = -1;
 		for( i=0; i<nalphabets; i++) 
 		{
@@ -737,12 +714,8 @@ void constants( int nseq, char **seq )
 			fprintf( stdout, "\n" );
 		}
 #endif
-#if 0
-/* 注意 ！！！！！！！！！！ */
-			penalty -= offset;
-#endif
-    BRANCHES && printf("branch %s %d\n", __FILE__, __LINE__); // no
 
+    BRANCHES && printf("branch %s %d\n", __FILE__, __LINE__); // no
 
 		for( i=0; i<nalphabets; i++ ) for( j=0; j<nalphabets; j++ ) 
 			n_distmp[i][j] = shishagonyuu( n_distmp[i][j] );
@@ -842,12 +815,7 @@ void constants( int nseq, char **seq )
 			sprintf( modelname, "User-defined, %4.2f, %+4.2f, %+4.2f, %s", -(double)ppenalty/1000, -(double)poffset/1000, -(double)ppenalty_ex/1000, shiftmodel );
 		else
 			sprintf( modelname, "BLOSUM%d, %4.2f, %+4.2f, %+4.2f, %s", nblosum, -(double)ppenalty/1000, -(double)poffset/1000, -(double)ppenalty_ex/1000, shiftmodel );
-#if 0
-		for( i=0; i<26; i++ ) amino[i] = locaminod[i];
-		for( i=0; i<26; i++ ) amino_grp[(int)amino[i]] = locgrpd[i];
-		for( i=0; i<0x80; i++ ) amino_n[i] = 0;
-		for( i=0; i<26; i++ ) amino_n[(int)amino[i]] = i;
-#endif
+
 		for( i=0; i<0x80; i++ )amino_n[i] = -1;
 		for( i=0; i<26; i++) amino_n[(int)amino[i]] = i;
 		if( fmodel == 1 )
@@ -933,11 +901,6 @@ void constants( int nseq, char **seq )
 			fprintf( stdout, "\n" );
 		}
 #endif
-#if 0
-/* 注意 ！！！！！！！！！！ */
-			penalty -= offset;
-#endif
-
 
 		for( i=0; i<20; i++ ) for( j=0; j<20; j++ ) 
 			n_distmp[i][j] = shishagonyuu( n_distmp[i][j] );
@@ -1225,11 +1188,6 @@ void constants( int nseq, char **seq )
 			fprintf( stdout, "\n" );
 		}
 #endif
-#if 0
-/* 注意 ！！！！！！！！！！ */
-			penalty -= offset;
-#endif
-
 
 		for( i=0; i<20; i++ ) for( j=0; j<20; j++ ) 
 			pamx[i][j] = shishagonyuu( pamx[i][j] );
@@ -1312,21 +1270,10 @@ void constants( int nseq, char **seq )
 
 	if( dorp == 'd' )  /* DNA */
 	{
-#if 0 // ???
-	    for( i=0; i<5; i++) for( j=0; j<5; j++ )
-        	n_disLN[i][j] = (double)n_dis[i][j] + offset - offsetLN;
-	    for( i=5; i<10; i++) for( j=5; j<10; j++ )
-        	n_disLN[i][j] = (double)n_dis[i][j] + offset - offsetLN;
-	    for( i=0; i<5; i++) for( j=0; j<5; j++ )
-        	n_disFFT[i][j] = n_dis[i][j] + offset - offsetFFT;
-	    for( i=5; i<10; i++) for( j=5; j<10; j++ )
-        	n_disFFT[i][j] = n_dis[i][j] + offset - offsetFFT;
-#else
 	    for( i=0; i<10; i++) for( j=0; j<10; j++ )
         	n_disLN[i][j] = (double)n_dis[i][j] + offset - offsetLN;
 	    for( i=0; i<10; i++) for( j=0; j<10; j++ )
         	n_disFFT[i][j] = n_dis[i][j] + offset - offsetFFT;
-#endif
 	}
 	else // protein
 	{
@@ -1335,49 +1282,6 @@ void constants( int nseq, char **seq )
 	    for( i=0; i<20; i++) for( j=0; j<20; j++ )
         	n_disFFT[i][j] = n_dis[i][j] + offset - offsetFFT;
 	}
-
-#if 0
-		reporterr(       "amino_dis (offset = %d): \n", offset );
-		for( i=0; i<20; i++ )
-		{
-			for( j=0; j<20; j++ ) 
-			{
-				reporterr(       "%5d", amino_dis[(int)amino[i]][(int)amino[j]] );
-			}
-			reporterr(       "\n" );
-		}
-
-		reporterr(       "amino_disLN (offsetLN = %d): \n", offsetLN );
-		for( i=0; i<20; i++ )
-		{
-			for( j=0; j<20; j++ ) 
-			{
-				reporterr(       "%5d", amino_disLN[(int)amino[i]][(int)amino[j]] );
-			}
-			reporterr(       "\n" );
-		}
-
-		reporterr(       "n_dis (offset = %d): \n", offset );
-		for( i=0; i<26; i++ )
-		{
-			for( j=0; j<26; j++ ) 
-			{
-				reporterr(       "%5d", n_dis[i][j] );
-			}
-			reporterr(       "\n" );
-		}
-
-		reporterr(       "n_disFFT (offsetFFT = %d): \n", offsetFFT );
-		for( i=0; i<26; i++ )
-		{
-			for( j=0; j<26; j++ ) 
-			{
-				reporterr(       "%5d", n_disFFT[i][j] );
-			}
-			reporterr(       "\n" );
-		}
-exit( 1 );
-#endif
 
 	BRANCHES && printf("branch %s %d\n", __FILE__, __LINE__); // yes
 	ppid = 0;
@@ -1416,10 +1320,6 @@ exit( 1 );
 		for( i=0; i<20; i++ ) volume[i] -= av;
 		for( i=0; i<20; i++ ) volume[i] /= sd;
 
-#if 0
-		for( i=0; i<20; i++ ) fprintf( stdout, "amino=%c, pol = %f<-%f, vol = %f<-%f\n", amino[i], polarity[i], polarity_[i], volume[i], volume_[i] );
-		for( i=0; i<20; i++ ) fprintf( stdout, "%c %+5.3f %+5.3f\n", amino[i], volume[i], polarity[i] );
-#endif
 	}
 }
 

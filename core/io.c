@@ -87,142 +87,6 @@ void gappick_samestring( char *seq )
 	*aseq = 0;
 }
 
-#if 0
-
-static int addlocalhom2( char *al1, char *al2, LocalHom *localhompt, int off1, int off2, int opt, int overlapaa, int skip )
-{
-	int pos1, pos2, start1, start2, end1, end2;
-	char *pt1, *pt2;
-	int iscore;
-	int isumscore;
-	int sumoverlap;
-	LocalHom *tmppt;
-	int st;
-	int nlocalhom = 0;
-	pt1 = al1; pt2 = al2;
-	pos1 = off1; pos2 = off2;
-
-	isumscore = 0;
-	sumoverlap = 0;
-
-#if 0
-	fprintf( stderr, "nlocalhom = %d in addlocalhom\n", nlocalhom );
-	fprintf( stderr, "al1 = %s, al2 = %s\n", al1, al2 );
-	fprintf( stderr, "off1 = %d, off2 = %d\n", off1, off2 );
-	fprintf( stderr, "localhopt = %p, skip = %d\n", localhompt, skip );
-	fprintf( stderr, "pt1 = \n%s\n, pt2 = \n%s\n", pt1, pt2 );
-#endif
-
-	if( skip )
-	{
-		while( --skip > 0 ) localhompt = localhompt->next;
-		localhompt->next = (LocalHom *)calloc( 1, sizeof( LocalHom ) );
-		localhompt = localhompt->next;
-//		fprintf( stderr, "tmppt = %p, localhompt = %p\n", tmppt, localhompt );
-	}
-	tmppt = localhompt;
-
-	st = 0;
-	iscore = 0;
-	while( *pt1 != 0 )
-	{
-//		fprintf( stderr, "In in while loop\n" );
-//		fprintf( stderr, "pt = %c, %c, st=%d\n", *pt1, *pt2, st );
-		if( st == 1 && ( *pt1 == '-' || *pt2 == '-' ) )
-		{
-			end1 = pos1 - 1;
-			end2 = pos2 - 1;
-
-			if( nlocalhom++ > 0 )
-			{
-//				fprintf( stderr, "reallocating ...\n" );
-				tmppt->next = (LocalHom *)calloc( 1, sizeof( LocalHom ) );
-//				fprintf( stderr, "done\n" );
-				tmppt = tmppt->next;
-				tmppt->next = NULL;
-			}
-			tmppt->start1 = start1;
-			tmppt->start2 = start2;
-			tmppt->end1   = end1  ;
-			tmppt->end2   = end2  ;
-
-#if 1
-			isumscore += iscore;
-			sumoverlap += end2-start2+1;
-#else
-			tmppt->overlapaa   = end2-start2+1;
-			tmppt->opt = iscore * 5.8 / 600;
-			tmppt->overlapaa   = overlapaa;
-			tmppt->opt = (double)opt;
-#endif
-
-#if 0
-			fprintf( stderr, "iscore (1)= %d\n", iscore );
-			fprintf( stderr, "al1: %d - %d\n", start1, end1 );
-			fprintf( stderr, "al2: %d - %d\n", start2, end2 );
-#endif
-			iscore = 0;
-			st = 0;
-		}
-		else if( *pt1 != '-' && *pt2 != '-' )
-		{
-			if( st == 0 )
-			{
-				start1 = pos1; start2 = pos2;
-				st = 1;
-			}
-			iscore += n_dis[(int)amino_n[(int)*pt1]][(int)amino_n[(int)*pt2]];
-//			fprintf( stderr, "%c-%c, score(0) = %d\n", *pt1, *pt2, iscore );
-		}
-		if( *pt1++ != '-' ) pos1++;
-		if( *pt2++ != '-' ) pos2++;
-	}
-
-	if( st )
-	{
-		if( nlocalhom++ > 0 )
-		{
-//			fprintf( stderr, "reallocating ...\n" );
-			tmppt->next = (LocalHom *)calloc( 1, sizeof( LocalHom ) );
-//			fprintf( stderr, "done\n" );
-			tmppt = tmppt->next;
-			tmppt->next = NULL;
-		}
-		end1 = pos1 - 1;
-		end2 = pos2 - 1;
-		tmppt->start1 = start1;
-		tmppt->start2 = start2;
-		tmppt->end1   = end1  ;
-		tmppt->end2   = end2  ;
-
-#if 1
-		isumscore += iscore;
-		sumoverlap += end2-start2+1;
-#else
-		tmppt->overlapaa   = end2-start2+1;
-		tmppt->opt = (double)iscore * 5.8 / 600;
-		tmppt->overlapaa   = overlapaa;
-		tmppt->opt = (double)opt;
-#endif
-#if 0
-		fprintf( stderr, "score (2)= %d\n", iscore );
-		fprintf( stderr, "al1: %d - %d\n", start1, end1 );
-		fprintf( stderr, "al2: %d - %d\n", start2, end2 );
-#endif
-	}
-
-	for( tmppt=localhompt; tmppt; tmppt=tmppt->next )
-	{
-		tmppt->overlapaa = sumoverlap;
-		tmppt->opt = (double)sumscore * 5.8 / 600 / sumoverlap;
-	}
-	return( nlocalhom );
-}
-
-#endif
-
-
-
 static int addlocalhom_r( char *al1, char *al2, LocalHom *localhompt, int off1, int off2, int opt, int overlapaa, int skip )
 {
 	CALLS && printf("called %s:addlocalhom_r()\n", __FILE__);
@@ -242,12 +106,6 @@ static int addlocalhom_r( char *al1, char *al2, LocalHom *localhompt, int off1, 
 	start1 = 0; // by D.Mathog, a guess
 	start2 = 0; // by D.Mathog, a guess
 
-#if 0
-	fprintf( stderr, "nlocalhom = %d in addlocalhom\n", nlocalhom );
-	fprintf( stderr, "al1 = %s, al2 = %s\n", al1, al2 );
-	fprintf( stderr, "off1 = %d, off2 = %d\n", off1, off2 );
-	fprintf( stderr, "localhopt = %p, skip = %d\n", localhompt, skip );
-#endif
 	fprintf( stderr, "pt1 = \n%s\n, pt2 = \n%s\n", pt1, pt2 );
 
 	if( skip )
@@ -283,15 +141,8 @@ static int addlocalhom_r( char *al1, char *al2, LocalHom *localhompt, int off1, 
 			tmppt->end1   = end1  ;
 			tmppt->end2   = end2  ;
 
-#if 1
 			sumscore += score;
 			sumoverlap += end2-start2+1;
-#else
-			tmppt->overlapaa   = end2-start2+1;
-			tmppt->opt = score * 5.8 / 600;
-			tmppt->overlapaa   = overlapaa;
-			tmppt->opt = (double)opt;
-#endif
 
 			fprintf( stderr, "score (1)= %f\n", score );
 			fprintf( stderr, "al1: %d - %d\n", start1, end1 );
@@ -327,15 +178,8 @@ static int addlocalhom_r( char *al1, char *al2, LocalHom *localhompt, int off1, 
 	tmppt->end1   = end1  ;
 	tmppt->end2   = end2  ;
 
-#if 1
 	sumscore += score;
 	sumoverlap += end2-start2+1;
-#else
-	tmppt->overlapaa   = end2-start2+1;
-	tmppt->opt = score * 5.8 / 600;
-	tmppt->overlapaa   = overlapaa;
-	tmppt->opt = (double)opt;
-#endif
 
 	fprintf( stderr, "score (2)= %f\n", score );
 	fprintf( stderr, "al1: %d - %d\n", start1, end1 );
@@ -402,7 +246,6 @@ void putlocalhom3( char *al1, char *al2, LocalHom *localhompt, int off1, int off
 			tmppt->end1   = end1  ;
 			tmppt->end2   = end2  ;
 
-#if 1
 			if( divpairscore )
 			{
 				tmppt->overlapaa   = end2-start2+1;
@@ -413,16 +256,7 @@ void putlocalhom3( char *al1, char *al2, LocalHom *localhompt, int off1, int off
 				sumscore += score;
 				sumoverlap += end2-start2+1;
 			}
-#else
-			tmppt->overlapaa   = overlapaa;
-			tmppt->opt = (double)opt;
-#endif
 
-#if 0
-			fprintf( stderr, "score (1)= %f\n", score );
-			fprintf( stderr, "al1: %d - %d\n", start1, end1 );
-			fprintf( stderr, "al2: %d - %d\n", start2, end2 );
-#endif
 			score = 0.0;
 			st = 0;
 		}
@@ -457,8 +291,6 @@ void putlocalhom3( char *al1, char *al2, LocalHom *localhompt, int off1, int off
 		tmppt->end1   = end1  ;
 		tmppt->end2   = end2  ;
 
-
-#if 1
 		if( divpairscore )
 		{
 			tmppt->overlapaa   = end2-start2+1;
@@ -469,16 +301,7 @@ void putlocalhom3( char *al1, char *al2, LocalHom *localhompt, int off1, int off
 			sumscore += score;
 			sumoverlap += end2-start2+1;
 		}
-#else
-		tmppt->overlapaa   = overlapaa;
-		tmppt->opt = (double)opt;
-#endif
 
-#if 0
-		fprintf( stderr, "score (2)= %f\n", score );
-		fprintf( stderr, "al1: %d - %d\n", start1, end1 );
-		fprintf( stderr, "al2: %d - %d\n", start2, end2 );
-#endif
 	}
 
 	fprintf( stderr, "sumscore = %f\n", sumscore );
@@ -537,7 +360,6 @@ void putlocalhom_ext( char *al1, char *al2, LocalHom *localhompt, int off1, int 
 			tmppt->end1   = end1  ;
 			tmppt->end2   = end2  ;
 
-#if 1
 			if( divpairscore )
 			{
 				tmppt->overlapaa   = end2-start2+1;
@@ -548,16 +370,7 @@ void putlocalhom_ext( char *al1, char *al2, LocalHom *localhompt, int off1, int 
 				isumscore += iscore;
 				sumoverlap += end2-start2+1;
 			}
-#else
-			tmppt->overlapaa   = overlapaa;
-			tmppt->opt = (double)opt;
-#endif
 
-#if 0
-			fprintf( stderr, "iscore (1)= %d\n", iscore );
-			fprintf( stderr, "al1: %d - %d\n", start1, end1 );
-			fprintf( stderr, "al2: %d - %d\n", start2, end2 );
-#endif
 			iscore = 0;
 			st = 0;
 		}
@@ -590,8 +403,7 @@ void putlocalhom_ext( char *al1, char *al2, LocalHom *localhompt, int off1, int 
 		tmppt->start2 = start2;
 		tmppt->end1   = end1  ;
 		tmppt->end2   = end2  ;
-	
-#if 1
+
 		if( divpairscore )
 		{
 			tmppt->overlapaa   = end2-start2+1;
@@ -602,16 +414,6 @@ void putlocalhom_ext( char *al1, char *al2, LocalHom *localhompt, int off1, int 
 			isumscore += iscore;
 			sumoverlap += end2-start2+1;
 		}
-#else
-		tmppt->overlapaa   = overlapaa;
-		tmppt->opt = (double)opt;
-#endif
-
-#if 0
-		fprintf( stderr, "iscore (2)= %d\n", iscore );
-		fprintf( stderr, "al1: %d - %d\n", start1, end1 );
-		fprintf( stderr, "al2: %d - %d\n", start2, end2 );
-#endif
 	}
 
 	if( !divpairscore )
@@ -719,7 +521,6 @@ void putlocalhom2( char *al1, char *al2, LocalHom *localhompt, int off1, int off
 			tmppt->end1   = end1  ;
 			tmppt->end2   = end2  ;
 
-#if 1
 			if( divpairscore )
 			{
 				tmppt->overlapaa   = end2-start2+1;
@@ -730,16 +531,6 @@ void putlocalhom2( char *al1, char *al2, LocalHom *localhompt, int off1, int off
 				isumscore += iscore;
 				sumoverlap += end2-start2+1;
 			}
-#else
-			tmppt->overlapaa   = overlapaa;
-			tmppt->opt = (double)opt;
-#endif
-
-#if 0
-			fprintf( stderr, "iscore (1)= %d\n", iscore );
-			fprintf( stderr, "al1: %d - %d\n", start1, end1 );
-			fprintf( stderr, "al2: %d - %d\n", start2, end2 );
-#endif
 			iscore = 0;
 			st = 0;
 		}
@@ -772,8 +563,7 @@ void putlocalhom2( char *al1, char *al2, LocalHom *localhompt, int off1, int off
 		tmppt->start2 = start2;
 		tmppt->end1   = end1  ;
 		tmppt->end2   = end2  ;
-	
-#if 1
+
 		if( divpairscore )
 		{
 			tmppt->overlapaa   = end2-start2+1;
@@ -784,16 +574,6 @@ void putlocalhom2( char *al1, char *al2, LocalHom *localhompt, int off1, int off
 			isumscore += iscore;
 			sumoverlap += end2-start2+1;
 		}
-#else
-		tmppt->overlapaa   = overlapaa;
-		tmppt->opt = (double)opt;
-#endif
-
-#if 0
-		fprintf( stderr, "iscore (2)= %d\n", iscore );
-		fprintf( stderr, "al1: %d - %d\n", start1, end1 );
-		fprintf( stderr, "al2: %d - %d\n", start2, end2 );
-#endif
 	}
 
 	if( !divpairscore )
@@ -849,7 +629,6 @@ void putlocalhom( char *al1, char *al2, LocalHom *localhompt, int off1, int off2
 			tmppt->end1   = end1  ;
 			tmppt->end2   = end2  ;
 
-#if 1
 			if( divpairscore )
 			{
 				tmppt->overlapaa   = end2-start2+1;
@@ -860,16 +639,6 @@ void putlocalhom( char *al1, char *al2, LocalHom *localhompt, int off1, int off2
 				sumscore += score;
 				sumoverlap += end2-start2+1;
 			}
-#else
-			tmppt->overlapaa   = overlapaa;
-			tmppt->opt = (double)opt;
-#endif
-
-#if 0
-			fprintf( stderr, "score (1)= %f\n", score );
-			fprintf( stderr, "al1: %d - %d\n", start1, end1 );
-			fprintf( stderr, "al2: %d - %d\n", start2, end2 );
-#endif
 			score = 0.0;
 			st = 0;
 		}
@@ -901,7 +670,6 @@ void putlocalhom( char *al1, char *al2, LocalHom *localhompt, int off1, int off2
 	tmppt->end1   = end1  ;
 	tmppt->end2   = end2  ;
 
-#if 1
 	if( divpairscore )
 	{
 		tmppt->overlapaa   = end2-start2+1;
@@ -912,16 +680,6 @@ void putlocalhom( char *al1, char *al2, LocalHom *localhompt, int off1, int off2
 		sumscore += score;
 		sumoverlap += end2-start2+1;
 	}
-#else
-	tmppt->overlapaa   = overlapaa;
-	tmppt->opt = (double)opt;
-#endif
-
-#if 0
-	fprintf( stderr, "score (2)= %f\n", score );
-	fprintf( stderr, "al1: %d - %d\n", start1, end1 );
-	fprintf( stderr, "al2: %d - %d\n", start2, end2 );
-#endif
 
 	if( !divpairscore )
 	{
@@ -1142,60 +900,6 @@ void FRead( FILE *fp, char name[][B], int nlen[], char **seq )
 #endif
 
 	geta2 = GETA2;
-
-#if 0
-	if( strlen( b ) >=25 )
-	{
-		b[25] = 0;
-	#if DEBUG
-		fprintf( stderr, "kimuraR = %s\n", b+20 );
-	#endif
-		kimuraR = atoi( b+20 );
-
-		if( kimuraR < 0 || 20 < kimuraR ) ErrorExit( "Illeagal kimuraR value.\n" );
-		if( allSpace( b+20 ) ) kimuraR = NOTSPECIFIED;
-	}
-	else kimuraR = NOTSPECIFIED;
-	#if DEBUG
-	fprintf( stderr, "kimuraR = %d\n", kimuraR );
-	#endif
-
-	if( strlen( b ) >=20 )
-	{
-		b[20] = 0;
-	#if DEBUG
-		fprintf( stderr, "pamN = %s\n", b+15 );
-	#endif
-		pamN = atoi( b+15 );
-		if( pamN < 0 || 400 < pamN ) ErrorExit( "Illeagal pam value.\n" );
-		if( allSpace( b+15 ) ) pamN = NOTSPECIFIED;
-	}
-	else pamN = NOTSPECIFIED;
-
-	if( strlen( b ) >= 15 )
-	{
-		b[15] = 0;
-	#if DEBUG
-		fprintf( stderr, "poffset = %s\n", b+10 );
-	#endif
-		poffset = atoi( b+10 );
-		if( poffset > 500 ) ErrorExit( "Illegal extending gap ppenalty\n" );
-		if( allSpace( b+10 ) ) poffset = NOTSPECIFIED;
-	}
-	else poffset = NOTSPECIFIED;
-
-	if( strlen( b ) >= 10 )
-	{
-		b[10] = 0;
-	#if DEBUG
-		fprintf( stderr, "ppenalty = %s\n", b+5 );
-	#endif
-		ppenalty = atoi( b+5 );
-		if( ppenalty > 0 ) ErrorExit( "Illegal opening gap ppenalty\n" );
-		if( allSpace( b+5 ) ) ppenalty = NOTSPECIFIED;
-	}
-	else ppenalty = NOTSPECIFIED;
-#endif
 
 	for( i=0; i<njob; i++ )
 	{
@@ -1455,40 +1159,20 @@ void readDataforgaln( FILE *fp, char **name, int *nlen, char **seq )
 	int i; 
 	static char *tmpseq = NULL;
 
-#if 0
-	if( !tmpseq )
-	{
-		tmpseq = AllocateCharVec( N );
-	}
-#endif
 
 	rewind( fp );
 	searchKUorWA( fp );
 
 	for( i=0; i<njob; i++ )
 	{
-		name[i][0] = '='; getc( fp ); 
-#if 0
-		fgets( name[i]+1, B-2, fp ); 
-		j = strlen( name[i] );
-		if( name[i][j-1] != '\n' )
-			ErrorExit( "Too long name\n" );
-		name[i][j-1] = 0;
-#else
-		myfgets( name[i]+1, B-2, fp ); 
-#endif
-#if 0
-		fprintf( stderr, "name[%d] = %s\n", i, name[i] );
-#endif
+		name[i][0] = '='; getc( fp );
+		myfgets( name[i]+1, B-2, fp );
 		tmpseq = load1SeqWithoutName_realloc( fp );
 		strcpy( seq[i], tmpseq );
 		nlen[i] = strlen( seq[i] );
 		free( tmpseq );
 	}
 	if( dorp == 'd' && upperCase != -1 ) seqLower( njob, seq );
-#if 0
-	free( tmpseq );
-#endif
 }
 
 void readData_varlen( FILE *fp, char **name, int *nlen, char **seq )
@@ -1502,19 +1186,8 @@ void readData_varlen( FILE *fp, char **name, int *nlen, char **seq )
 
 	for( i=0; i<njob; i++ )
 	{
-		name[i][0] = '='; getc( fp ); 
-#if 0
-		fgets( name[i]+1, B-2, fp ); 
-		j = strlen( name[i] );
-		if( name[i][j-1] != '\n' )
-			ErrorExit( "Too long name\n" );
-		name[i][j-1] = 0;
-#else
-		myfgets( name[i]+1, B-2, fp ); 
-#endif
-#if 0
-		fprintf( stderr, "name[%d] = %s\n", i, name[i] );
-#endif
+		name[i][0] = '='; getc( fp );
+		myfgets( name[i]+1, B-2, fp );
 		tmpseq = load1SeqWithoutName_realloc( fp );
 		nlen[i] = strlen( tmpseq );
 //		fprintf( stderr, "nlen[%d] = %d\n", i+1, nlen[i] );
@@ -1523,9 +1196,6 @@ void readData_varlen( FILE *fp, char **name, int *nlen, char **seq )
 		free( tmpseq );
 	}
 	if( dorp == 'd' && upperCase != -1 ) seqLower( njob, seq );
-#if 0
-	free( tmpseq );
-#endif
 }
 
 void readData_pointer2( FILE *fp, int nseq, char **name, int *nlen, char **seq )
@@ -1534,40 +1204,20 @@ void readData_pointer2( FILE *fp, int nseq, char **name, int *nlen, char **seq )
 	int i; 
 	static char *tmpseq = NULL;
 
-#if 0
-	if( !tmpseq )
-	{
-		tmpseq = AllocateCharVec( N );
-	}
-#endif
 
 	rewind( fp );
 	searchKUorWA( fp );
 
 	for( i=0; i<nseq; i++ )
 	{
-		name[i][0] = '='; getc( fp ); 
-#if 0
-		fgets( name[i]+1, B-2, fp ); 
-		j = strlen( name[i] );
-		if( name[i][j-1] != '\n' )
-			ErrorExit( "Too long name\n" );
-		name[i][j-1] = 0;
-#else
-		myfgets( name[i]+1, B-2, fp ); 
-#endif
-#if 0
-		fprintf( stderr, "name[%d] = %s\n", i, name[i] );
-#endif
+		name[i][0] = '='; getc( fp );
+		myfgets( name[i]+1, B-2, fp );
 		tmpseq = load1SeqWithoutName_realloc( fp );
 		strcpy( seq[i], tmpseq );
 		free( tmpseq );
 		nlen[i] = strlen( seq[i] );
 	}
 	if( dorp == 'd' && upperCase != -1 ) seqLower( nseq, seq );
-#if 0
-	free( tmpseq );
-#endif
 	if( outnumber )
 	{
 		char *namebuf;
@@ -1596,31 +1246,13 @@ void readData_pointer_casepreserve( FILE *fp, char **name, int *nlen, char **seq
 	int i; 
 	static char *tmpseq = NULL;
 
-#if 0
-	if( !tmpseq )
-	{
-		tmpseq = AllocateCharVec( N );
-	}
-#endif
-
 	rewind( fp );
 	searchKUorWA( fp );
 
 	for( i=0; i<njob; i++ )
 	{
-		name[i][0] = '='; getc( fp ); 
-#if 0
-		fgets( name[i]+1, B-2, fp ); 
-		j = strlen( name[i] );
-		if( name[i][j-1] != '\n' )
-			ErrorExit( "Too long name\n" );
-		name[i][j-1] = 0;
-#else
-		myfgets( name[i]+1, B-2, fp ); 
-#endif
-#if 0
-		fprintf( stderr, "name[%d] = %s\n", i, name[i] );
-#endif
+		name[i][0] = '='; getc( fp );
+		myfgets( name[i]+1, B-2, fp );
 		tmpseq = load1SeqWithoutName_realloc_casepreserve( fp );
 		strcpy( seq[i], tmpseq );
 		free( tmpseq );
@@ -1653,9 +1285,6 @@ int copydatafromgui( char **namegui, char **seqgui, char **name, int *nlen, char
 		reporterr( "DNA or Protein?\n" );
 		return( 1 );
 	}
-#if 0
-	free( tmpseq );
-#endif
 	if( outnumber )
 	{
 		char *namebuf;
@@ -1683,13 +1312,6 @@ void readData_pointer( FILE *fp, char **name, int *nlen, char **seq ) // yes
 	int i; 
 	static char *tmpseq = NULL;
 
-#if 0
-	if( !tmpseq )
-	{
-		tmpseq = AllocateCharVec( N );
-	}
-#endif
-
 	FILES && printf("file seek %d %s:%d\n", fp, __FILE__, __LINE__);
 	rewind( fp );
 	searchKUorWA( fp );
@@ -1697,29 +1319,15 @@ void readData_pointer( FILE *fp, char **name, int *nlen, char **seq ) // yes
 	FILES && printf("file read %d %s:%d\n", fp, __FILE__, __LINE__);
 	for( i=0; i<njob; i++ )
 	{
-		name[i][0] = '='; getc( fp ); 
-#if 0
-		fgets( name[i]+1, B-2, fp ); 
-		j = strlen( name[i] );
-		if( name[i][j-1] != '\n' )
-			ErrorExit( "Too long name\n" );
-		name[i][j-1] = 0;
-#else
+		name[i][0] = '='; getc( fp );
 		FILES && printf("file read %d %s:%d\n", fp, __FILE__, __LINE__);
-		myfgets( name[i]+1, B-2, fp ); 
-#endif
-#if 0
-		fprintf( stderr, "name[%d] = %s\n", i, name[i] );
-#endif
+		myfgets( name[i]+1, B-2, fp );
 		tmpseq = load1SeqWithoutName_realloc( fp );
 		strcpy( seq[i], tmpseq );
 		free( tmpseq );
 		nlen[i] = strlen( seq[i] );
 	}
 	if( dorp == 'd' && upperCase != -1 ) seqLower( njob, seq );
-#if 0
-	free( tmpseq );
-#endif
 	if( outnumber )
 	{
 		char *namebuf;
@@ -1747,40 +1355,19 @@ void readData( FILE *fp, char name[][B], int nlen[], char **seq )
 	int i; 
 	static char *tmpseq = NULL;
 
-#if 0
-	if( !tmpseq )
-	{
-		tmpseq = AllocateCharVec( N );
-	}
-#endif
-
 	rewind( fp );
 	searchKUorWA( fp );
 
 	for( i=0; i<njob; i++ )
 	{
-		name[i][0] = '='; getc( fp ); 
-#if 0
-		fgets( name[i]+1, B-2, fp ); 
-		j = strlen( name[i] );
-		if( name[i][j-1] != '\n' )
-			ErrorExit( "Too long name\n" );
-		name[i][j-1] = 0;
-#else
-		myfgets( name[i]+1, B-2, fp ); 
-#endif
-#if 0
-		fprintf( stderr, "name[%d] = %s\n", i, name[i] );
-#endif
+		name[i][0] = '='; getc( fp );
+		myfgets( name[i]+1, B-2, fp );
 		tmpseq = load1SeqWithoutName_realloc( fp );
 		strcpy( seq[i], tmpseq );
 		nlen[i] = strlen( seq[i] );
 		free( tmpseq );
 	}
 	if( dorp == 'd' && upperCase != -1 ) seqLower( njob, seq );
-#if 0
-	free( tmpseq );
-#endif
 }
 
 void cutAlignment( FILE *fp, int **regtable, char **revtable, int *outtable, char **name, char **outseq )
@@ -2488,12 +2075,7 @@ void writeDataforgaln( FILE *fp, int locnjob, char **name, int *nlen, char **ase
 		fprintf( fp, ">%s\n", name[i]+1 );
 		for( j=0; j<nalen; j=j+C )
 		{
-#if 0
-			strncpy( b, aseq[i]+j, C ); b[C] = 0;
-			fprintf( fp, "%s\n",b );
-#else
 			fprintf( fp, "%.*s\n", C, aseq[i]+j );
-#endif
 		}
 	}
 }
@@ -2515,13 +2097,8 @@ void writeData_pointer( FILE *fp, int locnjob, char **name, int *nlen, char **as
 		fprintf( fp, ">%s\n", name[i]+1 );
 		for( j=0; j<nalen; j=j+C )
 		{
-#if 0
-			strncpy( b, aseq[i]+j, C ); b[C] = 0;
-			fprintf( fp, "%s\n",b );
-#else
 			FILES && printf("file write %d %s:%d\n", fp, __FILE__, __LINE__);
 			fprintf( fp, "%.*s\n", C, aseq[i]+j );
-#endif
 		}
 	}
 }
@@ -2541,12 +2118,7 @@ void writeData( FILE *fp, int locnjob, char name[][B], int nlen[], char **aseq )
 		fprintf( fp, ">%s\n", name[i]+1 );
 		for( j=0; j<nalen; j=j+C )
 		{
-#if 0
-			strncpy( b, aseq[i]+j, C ); b[C] = 0;
-			fprintf( fp, "%s\n",b );
-#else
 			fprintf( fp, "%.*s\n", C, aseq[i]+j );
-#endif
 		}
 	}
 }
@@ -2578,20 +2150,7 @@ void readhat2_floathalf_part_pointer( FILE *fp, int nseq, int nadd, char **name,
     fgets( b, B, fp );
     for( i=0; i<nseq; i++ )
     {
-#if 0
-        getaline_fp_eof( b, B, fp ); 
-#else
 		myfgets( b, B-2, fp );
-#endif
-#if 0
-		j = MIN( strlen( b+6 ), 10 );
-        if( strncmp( name[i], b+6 , j ) ) 
-		{
-			fprintf( stderr, "Error in hat2\n" );
-			fprintf( stderr, "%s != %s\n", b, name[i] );
-			exit( 1 );
-		}
-#endif
     }
 	norg = nseq-nadd;
     for( i=0; i<norg; i++ ) for( j=0; j<nadd; j++ )
@@ -2615,20 +2174,7 @@ void readhat2_floathalf_pointer( FILE *fp, int nseq, char **name, float **mtx )
     fgets( b, B, fp );
     for( i=0; i<nseq; i++ )
     {
-#if 0
-        getaline_fp_eof( b, B, fp ); 
-#else
 		myfgets( b, B-2, fp );
-#endif
-#if 0
-		j = MIN( strlen( b+6 ), 10 );
-        if( strncmp( name[i], b+6 , j ) ) 
-		{
-			fprintf( stderr, "Error in hat2\n" );
-			fprintf( stderr, "%s != %s\n", b, name[i] );
-			exit( 1 );
-		}
-#endif
     }
     for( i=0; i<nseq-1; i++ ) for( j=i+1; j<nseq; j++ )
     {
@@ -2645,20 +2191,7 @@ void readhat2_floathalf( FILE *fp, int nseq, char name[M][B], float **mtx )
     fgets( b, B, fp );
     for( i=0; i<nseq; i++ )
     {
-#if 0
-        getaline_fp_eof( b, B, fp ); 
-#else
 		myfgets( b, B-2, fp );
-#endif
-#if 0
-		j = MIN( strlen( b+6 ), 10 );
-        if( strncmp( name[i], b+6 , j ) ) 
-		{
-			fprintf( stderr, "Error in hat2\n" );
-			fprintf( stderr, "%s != %s\n", b, name[i] );
-			exit( 1 );
-		}
-#endif
     }
     for( i=0; i<nseq-1; i++ ) for( j=i+1; j<nseq; j++ )
     {
@@ -2676,20 +2209,7 @@ void readhat2_float( FILE *fp, int nseq, char name[M][B], float **mtx )
     fgets( b, B, fp );
     for( i=0; i<nseq; i++ )
     {
-#if 0
-        getaline_fp_eof( b, B, fp ); 
-#else
 		myfgets( b, B-2, fp );
-#endif
-#if 0
-		j = MIN( strlen( b+6 ), 10 );
-        if( strncmp( name[i], b+6 , j ) ) 
-		{
-			fprintf( stderr, "Error in hat2\n" );
-			fprintf( stderr, "%s != %s\n", b, name[i] );
-			exit( 1 );
-		}
-#endif
     }
     for( i=0; i<nseq-1; i++ ) for( j=i+1; j<nseq; j++ )
     {
@@ -2706,20 +2226,7 @@ void readhat2_int( FILE *fp, int nseq, char name[M][B], int **mtx )
     fgets( b, B, fp );
     for( i=0; i<nseq; i++ )
     {
-#if 0
-        getaline_fp_eof( b, B, fp ); 
-#else
 		myfgets( b, B-2, fp );
-#endif
-#if 0
-		j = MIN( strlen( b+6 ), 10 );
-        if( strncmp( name[i], b+6 , j ) ) 
-		{
-			fprintf( stderr, "Error in hat2\n" );
-			fprintf( stderr, "%s != %s\n", b, name[i] );
-			exit( 1 );
-		}
-#endif
     }
     for( i=0; i<nseq-1; i++ ) for( j=i+1; j<nseq; j++ )
     {
@@ -2738,20 +2245,7 @@ void readhat2_pointer( FILE *fp, int nseq, char **name, double **mtx )
     fgets( b, B, fp );
     for( i=0; i<nseq; i++ )
     {
-#if 0
-        getaline_fp_eof( b, B, fp ); 
-#else
 		myfgets( b, B-2, fp );
-#endif
-#if 0
-		j = MIN( strlen( b+6 ), 10 );
-        if( strncmp( name[i], b+6 , j ) ) 
-		{
-			fprintf( stderr, "Error in hat2\n" );
-			fprintf( stderr, "%s != %s\n", b, name[i] );
-			exit( 1 );
-		}
-#endif
     }
     for( i=0; i<nseq-1; i++ ) for( j=i+1; j<nseq; j++ )
     {
@@ -2769,20 +2263,7 @@ void readhat2( FILE *fp, int nseq, char name[M][B], double **mtx )
     fgets( b, B, fp );
     for( i=0; i<nseq; i++ )
     {
-#if 0
-        getaline_fp_eof( b, B, fp ); 
-#else
 		myfgets( b, B-2, fp );
-#endif
-#if 0
-		j = MIN( strlen( b+6 ), 10 );
-        if( strncmp( name[i], b+6 , j ) ) 
-		{
-			fprintf( stderr, "Error in hat2\n" );
-			fprintf( stderr, "%s != %s\n", b, name[i] );
-			exit( 1 );
-		}
-#endif
     }
     for( i=0; i<nseq-1; i++ ) for( j=i+1; j<nseq; j++ )
     {
@@ -2946,23 +2427,6 @@ void WriteHat2( FILE *hat2p, int locnjob, char name[M][B], double **mtx )
 		}
 	}
 }
-
-#if 0
-void WriteHat2plain( FILE *hat2p, int locnjob, double **mtx )
-{
-	int i, j, ilim;
-
-	ilim = locnjob-1;
-	for( i=0; i<ilim; i++ )
-	{
-		fprintf( hat2p, "%d-%d d=%.3f\n", i+1, i+1, 0.0 );
-		for( j=i+1; j<locnjob; j++ ) 
-		{
-			fprintf( hat2p, "%d-%d d=%.3f\n", i+1, j+1, mtx[i][j] );
-		}
-	}
-}
-#endif
 
 int ReadFasta_sub( FILE *fp, double *dis, int nseq, char name[M][B] )
 {
@@ -3408,11 +2872,7 @@ int ReadFasta34noalign( FILE *fp, double *dis, int qmem, char **name, LocalHom *
 
 
     count = 0;
-#if 0
-    for( i=0; i<10000000 && count<nseq; i++ )
-#else
     while( !feof( fp ) )
-#endif
     {
         fgets( b, B-1, fp );
         if( !strncmp( "+==========+", b, 12 ) )
@@ -3446,11 +2906,7 @@ int ReadFasta34m10_nuc( FILE *fp, double *dis, int qmem, char **name, LocalHom *
 
 
     count = 0;
-#if 0
-    for( i=0; i<10000000 && count<nseq; i++ )
-#else
     while( !feof( fp ) )
-#endif
     {
         fgets( b, B-1, fp );
         if( !strncmp( "+==========+", b, 12 ) )
@@ -3584,13 +3040,8 @@ int ReadFasta34m10( FILE *fp, double *dis, int qmem, char **name, LocalHom *loca
 	char *qal2, *tal2;
 	int c;
 
-
     count = 0;
-#if 0
-    for( i=0; i<10000000 && count<nseq; i++ )
-#else
     while( !feof( fp ) )
-#endif
     {
         fgets( b, B-1, fp );
         if( !strncmp( "+==========+", b, 12 ) )
@@ -3732,12 +3183,6 @@ int ReadFasta34m10_scoreonly_nucbk( FILE *fp, double *dis, int nin )
 			sscanf( pt, "%d %lf %lf",  &opt, &bits, &z ); 
             dis[pos] += (double)opt;
             count++;
-#if 0
-			fprintf( stderr, "b=%s\n", b );
-			fprintf( stderr, "opt=%d\n", opt );
-			fprintf( stderr, "pos=%d\n", pos );
-			fprintf( stderr, "dis[pos]=%f\n", dis[pos] );
-#endif
 
         }
 		else if( 0 == strncmp( ">>><<<", b, 6 ) )
@@ -3787,12 +3232,6 @@ int ReadFasta34m10_scoreonly_nuc( FILE *fp, double *dis, int nin )
 				yonda[pos] = 1;
 			}
             count++;
-#if 0
-			fprintf( stderr, "b=%s\n", b );
-			fprintf( stderr, "opt=%d\n", opt );
-			fprintf( stderr, "pos=%d\n", pos );
-			fprintf( stderr, "dis[pos]=%f\n", dis[pos] );
-#endif
 
         }
         else if( !strncmp( ">>>", b, 3 ) )
@@ -3846,12 +3285,6 @@ int ReadFasta34m10_scoreonly( FILE *fp, double *dis, int nin )
 				yonda[pos] = 1;
 			}
             count++;
-#if 0
-			fprintf( stderr, "b=%s\n", b );
-			fprintf( stderr, "opt=%d\n", opt );
-			fprintf( stderr, "pos=%d\n", pos );
-			fprintf( stderr, "dis[pos]=%f\n", dis[pos] );
-#endif
 
         }
         else if( !strncmp( ">>>", b, 3 ) )
@@ -3882,13 +3315,8 @@ int ReadFasta34( FILE *fp, double *dis, int nseq, char name[M][B], LocalHom *loc
 	int opt, qstart, qend, tstart, tend;
 	double z, bits;
 
-
     count = 0;
-#if 0
-    for( i=0; i<10000000 && count<nseq; i++ )
-#else
     while( !feof( fp ) )
-#endif
     {
         fgets( b, B-1, fp );
         if( !strncmp( "+==========+", b, 12 ) )
@@ -3948,11 +3376,7 @@ int ReadFasta3( FILE *fp, double *dis, int nseq, char name[M][B] )
 	double z;
 
     count = 0;
-#if 0
-    for( i=0; i<10000000 && count<nseq; i++ )
-#else
     while( !feof( fp ) )
-#endif
     {
         fgets( b, B-1, fp );
         if( !strncmp( "+==========+", b, 12 ) )
@@ -4064,11 +3488,7 @@ int writePre( int nseq, char **name, int nlen[M], char **aseq, int force )
 		{
 			rewind( prep_g );
 			if( devide ) dvWrite( prep_g, nseq, name, nlen, aseq );
-#if 0
-			else    WriteGapFill( prep_g, nseq, name, nlen, aseq );
-#else
 			else    writeData( prep_g, nseq, name, nlen, aseq );
-#endif
 		}
 		return( 0 );
 	}
@@ -4079,10 +3499,6 @@ int writePre( int nseq, char **name, int nlen[M], char **aseq, int force )
 #endif
 		if( signalSM[SEMAPHORE]-- > 0 )
 		{
-#if 0 /* /tmp/pre の関係ではずした */
-			if( ferror( prep_g ) ) prep_g = fopen( "pre", "w" );
-			if( !prep_g ) ErrorExit( "Cannot re-open pre." ); 
-#endif
 			rewind( prep_g );
 			signalSM[STATUS] = IMA_KAITERU;
 #if IODEBUG
@@ -4157,10 +3573,6 @@ void readOtherOptions( int *ppidptr, int *fftThresholdptr, int *fftWinSizeptr )
 		else
 			*fftWinSizeptr = FFT_WINSIZE_P;
 	}
-#if 0
-	fprintf( stderr, "fftThresholdptr=%d\n", *fftThresholdptr );
-	fprintf( stderr, "fftWinSizeptr=%d\n", *fftWinSizeptr );
-#endif
 }
 
 void initSignalSM( void ) // yes
@@ -4177,15 +3589,6 @@ void initSignalSM( void ) // yes
 		signalSM = NULL;
 		return;
 	}
-
-#if 0
-	signalsmid = shmget( (key_t)ppid, 3, IPC_ALLOC | 0666 );
-	if( signalsmid == -1 ) ErrorExit( "Cannot get Shared memory for signal.\n" );
-	signalSM = shmat( signalsmid, 0, 0 );
-	if( (int)signalSM == -1 ) ErrorExit( "Cannot attatch Shared Memory for signal!\n" );
-	signalSM[STATUS] = IMA_KAITERU;
-	signalSM[SEMAPHORE] = 1;
-#endif
 }
 
 void initFiles( void ) // yes
@@ -4256,10 +3659,6 @@ void readlocalhomtable2( FILE*fp, int njob, LocalHom **localhomtable, char *kozo
 //		fprintf( stderr, "\n" );
 		sscanf( buff, "%d %d %d %lf %d %d %d %d %s",  &i, &j, &overlapaa, &opt, &start1, &end1, &start2, &end2, infor );
 		if( *infor == 'k' ) kozoarivec[i] = kozoarivec[j] = 1;
-
-#if 0
-		if( start1 == end1 || start2 == end2 ) continue; //mondai ari
-#endif
 
 //		if( i < j )
 		{
@@ -4341,11 +3740,6 @@ void readlocalhomtable( FILE*fp, int njob, LocalHom **localhomtable, char *kozoa
 //		fprintf( stderr, "\n" );
 		sscanf( buff, "%d %d %d %lf %d %d %d %d %s",  &i, &j, &overlapaa, &opt, &start1, &end1, &start2, &end2, infor );
 		if( *infor == 'k' ) kozoarivec[i] = kozoarivec[j] = 1;
-
-#if 0
-		if( start1 == end1 || start2 == end2 ) continue; //mondai ari
-#endif
-
 
 //		if( i < j )
 		{
@@ -4430,10 +3824,6 @@ void readlocalhomtable_two( FILE*fp, int norg, int nadd, LocalHom **localhomtabl
 		}
 		j -= norg;
 
-#if 0
-		if( start1 == end1 || start2 == end2 ) continue; //mondai ari
-#endif
-
 
 //		if( i < j )
 		{
@@ -4514,10 +3904,6 @@ void readlocalhomtable_one( FILE*fp, int norg, int nadd, LocalHom **localhomtabl
 			exit( 1 );
 		}
 		j -= norg;
-
-#if 0
-		if( start1 == end1 || start2 == end2 ) continue; //mondai ari
-#endif
 
 
 //		if( i < j )
@@ -4913,12 +4299,7 @@ void writeData_reorder_pointer( FILE *fp, int locnjob, char **name, int *nlen, c
 		fprintf( fp, ">%s\n", name[k]+1 );
 		for( j=0; j<nalen; j=j+C )
 		{
-#if 0
-			strncpy( b, aseq[k]+j, C ); b[C] = 0;
-			fprintf( fp, "%s\n",b );
-#else
 			fprintf( fp, "%.*s\n", C, aseq[k]+j );
-#endif
 		}
 	}
 }
@@ -4938,12 +4319,7 @@ void writeData_reorder( FILE *fp, int locnjob, char name[][B], int nlen[], char 
 		fprintf( fp, ">%s\n", name[k]+1 );
 		for( j=0; j<nalen; j=j+C )
 		{
-#if 0
-			strncpy( b, aseq[k]+j, C ); b[C] = 0;
-			fprintf( fp, "%s\n",b );
-#else
 			fprintf( fp, "%.*s\n", C, aseq[k]+j );
-#endif
 		}
 	}
 }
@@ -5497,27 +4873,6 @@ void reporterr( const char *str, ... ) // yes
 		va_end( args );
 		FILES && printf("file close %d %s:%d\n", errtmpfp, __FILE__, __LINE__);
 		fclose( errtmpfp );
-#endif
-
-#if 0
-		char *tmpptr;
-		tmpptr = (char *)realloc( *gmsg, (loglen+10000) * sizeof( char ) );
-		if( tmpptr == NULL )
-		{
-			fprintf( stderr, "Cannot relloc *gmsg\n" );
-			exit( 1 );
-		}
-		*gmsg = tmpptr;
-		va_start( args, str );
-		loglen += vsprintf( *gmsg + loglen, str, args );
-		va_end( args );
-
-
-		va_start( args, str );
-		loglen += vsprintf( *gmsg + loglen, str, args );
-		va_end( args );
-		*(*gmsg + loglen) = 0;
-		if( loglen > gmsglen - 100 ) loglen = 0; // tekitou
 #endif
 
 	}
