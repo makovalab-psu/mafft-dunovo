@@ -1,4 +1,5 @@
 #include "mltaln.h"
+#include <sys/time.h>
 
 #ifdef PCALLS
 #define CALLS 1
@@ -15,6 +16,22 @@
 #else
 #define FILES 0
 #endif
+#ifdef PTIMES
+#define TIMES 1
+#else
+#define TIMES 0
+#endif
+
+int time_check(struct timeval *last, int line) {
+  struct timeval now;
+  gettimeofday(&now, NULL);
+  long int sec_diff = (long int)now.tv_sec - (long int)(*last).tv_sec;
+  long int usec_diff = (long int)now.tv_usec - (long int)(*last).tv_usec;
+  usec_diff += sec_diff * 1000000;
+  fprintf(stderr, "time %f %d\n", (float)usec_diff/1000000.0, line);
+  *last = now;
+  return 1;
+}
 
 #define DEBUG 0
 #define IODEBUG 0
@@ -1797,6 +1814,9 @@ static void WriteOptions( FILE *fp )
 int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, char **argv, int (*callback)(int, int, char*))
 {
 	CALLS && printf("called %s:disttbfast()\n", __FILE__);
+	struct timeval now;
+	gettimeofday(&now, NULL);
+
 	int  *nlen = NULL;	
 	int  *nogaplen = NULL;	
 	char **name = NULL, **seq = NULL;
@@ -1866,6 +1886,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 	}
 
 	arguments( argc, argv );
+	TIMES && time_check(&now, __LINE__);
 	algbackup = alg; // tbfast wo disttbfast ni ketsugou shitatame.
 #ifndef enablemultithread
 	BRANCHES && printf("branch %d\n", __LINE__); // no
@@ -1991,6 +2012,8 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 #if 0
 	reporterr(       "params = %d, %d, %d\n", penalty, penalty_ex, offset );
 #endif
+
+	TIMES && time_check(&now, __LINE__);
 
 	initSignalSM();
 
@@ -2224,6 +2247,8 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 	}
 #endif
 
+	// The majority of the time is taken here.
+	TIMES && time_check(&now, __LINE__);
 
 	for( iguidetree=0; iguidetree<nguidetree; iguidetree++ )
 //	for( iguidetree=0; ; iguidetree++ )
@@ -2864,6 +2889,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 			bseq = NULL;
 		}
 	}
+	TIMES && time_check(&now, __LINE__);
 #if DEBUG
 	reporterr(       "closing trap_g\n" );
 #endif
@@ -2949,6 +2975,7 @@ int disttbfast( int ngui, int lgui, char **namegui, char **seqgui, int argc, cha
 	freeconstants();
 	closeFiles();
 	FreeCommonIP();
+	TIMES && time_check(&now, __LINE__);
 	return( val );
 
 chudan:
