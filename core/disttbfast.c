@@ -28,7 +28,7 @@ int time_check(struct timeval *last, int line) {
   long int sec_diff = (long int)now.tv_sec - (long int)(*last).tv_sec;
   long int usec_diff = (long int)now.tv_usec - (long int)(*last).tv_usec;
   usec_diff += sec_diff * 1000000;
-  fprintf(stderr, "time %f %d\n", (float)usec_diff/1000000.0, line);
+  printf("time %f %d\n", (float)usec_diff/1000000.0, line);
   *last = now;
   return 1;
 }
